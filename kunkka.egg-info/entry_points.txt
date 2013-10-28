@@ -1,0 +1,5 @@
+      [paste.app_factory]
+      main = kunkka:main
+      [console_scripts]
+      initialize_kunkka_db = kunkka.scripts.initializedb:main
+      

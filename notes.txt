@@ -1,0 +1,305 @@
+sudo mount -t  vboxsf shared_folder host
+cd host
+ssh -i DataPlatform.pem ubuntu@175.41.137.227
+
+#Creating Pyramid Project
+virtualenv env
+chomod /bin/pip
+bin/pip install pyramid nose webtest deform sqlalchemy
+chmod +x bin/activate
+./bin/activate
+pcreate --list
+pcreate -s alchemy __name__
+
+#Git
+sudo apt-get install git
+cd project_folder_
+git init
+git add *
+#Create Repo
+git add remote https://github.com/heera-jaiswal/__name__
+git commit -m "Created Project"
+git push origin master
+git checkout -b development
+
+//Development localy
+git clone https://github.com/heera-jaiswal/__name__
+virtualenv env
+chomod /bin/pip
+bin/pip install pyramid nose webtest deform sqlalchemy
+chmod +x bin/activate
+./bin/activate
+cd project_folder
+../bin/python setup.py develop
+../bin/pserve developement.ini
+
+
+
+//Opening First time Home Page
+Pyramid is having a problem using your SQL database.  The problem
+might be caused by one of the following things:
+
+1.  You may need to run the "initialize_kunkka_db" script
+    to initialize your database tables.  Check your virtual 
+    environment's "bin" directory for this script and try to run it.
+
+2.  Your database server may not be running.  Check that the
+    database server referred to by the "sqlalchemy.url" setting in
+    your "development.ini" file is running.
+
+After you fix the problem, please restart the Pyramid application to
+try it again.
+
+
+#installing mysql server and client
+sudo apt-get install mysql-server mysql-client
+root password: travel123
+#for mysql_config
+sudo pip install pymysql
+sudo apt-get install libmysqlclient-dev python-dev
+
+
+#configuring mysql + sqlalchemy into pyramid
+1. Add 'mysql-python' in require list of file setup.py
+2. Run python setup.py develop to build
+
+#set sqlalchemy to use mysql in development.ini
+sqlalchemy.url = mysql://root:22password@localhost/alchemy
+
+
+#mysq
+#login to mysql as root
+mysql --user=root --password=travel123
+# access from localhost only
+create user kunkka@localhost identified by 'travel123';
+# access from any host
+create user kunkka@'%' identified by 'travel123';
+#grant access
+grant all privileges on *.* to kunkka@'%' with grant option;
+
+
+#URL Dispatch
+#Pattern
+/users/{user}
+match_dict["user"] contains value
+/user/{}
+
+#append_slash
+Adding append_slash=True is a way to automatically redirect requests where the URL lacks a trailing slash, but requires one to match the proper route.
+
+You should not rely on this mechanism to redirect POST requests. The redirect of the slash-appending not found view will turn a POST request into a GET, losing any POST data in the original request.
+
+#Generating URLs
+Use the pyramid.request.Request.route_url() method to generate URLs based on route patterns
+url = request.route_url('foo', a='1', b='2', c='3')
+==>url = http://example.com/1/2/3 
+
+#Static Routes
+config.add_route('page', '/page/{action}', static=True)
+Routes added with a True static keyword argument will never be considered for matching at request time. Static routes are useful for URL generation purposes only.
+
+#Context
+The context resource object passed in to a view found as the result of URL dispatch will, by default, be an instance of the object returned by the root factory configured at startup time (the root_factory argument to the Configurator used to configure the application).
+You can override this behavior by passing in a factory argument to the add_route() method for a particular route. The factory should be a callable that accepts a request and returns an instance of a class that will be the context resource used by the view.
+
+config.add_route('idea', 'ideas/{idea}', factory='myproject.resources.Idea')
+class Idea(object):
+    def __init__(self, request):
+        pass
+
+
+#Event
+Events in Pyramid are always broadcast by the framework
+config.add_subscriber(<mysubscriber_fun_name>, <event_type>)
+config.add_subscriber(mysubscriber, NewRequest)
+
+or
+
+@subscriber(<event_type>)
+@subscriber(NewRequest)
+
+ Subscribers to the same event type are not guaranteed to be called in any particular order relative to each other.       
+
+ #Templates
+Only Chameleon templates support defining a renderer for a template relative to the location of the module where the view callable is defined. Mako templates, and other templating system bindings work differently. In particular, Mako templates use a “lookup path” as defined by the mako.directories configuration file instead of treating relative paths as relative to the current view module.
+An asset specification points at a file within a Python package. In this case, it points at a file named foo.pt within the templates directory of the mypackage package. Using a asset specification instead of a relative template name is usually a good idea, because calls to render_to_response using asset specifications will continue to work properly if you move the code containing them around.
+
+#Rendering
+the renderer representing the template will be provided with a number of system values
+request: The value provided as the request keyword argument to render_to_response or render or the request object passed to the view
+req: An alias for request.
+context: The current Pyramid context if request was provided as a keyword argument to render_to_response or render, or None if the request keyword argument was not provided
+renderer_name: The renderer name used to perform the rendering
+renderer_info:Basically, an object with the following attributes: name, package and type.
+view: Note that this value will only be automatically present when a template is rendered as a result of a renderer= argument; it will be None when the render_to_response or render APIs are used.
+You can define more values which will be passed to every template executed as a result of rendering by defining renderer globals.
+
+#Tween
+To make use of tweens, you must construct a “tween factory”. A tween factory must be a globally importable callable which accepts two arguments: handler and registry. handler will be the either the main Pyramid request handling function or another tween. registry will be the Pyramid application registry represented by this Configurator. A tween factory must return a tween when it is called.
+
+A tween is a callable which accepts a request object and returns a response object.
+
+Here’s an example of a tween factory:
+##in a module named myapp.tweens
+
+ import time
+ from pyramid.settings import asbool
+ import logging
+
+ log = logging.getLogger(__name__)
+
+ def timing_tween_factory(handler, registry):
+     if asbool(registry.settings.get('do_timing')):
+         # if timing support is enabled, return a wrapper
+         def timing_tween(request):
+             start = time.time()
+             try:
+                 response = handler(request)
+             finally:
+                 end = time.time()
+                 log.debug('The request took %s seconds' %
+                           (end - start))
+             return response
+         return timing_tween
+     # if timing support is not enabled, return the original
+     # handler
+     return handler
+
+
+#Registering an Implicit Tween Factory
+from pyramid.config import Configurator
+ config = Configurator()
+ config.add_tween('myapp.tweens.timing_tween_factory')
+
+ You cannot pass the tween factory object itself to the method
+
+#Suggesting Implicit Tween Ordering
+
+Allowable values for under or over (or both) are:
+
+None (the default).
+A dotted Python name to a tween factory: a string representing the predicted dotted name of a tween factory added in a call to add_tween in the same configuration session.
+One of the constants pyramid.tweens.MAIN, pyramid.tweens.INGRESS, or pyramid.tweens.EXCVIEW.
+An iterable of any combination of the above. This allows the user to specify fallbacks if the desired tween is not included, as well as compatibility with multiple other tweens.
+Effectively, under means “closer to the main Pyramid application than”, over means “closer to the request ingress than”.
+
+Example:
+config = Configurator()
+ config.add_tween('myapp.tween_factory1')
+ config.add_tween('myapp.tween_factory2')
+INGRESS (implicit)
+myapp.tween_factory2
+myapp.tween_factory1
+pyramid.tweens.excview_tween_factory (implicit)
+MAIN (implicit)
+
+#Explicit Tween Ordering
+The deploying user can override the implicit tween inclusion and ordering implied by calls to add_tween() entirely by using the pyramid.
+When used, this settings value must be a list of Python dotted names which will override the ordering (and inclusion) of tween factories in the implicit tween chain
+
+[app:main]
+use = egg:MyApp
+pyramid.reload_templates = true
+pyramid.tweens = myapp.my_cool_tween_factory
+
+#Displaying “Tweens”
+myenv/bin/ptweens development.ini
+
+#Command Line Help
+http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/commandline.html
+
+bin/pviews development.ini#shootout /about
+bin/proutes development.ini
+
+bin/prequest development.ini /
+bin/prequest --header=Host:example.com development.ini /
+bin/prequest -mPOST development.ini / < somefile
+
+#bootstrap: to run a script in pyramid env
+
+
+
+
+#MAKO Templating
+#Expression Escaping
+
+The above expression applies URL escaping to the expression, and produces this+is+some+text. The u name indicates URL escaping, whereas h represents HTML escaping, x represents XML escaping, and trim applies a trim function
+
+Within <% %>, you’re writing a regular block of Python code and this code does have access to the template’s context
+
+Use the <%! %> tags to declare your template’s imports, as well as any pure-Python functions you might want to declare as it is only executed once and this code does not have access to the template’s context
+
+#Tags:
+
+<%page>
+This tag defines general characteristics of the template, including caching arguments, and optional lists of arguments which the template expects when invoked. Currently, only one <%page> tag gets used per template, the rest get ignored
+<%page args="x, y, z='default'"/>
+<%page cached="True" cache_type="memory"/>
+
+<%include>
+is a regular joe that just accepts a file argument and calls in the rendered result of that file:
+<%include file="header.html"/>
+blah blah
+<%include file="footer.html"/>
+
+<%def>
+The %def tag defines a Python function which contains a set of content, that can be called at some other point in the template
+<%def name="myfunc(x)">
+    this is myfunc, x is ${x}
+</%def>
+${myfunc(7)}
+
+<%block>
+%block is a tag that is close to a %def, except executes itself immediately in its base-most scope and can also be anonymous (i.e. with no name):
+named blocks offer a syntactically pleasing way to do inheritance:
+
+<% return %>
+You can use a return statement inside a Python block to do that.
+
+
+
+
+1. ##Magnus(Cron): Requirement
+install mxodbc
+sudo apt-get install libiodbc2 iodbc
+edit your own odbc.ini (/etc/odbc.ini, ~/.odbc.ini or $ODBCINI environment variable) to contain something similar to the following:
+
+[ODBC Data Sources]
+pgdata = Native PostgreSQL ODBC driver
+
+[pgdata]
+Driver=/usr/lib/odbc/psqlodbcw.so
+Host       = 216.12.192.198
+Server     = gdsdb
+ServerName = gdsdb
+Database   = gds
+UserName   = agn
+UID        = agn
+Port       = 5432
+
+sudo  ~/data_platform/env/bin/easy_install https://downloads.egenix.com/python/index/ucs2/egenix-mxodbc/3.2.3/egenix_mxodbc-3.2.3-py2.7-linux-i686.egg#md5=0bf5eb1ed5aad7ce40bc927208e33ab2
+
+
+
+install adodb
+2. ##Magnus(Cron): Requirement
+sudo apt-get install unixODBC-dev
+sudo aptitude install g++
+sudo apt-get install python-dev
+sudo apt-get install tdsodbc
+sudo ~/data_platform/env/bin/python ~/data_platform/env/cron/magnus/pyodbc/setup.py build install
+
+
+create /etc/odbcinst.ini and put the following entry:
+[SQL Server]
+Description = TDS driver (Sybase/MS SQL)
+Driver      = /usr/lib/odbc/libtdsodbc.so
+Setup       = /usr/lib/odbc/libtdsS.so
+CPTimeout   =
+CPReuse     =
+
+#download ms sqlodbc driver from microsoft site
+ftp://ftp.software.ibm.com/software/db2ii/downloads/odbc_driver/ODBC71-fs-v95-or-above-131022/
+
+#To remove warning when importing pyodbc
+sudo chmod g-wx,o-wx /home/heera/.python-eggs

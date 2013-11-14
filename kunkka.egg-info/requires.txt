@@ -1,3 +1,4 @@
+pyramid_chameleon
 pyramid
 SQLAlchemy
 transaction

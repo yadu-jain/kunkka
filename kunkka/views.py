@@ -1,21 +1,61 @@
 from pyramid.response import Response
 from pyramid.view import view_config
-
+from datetime import datetime
 from sqlalchemy.exc import DBAPIError
+from logger import *
 
 from .models import (
     DBSession,
-    MyModel,
     )
 
-
-@view_config(route_name='home', renderer='templates/mytemplate.pt')
-def my_view(request):
+@view_config(route_name='doc', renderer='templates/mytemplate.pt')
+def doc(request):
     try:
         one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'one': one, 'project': 'kunkka'}
+
+@view_config(route_name='home',renderer='kunkka:templates/base.mak')
+def home(request):
+    return {'name':'OTS Report','project_name':'Kunkka','username':'heera'}
+##-------------------------------------------------------------------------------##
+@view_config(route_name='transaction',renderer='kunkka:templates/report.mak')
+def transaction(request):
+    log(request.GET)
+    data={'name':'OTS Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
+    if request.GET.has_key("from") and request.GET.has_key("to"):
+        log(request.GET["from"])
+        log(request.GET["to"]) 
+        #date format= '2013-07-07'
+        str_from=request.GET["from"]
+        str_to=request.GET["to"]
+        try:
+            date_from=datetime.strptime(str_from,'%Y-%m-%d')       
+            date_to=datetime.strptime(str_to,'%Y-%m-%d')       
+            if date_to<date_from:
+                data['error_msg']='Invalid Range !'
+            else:
+                data["date_from"]=str_from
+                data["date_to"]=str_to
+        except Exception as e:
+            log(str(e))
+            data['error_msg']=str(e)        
+    else:
+        today=datetime.now()
+        str_today=today.strftime('%y-%m-%d')
+        data["date_from"]=str_today
+        data["date_to"]=str_today        
+    return data
+
+@view_config(route_name='magnus',renderer='json')
+def magnus_ack(request):
+    #log(request.params)
+    if request.params.has_key("key"):
+        key=request.params["key"]
+        if key=='magnus':
+            return {'success':'true'}
+    return {'success':'false'}
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem

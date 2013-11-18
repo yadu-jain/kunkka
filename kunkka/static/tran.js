@@ -15,4 +15,3 @@ function tran(type)
 	console.log(url);
 	document.location.href=url;
 }
-

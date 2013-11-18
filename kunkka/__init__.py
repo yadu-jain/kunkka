@@ -21,6 +21,7 @@ def main(global_config, **settings):
     config.add_static_view('static', 'kunkka:static', cache_max_age=3600)
     config.add_route('home', '')
     config.add_route('transaction', '/tran/')    
+    config.add_route('chart', '/chart/OTS/{type}/')    
     config.add_route('doc', '/doc/')
     config.add_route('magnus', '/magnus/')
     config.add_notfound_view(notfound, append_slash=True)

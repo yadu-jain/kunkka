@@ -48,6 +48,7 @@ def transaction(request):
         data["date_to"]=str_today        
     return data
 
+
 @view_config(route_name='magnus',renderer='json')
 def magnus_ack(request):
     #log(request.params)
@@ -56,6 +57,7 @@ def magnus_ack(request):
         if key=='magnus':
             return {'success':'true'}
     return {'success':'false'}
+
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem

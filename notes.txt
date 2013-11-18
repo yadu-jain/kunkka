@@ -54,8 +54,9 @@ try it again.
 #installing mysql server and client
 sudo apt-get install mysql-server mysql-client
 root password: travel123
-#for mysql_config
+#for mysql_config required for alchemy
 sudo pip install pymysql
+#required for alchemy to use mysql
 sudo apt-get install libmysqlclient-dev python-dev
 
 
@@ -76,7 +77,7 @@ create user kunkka@localhost identified by 'travel123';
 create user kunkka@'%' identified by 'travel123';
 #grant access
 grant all privileges on *.* to kunkka@'%' with grant option;
-
+select user from mysql.user;
 
 #URL Dispatch
 #Pattern
@@ -303,3 +304,54 @@ ftp://ftp.software.ibm.com/software/db2ii/downloads/odbc_driver/ODBC71-fs-v95-or
 
 #To remove warning when importing pyodbc
 sudo chmod g-wx,o-wx /home/heera/.python-eggs
+
+
+
+
+##Deployment First Time
+#1. Within the virtualenv directory (~/home/gruffi/env), create a script named pyramid.wsgi. Give it these contents:
+############pyramid.wsgi#############
+import os
+from pyramid.paster import get_app, setup_logging
+os.environ['PYTHON_EGG_CACHE'] = '/tmp'
+ini_path = '/home/gruffi/env/kunkka/development.ini'
+setup_logging(ini_path)
+application = get_app(ini_path, 'main')
+#############
+
+
+
+#2. update etc/apache/httpd.conf file
+##################etc/apache/httpd.conf ##################
+WSGIPythonHome /home/gruffi/env
+WSGIApplicationGroup %{GLOBAL}
+WSGIPassAuthorization On
+
+WSGIDaemonProcess pyramid user=gruffi group=gruffi threads=4 python-path=/home/env/env/lib/python2.7/site-packages
+WSGIScriptAlias / /home/gruffi/env/pyramid.wsgi
+
+<Directory /home/gruffi/env/kunkka>
+  WSGIProcessGroup pyramid
+  Order allow,deny
+  Allow from all
+</Directory>
+
+#3. Build the pyramid application
+/home/gruffi/env/bin/python setup.py develop
+/home/gruffi/env/bin/python setup.py install
+
+#4. Restart apache server
+sudo /usr/sbin/apachectl restart
+
+#5. Check server logs
+sudo tail /var/log/apache2/error.log
+sudo tail /var/log/apache2/access.log
+
+
+#mysql data dir:
+ls -lah /var/lib/mysql/
+
+
+
+#queries:
+select agent_id, agent_name,booking_hr,count(*) from(select hour(booking_date) as booking_hr,B.* from bookings B where booking_date>= '2013-11-14' and booking_date<'2013-11-15') A group by agent_id, agent_name,booking_hr;

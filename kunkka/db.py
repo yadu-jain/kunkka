@@ -39,8 +39,9 @@ def bookings(fields):
 		result=session.execute("""
 		SELECT agent_id, agent_name,date_time,count(*) AS total 
 		FROM(
-			SELECT HOUR(B.booking_date) as date_time,B.* from bookings B 
-			WHERE booking_date>= :temp_date and booking_date < :temp_date_next) A 
+			SELECT HOUR(B.booking_date) as date_time,B.* from bookings B
+			INNER JOIN agents ag ON ag.agent_id=B.agent_id 
+			WHERE booking_date>= :temp_date and booking_date < :temp_date_next AND status='B' AND ag.category=1) A 
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"temp_date":temp_date,"temp_date_next":temp_date_next})
 		result_set=result
@@ -52,7 +53,8 @@ def bookings(fields):
 		SELECT agent_id, agent_name,date_time,count(*) AS total 
 		FROM(
 			SELECT DATE(B.booking_date) as date_time,B.* from bookings B 
-			WHERE booking_date>= :from_date and booking_date < :to_date_next) A 
+			INNER JOIN agents ag ON ag.agent_id=B.agent_id 
+			WHERE booking_date>= :from_date and booking_date < :to_date_next AND status='B' AND ag.category=1) A 
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"from_date":from_date,"to_date_next":to_date_next})
 		result_set=result
@@ -108,7 +110,8 @@ def seats(fields):
 		SELECT agent_id, agent_name,date_time,sum(total_seats) AS total 
 		FROM(
 			SELECT HOUR(B.booking_date) as date_time,B.* from bookings B 
-			WHERE booking_date>= :temp_date and booking_date < :temp_date_next) A 
+			INNER JOIN agents ag ON ag.agent_id=B.agent_id 
+			WHERE booking_date>= :temp_date and booking_date < :temp_date_next AND status='B' AND ag.category=1) A 
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"temp_date":temp_date,"temp_date_next":temp_date_next})
 		result_set=result
@@ -120,7 +123,8 @@ def seats(fields):
 		SELECT agent_id, agent_name,date_time,count(total_seats) AS total 
 		FROM(
 			SELECT DATE(B.booking_date) as date_time,B.* from bookings B 
-			WHERE booking_date>= :from_date and booking_date < :to_date_next) A 
+			INNER JOIN agents ag ON ag.agent_id=B.agent_id 
+			WHERE booking_date>= :from_date and booking_date < :to_date_next AND status='B' AND ag.category=1) A 
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"from_date":from_date,"to_date_next":to_date_next})
 		result_set=result
@@ -176,7 +180,8 @@ def amount(fields):
 		SELECT agent_id, agent_name,date_time,sum(amount) AS total 
 		FROM(
 			SELECT HOUR(B.booking_date) as date_time,B.* from bookings B 
-			WHERE booking_date>= :temp_date and booking_date < :temp_date_next) A 
+			INNER JOIN agents ag ON ag.agent_id=B.agent_id 
+			WHERE booking_date>= :temp_date and booking_date < :temp_date_next AND status='B' AND ag.category=1) A 
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"temp_date":temp_date,"temp_date_next":temp_date_next})
 		result_set=result
@@ -188,7 +193,8 @@ def amount(fields):
 		SELECT agent_id, agent_name,date_time,count(total_seats) AS total 
 		FROM(
 			SELECT DATE(B.booking_date) as date_time,B.* from bookings B 
-			WHERE booking_date>= :from_date and booking_date < :to_date_next) A 
+			INNER JOIN agents ag ON ag.agent_id=B.agent_id 
+			WHERE booking_date>= :from_date and booking_date < :to_date_next AND status='B' AND ag.category=1) A 
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"from_date":from_date,"to_date_next":to_date_next})
 		result_set=result

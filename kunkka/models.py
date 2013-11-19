@@ -57,6 +57,7 @@ class Agent(Base):
     __tablename__   = 'agents'
     agent_id        = Column(types.Integer,primary_key=True)    
     name            = Column(types.String(100))    
+    category        = Column(types.Integer,default=0)
 
 class IP(Base):
     __tablename__   = 'ips'

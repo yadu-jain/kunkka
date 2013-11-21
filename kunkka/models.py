@@ -58,6 +58,16 @@ class Agent(Base):
     agent_id        = Column(types.Integer,primary_key=True)    
     name            = Column(types.String(100))    
     category        = Column(types.Integer,default=0)
+    
+class Provider(Base):
+    __tablename__   = 'providers'
+    provider_id     = Column(types.Integer,primary_key=True)    
+    name            = Column(types.String(100))    
+
+class Tier(Base):
+    __tablename__   = 'tiers'
+    tier_id         = Column(types.String(10),primary_key=True)
+    name            = Column(types.String(30))
 
 class IP(Base):
     __tablename__   = 'ips'

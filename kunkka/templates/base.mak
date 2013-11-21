@@ -68,17 +68,17 @@
               
             </%block>
       </div>
+       <div class="row">
           <%block name="inner_content">            
           ---------------
-          </%block>        
+          </%block>     
+        <div class="row">   
     </div>
       <footer>
         <p>© Mantis 2013</p>
       </footer>
 
     </div><!--/.fluid-container-->
-
-    
     
     <script src="${request.static_url('kunkka:static/bootstrap/js/bootstrap.min.js')}"></script>
 

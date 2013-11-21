@@ -43,11 +43,38 @@ def transaction(request):
             data['error_msg']=str(e)        
     else:
         today=datetime.now()
-        str_today=today.strftime('%y-%m-%d')
+        str_today=today.strftime('%Y-%m-%d')
         data["date_from"]=str_today
         data["date_to"]=str_today        
     return data
 
+@view_config(route_name='console',renderer='kunkka:templates/console.mak')
+def console(request):
+    log(request.GET)
+    data={'name':'Console:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
+    if request.GET.has_key("from") and request.GET.has_key("to"):
+        log(request.GET["from"])
+        log(request.GET["to"]) 
+        #date format= '2013-07-07'
+        str_from=request.GET["from"]
+        str_to=request.GET["to"]
+        try:
+            date_from=datetime.strptime(str_from,'%Y-%m-%d')       
+            date_to=datetime.strptime(str_to,'%Y-%m-%d')       
+            if date_to<date_from:
+                data['error_msg']='Invalid Range !'
+            else:
+                data["date_from"]=str_from
+                data["date_to"]=str_to
+        except Exception as e:
+            log(str(e))
+            data['error_msg']=str(e)        
+    else:
+        today=datetime.now()
+        str_today=today.strftime('%Y-%m-%d')
+        data["date_from"]=str_today
+        data["date_to"]=str_today        
+    return data
 
 @view_config(route_name='magnus',renderer='json')
 def magnus_ack(request):

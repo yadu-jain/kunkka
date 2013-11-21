@@ -24,6 +24,8 @@ def main(global_config, **settings):
     config.add_route('chart', '/chart/OTS/{type}/')    
     config.add_route('doc', '/doc/')
     config.add_route('magnus', '/magnus/')
+    config.add_route('console','/console/')
+    config.add_route('rest','/rest/{fun}/')
     config.add_notfound_view(notfound, append_slash=True)
     config.add_subscriber_predicate('magnus', magnus_handler.RequestPathStartsWith)
     config.scan()

@@ -120,7 +120,7 @@ def seats(fields):
 		#Range: from_date-to_date
 		to_date_next=datetime.timedelta(days=1)+to_date
 		result=session.execute("""
-		SELECT agent_id, agent_name,date_time,count(total_seats) AS total 
+		SELECT agent_id, agent_name,date_time,sum(total_seats) AS total 
 		FROM(
 			SELECT DATE(B.booking_date) as date_time,B.* from bookings B 
 			INNER JOIN agents ag ON ag.agent_id=B.agent_id 
@@ -190,7 +190,7 @@ def amount(fields):
 		#Range: from_date-to_date
 		to_date_next=datetime.timedelta(days=1)+to_date
 		result=session.execute("""
-		SELECT agent_id, agent_name,date_time,count(total_seats) AS total 
+		SELECT agent_id, agent_name,date_time,sum(amount) AS total 
 		FROM(
 			SELECT DATE(B.booking_date) as date_time,B.* from bookings B 
 			INNER JOIN agents ag ON ag.agent_id=B.agent_id 

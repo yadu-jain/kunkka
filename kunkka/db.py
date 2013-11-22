@@ -252,10 +252,12 @@ def amount(fields):
 
 #### Console####
 def id_value_list(str_sql):
-	
-	session=DBSession()
-	result=session.execute(str_sql())
-	return [{"id":item.id,"name":item.name} for item in result.fetchall()]
+	def fun():
+		session=DBSession()	
+		result=session.execute(str_sql())
+		print str_sql()	
+		return [{"id":item.id,"name":item.name} for item in result.fetchall()]
+	return fun
 
 @id_value_list
 def agent_list():

@@ -14,7 +14,8 @@ requires = [
     'pyramid_tm',
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
-    'waitress'    
+    'waitress',
+    'mysql-python'    
     ]
 
 setup(name='kunkka',

@@ -16,6 +16,8 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'mysql-python'    
+    'cryptacular',
+    'pycrypto'
     ]
 
 setup(name='kunkka',

@@ -17,6 +17,20 @@ query_set={}
 rest={}
 engine = Base.metadata.bind
 ##Queries:
+def get_user(username,password=None):
+	session=DBSession()
+	
+	if password:
+		cursor=session.execute("""
+			SELECT * from users where username=:username and password=:password;
+			""",{"username":username,"password":password})
+		return cursor.first()
+	else:
+		cursor=session.execute("""
+			SELECT * from users where username=:username;
+			""",{"username":username})
+		return cursor.first()
+
 def get_last_booking_id():
 	session=DBSession()
 	cursor=session.execute("""
@@ -288,9 +302,9 @@ def console(fields):
 	#if not result_types.has_key(result_type):
 	#	return {}
 
-	x_axis_title 	= "Custom Report"
+	x_axis_title 	= "Booked/Cancelled/Failed Report"
 	#result_type		= "Filter by "+",".join([key+"="+'<span class="info">'+applied_filter_values[key]+'</span>' for key in applied_filter_values.keys()])
-	y_axis_title	= "Booking Stats"
+	y_axis_title	= "Count"
 
 	
 
@@ -374,7 +388,7 @@ def console(fields):
 		
 		y_axis=int(y_axis.strftime("%s"))*1000		
 		temp_done[item.status].append([y_axis,int(item.total)])	
-	chart["series"]=[{"name":"Booked","data":temp_done["B"]}, {"name":"Cancelled","data":temp_done["C"]}, {"name":"Failed","data":temp_done["F"]}]
+	chart["series"]=[{"name":"Booked","data":temp_done["B"],"color":"green"}, {"name":"Cancelled","data":temp_done["C"],"color":"yellow"}, {"name":"Failed","data":temp_done["F"],"color":"red"}]
 	##Chart Properties
 	chart["title"]["text"]=x_axis_title
 	#chart["subtitle"]["text"]=result_type

@@ -6,6 +6,7 @@
                 "text": "title"
             },
             "subtitle": {
+                "useHTML" : true,
                 "text": "subtitle"
             },
             "xAxis": {

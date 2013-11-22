@@ -1,14 +1,31 @@
 from pyramid.response import Response
+from pyramid.httpexceptions import HTTPMovedPermanently
 from pyramid.view import view_config
 from datetime import datetime
 from sqlalchemy.exc import DBAPIError
 from logger import *
 from db import get_last_booking_id
+from authentication import (
+    get_username,
+    check_user,
+    Auth
+    )
+from pyramid.httpexceptions import (
+    HTTPMovedPermanently,
+    HTTPFound,
+    HTTPNotFound,
+    )
+
+from pyramid.security import (
+    authenticated_userid,
+    remember,
+    forget,
+    )
 from .models import (
     DBSession,
     )
 
-@view_config(route_name='doc', renderer='templates/mytemplate.pt')
+@view_config(route_name='doc', renderer='josn')
 def doc(request):
     try:
         one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
@@ -16,14 +33,40 @@ def doc(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'one': one, 'project': 'kunkka'}
 
-@view_config(route_name='home',renderer='kunkka:templates/base.mak')
-def home(request):
-    return {'name':'OTS Report','project_name':'Kunkka','username':'heera'}
+@view_config(route_name='home')
+@Auth('simple')
+def home(request):    
+    return HTTPMovedPermanently('/aff/')
+###----------------------------------Login---------------------------------------##    
+@view_config(route_name='login', renderer='kunkka:templates/login.mak')
+def login(request):
+    data={'msg':'','project_name':'Kunkka'}
+    print request.session
+    if request.method=="POST":
+        username=request.POST["username"]
+        password=request.POST["password"]
+        user=check_user(username,password)        
+        if user:
+            request.session["username"]=user.username
+            #headers = remember(request, username)    
+            return HTTPFound(location="/aff/")
+        else:
+            data['msg']='Invalid Login Id and password'
+    else:
+        log(request.session)               
+    return data
+@view_config(route_name='logout')
+def logout(request):
+    request.session.invalidate()
+    return HTTPFound(location="/login/")
 ##-------------------------------------------------------------------------------##
+
 @view_config(route_name='transaction',renderer='kunkka:templates/report.mak')
+@Auth('simple')
 def transaction(request):
-    log(request.GET)
-    data={'name':'OTS Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
+    username =""
+    print request.session
+    data={'name':'OTS Report','project_name':'Kunkka','error_msg':'','date_from':None,'date_to':None}
     if request.GET.has_key("from") and request.GET.has_key("to"):
         log(request.GET["from"])
         log(request.GET["to"]) 
@@ -45,10 +88,11 @@ def transaction(request):
         today=datetime.now()
         str_today=today.strftime('%Y-%m-%d')
         data["date_from"]=str_today
-        data["date_to"]=str_today        
+        data["date_to"]=str_today     
     return data
 
 @view_config(route_name='console',renderer='kunkka:templates/console.mak')
+@Auth('simple')
 def console(request):
     log(request.GET)
     data={'name':'Console:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}

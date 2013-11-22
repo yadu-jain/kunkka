@@ -3,6 +3,9 @@ from pyramid.view import view_config
 from datetime import datetime
 from sqlalchemy.exc import DBAPIError
 from logger import *
+from authentication import (
+    Auth
+    )
 from .models import (
     DBSession,
     )    
@@ -14,6 +17,7 @@ def JSON_NOT_FOUND(request,msg=None):
 	return {"success":"false","msg":msg}
 
 @view_config(route_name='chart',renderer='json')
+@Auth('simple')
 def chart(request):
 	rest_name=request.matchdict["type"]	
 	fields=request.params
@@ -23,6 +27,7 @@ def chart(request):
 		return JSON_NOT_FOUND(request)
 
 @view_config(route_name='rest',renderer='json')
+@Auth('simple')
 def rest(request):
 	rest_name=request.matchdict["fun"]	
 	fields=request.params

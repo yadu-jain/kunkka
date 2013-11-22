@@ -15,7 +15,7 @@
 		<div class="col-lg-2">
 			<div class="input-group">            
             <div class="input-group-btn">
-              <button id="go" type="button" class="btn btn-default" href="#" onclick='go();' tabindex="-1"><span class="glyphicon glyphicon-zoom-in"></span></button>
+              <button id="go" type="button" class="btn btn-default" href="#" onclick='go();' tabindex="-1">Go</span></button>
             </div>
           </div>			
 		</div>
@@ -38,7 +38,7 @@
 				    $("#to" ).datepicker({				    	
 				    	dateFormat: 'yy-mm-dd'				    	
 				    });
-				    console.log("${date_from}");					
+				    //console.log("${date_from}");					
 				   	$("#from").datepicker( "setDate" ,date_from);
 					$("#to").datepicker( "setDate" ,date_to);
 				   	
@@ -137,10 +137,10 @@ function load_list(target_id)
 		    empty.value="-";
 		    empty.innerHTML="ALL";
 		    target.appendChild(empty);
-		    console.log(data);		    
+		    //console.log(data);		    
 			$.each( data, function( key, val ) {				
-				console.log(key);
-				console.log(val);
+				//console.log(key);
+				//console.log(val);
 		    	var id=val["id"];
 		    	var name=val["name"];
 		    	var opt=document.createElement("option");
@@ -155,7 +155,7 @@ function load_list(target_id)
 	});
 }
 function console_chart(target_id){
-	console.log($('#'+target_id+' div'));
+	//console.log($('#'+target_id+' div'));
 	//var from_date=document.getElementById("from").value;
 	//var to_date=document.getElementById("to").value;
 	var str_date_from=$.datepicker.formatDate("yy-m-d",date_from);
@@ -180,12 +180,12 @@ function console_chart(target_id){
 	}	
 	if(provider!="-")
 	{
-		subtitle+=" Provider=<span class=\"blue\">"+$('#providers option:selected').html()+"</span>"
+		subtitle+=" Provider=<span color=\"blue\">"+$('#providers option:selected').html()+"</span>"
 		path+="&provider="+provider;
 	}	
 	if(tier!="-")
 	{
-		subtitle+=" Tier=<span class=\"blue\">"+$('#tiers option:selected').html()+"</span>"
+		subtitle+=" Tier=<span color=\"blue\">"+$('#tiers option:selected').html()+"</span>"
 		path+="&tier="+tier;
 	}
 	var key=agent+":"+provider+":"+tier;
@@ -197,10 +197,10 @@ function console_chart(target_id){
 		return;
 	}else
 	{
-		//console.log("loading chart..."+str_date_from+"->"+str_date_to+" :"+target_id);	
+		////console.log("loading chart..."+str_date_from+"->"+str_date_to+" :"+target_id);	
 		$.getJSON( path, 
 		function( data ){
-			console.log(subtitle);
+			//console.log(subtitle);
 			if(subtitle!=""){
 				data["subtitle"]["text"]=subtitle;
 			}else
@@ -219,7 +219,7 @@ $(document).ready(function(){
 
 	$('#chart_js').ready(function(){	
 		console_chart("console");				  	
-	  //console.log(e.relatedTarget);// previous tab	
+	  ////console.log(e.relatedTarget);// previous tab	
 	});
 	load_list("agents");
 	load_list("tiers");

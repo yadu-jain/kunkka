@@ -14,7 +14,9 @@ requires = [
     'pyramid_tm',
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
-    'waitress'    
+    'waitress',
+    'cryptacular',
+    'pycrypto'    
     ]
 
 setup(name='kunkka',

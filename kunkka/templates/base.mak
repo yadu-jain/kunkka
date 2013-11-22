@@ -35,30 +35,28 @@
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <span><a class="navbar-brand" href="#">${project_name}</a>${username}</span>
-
+        <div class="navbar-header">                   
+          <span class="navbar-brand">KUNKKA</span>          
+        </div>        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li id="nav_aff"><a href="/aff/">Affiliates</a></li>
+            <li id="nav_console"><a href="/console/">Console</a></li>
+          </ul>
+          <script type="text/javascript">
+            var nav_id="nav_"+document.location.href.split("/")[3];            
+            document.getElementById(nav_id).classList.add("active");
+          </script>
+          <div class="nav navbar-nav navbar-right">            
+            <ul>
+            <li>${request.username}</li>          
+            <li><a href="/logout/">Logout</a></li>        
+            </ul> 
+          </div>
         </div>
-        <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
-        </div><!--/.navbar-collapse -->
       </div>
-    </div>
 
+    </div>
     <div class="container fluid">
       <div class="row">
             <%block name="error">
@@ -76,11 +74,11 @@
     </div>
       <footer>
         <p>© Mantis 2013</p>
+        <p><small> Developed By: Heera</small></p>
       </footer>
 
     </div><!--/.fluid-container-->
     
     <script src="${request.static_url('kunkka:static/bootstrap/js/bootstrap.min.js')}"></script>
-
 
 </body></html>

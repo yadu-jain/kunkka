@@ -11,7 +11,7 @@ function tran(type)
 			type="Bookings";
 		}
 	}	
-	var url="/tran/?from="+from.value+"&to="+to.value+"#"+type;
+	var url="/aff/?from="+from.value+"&to="+to.value+"#"+type;
 	console.log(url);
 	document.location.href=url;
 }
@@ -25,6 +25,7 @@ function load_chart(target_id)
 	//var to_date=document.getElementById("to").value;
 	var str_date_from=$.datepicker.formatDate("yy-m-d",date_from)
 	var str_date_to=$.datepicker.formatDate("yy-m-d",date_to)
+	console.log(str_date_from);
 	if (my_charts[target_id+":"+str_date_from+"->"+str_date_to])
 	{	
 		return;

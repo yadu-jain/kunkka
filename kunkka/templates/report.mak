@@ -47,7 +47,7 @@
 				    $("#to" ).datepicker({				    	
 				    	dateFormat: 'yy-mm-dd'				    	
 				    });
-				    console.log("${date_from}");					
+				    //console.log("${date_from}");					
 				   	$("#from").datepicker( "setDate" ,date_from);
 					$("#to").datepicker( "setDate" ,date_to);
 				   	
@@ -83,51 +83,33 @@
 	</div>
 	<script>	
 	var my_charts=new Object();
-	function load_chart(target_id)
-{
-	//load chart using ajax	
 	
-	console.log($('#'+target_id+' div'));
-	//var from_date=document.getElementById("from").value;
-	//var to_date=document.getElementById("to").value;
-	var str_date_from=$.datepicker.formatDate("yy-m-d",date_from)
-	var str_date_to=$.datepicker.formatDate("yy-m-d",date_to)
-	if (my_charts[target_id+":"+str_date_from+"->"+str_date_to])
-	{	
-		return;
-	}else
-	{
-		//console.log("loading chart..."+str_date_from+"->"+str_date_to+" :"+target_id);	
-		my_charts[target_id+":"+str_date_from+"->"+str_date_to]=true;	
-	}
-	$.getJSON( "/chart/OTS/"+target_id+"/?from="+str_date_from+"&to="+str_date_to, 
-	function( data ){
-		$('#'+target_id+' div').highcharts(data)
-	});
-      
-}	
 $('#chart_js').ready(function(){
+	//console.log("loading first time")
 	$('#myTab a').on('shown.bs.tab', function (e) {
 		var target_id=e.target.href.split('#')[1];
+		//console.log("loading first time")
 		load_chart(target_id);				  	
-	  //console.log(e.relatedTarget);// previous tab
+	  ////console.log(e.relatedTarget);// previous tab
 	});				
 });
 $(document).ready(function(){
 	//ON Load
 	var id = document.location.hash.substring(1);
-	console.log(id);
+	////console.log(id);
+	if(id==""){
+		id="Bookings";
+	}
 
 	$('#myTab a[href="#'+id+'"]').tab('show');
-	
-	
+		
 
 	//On Changes			
 	$(window).bind("hashchange",function(event) {
 	//if you're using the awesome hashchange plugin
 	//$(window).hashchange(function(event) { ...				    
 	    var id = document.location.hash.substring(1);
-	    console.log(id);
+	    //console.log(id);
 	    $('#myTab a[href="#'+id+'"]').tab('show'); // Select tab by name				    
 	});
 	

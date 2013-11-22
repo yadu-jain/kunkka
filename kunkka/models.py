@@ -1,8 +1,10 @@
+import cryptacular.bcrypt
 from sqlalchemy import (
     Column,
     Index,
     Integer,
-    Text
+    Text,
+    Unicode,    
     )
 from sqlalchemy import types
 
@@ -11,13 +13,19 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import (
     scoped_session,
     sessionmaker,
+    synonym,
+    )
+from pyramid.security import (
+    Everyone,
+    Authenticated,
+    Allow,    
     )
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
-
+crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
 
 #class MyModel(Base):
 #    __tablename__ = 'models'
@@ -75,3 +83,35 @@ class IP(Base):
     ip              = Column(types.String(30))
     host            = Column(types.String(50))
     agent_id        = Column(types.Integer)
+
+class User(Base):
+    """
+    For Authentication
+    """
+    __tablename__ = 'users'
+    id = Column(types.Integer,primary_key=True)
+    username = Column(Unicode(20), unique=True)
+    _password = Column('password', Unicode(60))
+
+    def _get_password(self):
+        return self._password
+
+    def _set_password(self, password):
+        self._password = password #hash_password(password)
+
+    password = property(_get_password, _set_password)
+    password = synonym('_password', descriptor=password)
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    @classmethod
+    def get_by_username(cls, username):
+        return DBSession.query(cls).filter(cls.username == username).first()
+
+    @classmethod
+    def check_password(cls, username, password):
+        user = cls.get_by_username(username)
+        if not user:
+            return False
+        return  user.password==password#crypt.check(user.password, password)

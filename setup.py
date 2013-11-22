@@ -15,7 +15,7 @@ requires = [
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
-    'mysql-python'    
+    'mysql-python',    
     'cryptacular',
     'pycrypto'
     ]

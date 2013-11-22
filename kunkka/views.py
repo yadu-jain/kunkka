@@ -85,7 +85,7 @@ def magnus_ack(request):
             if request.method=="POST":
                 return {'success':'true'}
             else:
-                return {'success':'true','id':get_last_booking_id()}
+                return {'success':True,'id':get_last_booking_id()}
     return {'success':'false'}
 
 

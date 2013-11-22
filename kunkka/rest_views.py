@@ -32,6 +32,6 @@ def rest(request):
 	rest_name=request.matchdict["fun"]	
 	fields=request.params
 	if db.rest.has_key(rest_name):
-		return {"success":True,"data":db.rest[rest_name]}
+		return {"success":True,"data":db.rest[rest_name]()}
 	else:
 		return JSON_NOT_FOUND(request)

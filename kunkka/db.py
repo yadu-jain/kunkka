@@ -17,7 +17,15 @@ query_set={}
 rest={}
 engine = Base.metadata.bind
 ##Queries:
-
+def get_last_booking_id():
+	session=DBSession()
+	cursor=session.execute("""
+		SELECT MAX(booking_id) id from bookings;;
+		""")
+	data=cursor.first()
+	if data and data.id:
+		return int(data.id)
+	return 0
 def bookings(fields):	
 	x_axis_title 	="Agents Report"
 	y_axis_title 	="Total"

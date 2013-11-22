@@ -3,7 +3,7 @@ from pyramid.view import view_config
 from datetime import datetime
 from sqlalchemy.exc import DBAPIError
 from logger import *
-
+from db import get_last_booking_id
 from .models import (
     DBSession,
     )
@@ -82,7 +82,10 @@ def magnus_ack(request):
     if request.params.has_key("key"):
         key=request.params["key"]
         if key=='magnus':
-            return {'success':'true'}
+            if request.method=="POST":
+                return {'success':'true'}
+            else:
+                return {'success':'true','id':get_last_booking_id()}
     return {'success':'false'}
 
 

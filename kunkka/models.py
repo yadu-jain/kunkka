@@ -43,8 +43,8 @@ crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
 ## For Magnus Data to mysql-->username:kunkka, database:
 class Booking(Base):
     __tablename__   = 'bookings'
-    id              = Column(types.Integer,primary_key=True)
-    booking_id      = Column(types.Integer)
+    #id              = Column(types.Integer,primary_key=True)
+    booking_id      = Column(types.Integer,primary_key=True)
     agent_id        = Column(types.Integer)
     agent_name      = Column(types.String(50))
     status          = Column(types.String(2))

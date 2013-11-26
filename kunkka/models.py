@@ -27,6 +27,21 @@ DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
 
+def get_session():
+    try:
+        # suppose the database has been restarted.
+        session=DBSession()
+        session.execute("SELECT 1")
+        session.close()
+        return DBSession()
+    except exc.DBAPIError, e:
+        # an exception is raised, Connection is invalidated.
+        if e.connection_invalidated:
+            print "connection invalidated"
+    DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+    engine = Base.metadata.bind
+    DBSession.configure(bind=engine)
+    return DBSession()
 #class MyModel(Base):
 #    __tablename__ = 'models'
     #id = Column(Integer, primary_key=True)

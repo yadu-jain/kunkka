@@ -5,7 +5,7 @@ from sqlalchemy.exc import DBAPIError
 import json
 
 from .models import (
-    DBSession,
+    get_session,
     Booking,
     )
 
@@ -27,7 +27,7 @@ def MagnusHandler(event):
 		log("Magnus POST")
 		try:			
 			data=json.loads(event.request.body, encoding=event.request.charset)
-			db=DBSession()			
+			db=get_session()			
 			list_bookings=data["bookings"]
 			for item in list_bookings:
 				booking=Booking(

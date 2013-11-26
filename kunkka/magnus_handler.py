@@ -52,11 +52,11 @@ def MagnusHandler(event):
 						)
 				
 				db.add(booking)
-				count+=1
-				if count>=100:
+				counter+=1
+				if counter>=100:
 					log("Commiting...")
 					db.commit()
-					count=0			
+					counter=0			
 			log("Commiting...")		
 			try:
 				db.commit()

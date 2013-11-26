@@ -1,4 +1,5 @@
 from pyramid.events import NewRequest
+import transaction
 from pyramid.events import subscriber
 from logger import *
 from sqlalchemy.exc import DBAPIError
@@ -6,6 +7,7 @@ import json
 
 from .models import (
     get_session,
+    DBSession,
     Booking,
     )
 
@@ -27,7 +29,7 @@ def MagnusHandler(event):
 		log("Magnus POST")
 		try:			
 			data=json.loads(event.request.body, encoding=event.request.charset)
-			db=get_session()			
+			db=DBSession()
 			list_bookings=data["bookings"]
 			for item in list_bookings:
 				booking=Booking(
@@ -52,12 +54,15 @@ def MagnusHandler(event):
 			log("Commiting...")		
 			try:
 				db.commit()
-				Log('DONE')
+				db.close()
+				log('DONE')
         		#one = DBSession.query(Booking).filter(MyModel.name == 'one').first()        		
 			except DBAPIError as e:
-				log(str(e))
+				#log(str(e))
+				log(e)
 		except Exception as e:
-			log(str(e))
+			#log(str(e))
+			log(e)
 			#log(event.request.body)
 	else:
 		log("Magnus GET")		

@@ -31,6 +31,7 @@ def MagnusHandler(event):
 			data=json.loads(event.request.body, encoding=event.request.charset)
 			db=DBSession()
 			list_bookings=data["bookings"]
+			counter=0
 			for item in list_bookings:
 				booking=Booking(
 						booking_id =item['booking_id'],
@@ -50,7 +51,12 @@ def MagnusHandler(event):
 						company_name=item['company_name']
 						)
 				
-				db.add(booking)		
+				db.add(booking)
+				count+=1
+				if count>=100:
+					log("Commiting...")
+					db.commit()
+					count=0			
 			log("Commiting...")		
 			try:
 				db.commit()

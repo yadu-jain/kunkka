@@ -44,7 +44,7 @@ crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
 class Booking(Base):
     __tablename__   = 'bookings'
     #id              = Column(types.Integer,primary_key=True)
-    booking_id      = Column(types.Integer,primary_key=True)
+    booking_id      = Column(types.Integer,primary_key=True,autoincrement=False)
     agent_id        = Column(types.Integer)
     agent_name      = Column(types.String(50))
     status          = Column(types.String(2))

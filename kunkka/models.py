@@ -29,6 +29,7 @@ Base = declarative_base()
 crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
 
 def get_session():
+    global DBSession
     try:
         # suppose the database has been restarted.
         session=DBSession()

@@ -55,11 +55,11 @@ def MagnusHandler(event):
 				counter+=1
 				if counter>=100:
 					log("Commiting...")
-					db.commit()
+					transaction.commit()
 					counter=0			
 			log("Commiting...")		
 			try:
-				db.commit()
+				transaction.commit()
 				db.close()
 				log('DONE')
         		#one = DBSession.query(Booking).filter(MyModel.name == 'one').first()        		

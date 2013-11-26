@@ -24,8 +24,9 @@ from pyramid.security import (
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
-DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+
 Base = declarative_base()
+DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
 
 def get_session():

@@ -8,9 +8,9 @@ from sqlalchemy import func
 from sqlalchemy.sql import select
 import json
 from .models import (
-	Base,
-    DBSession,
+	Base,    
     Booking,
+    get_session,
     )
 
 query_set={}
@@ -18,7 +18,7 @@ rest={}
 engine = Base.metadata.bind
 ##Queries:
 def get_user(username,password=None):
-	session=DBSession()
+	session=get_session()
 	
 	if password:
 		cursor=session.execute("""
@@ -32,7 +32,7 @@ def get_user(username,password=None):
 		return cursor.first()
 
 def get_last_booking_id():
-	session=DBSession()
+	session=get_session()
 	cursor=session.execute("""
 		SELECT MAX(booking_id) id from bookings;;
 		""")
@@ -49,7 +49,7 @@ def bookings(fields):
 	print result_type
 	log(from_date)
 	log(to_date)
-	session=DBSession()
+	session=get_session()
 	result_set=None
 	same_date=False
 	if from_date==to_date:
@@ -119,7 +119,7 @@ def seats(fields):
 	print result_type
 	log(from_date)
 	log(to_date)
-	session=DBSession()
+	session=get_session()
 	result_set=None
 	same_date=False
 	if from_date==to_date:
@@ -189,7 +189,7 @@ def amount(fields):
 	print result_type
 	log(from_date)
 	log(to_date)
-	session=DBSession()
+	session=get_session()
 	result_set=None
 	same_date=False
 	if from_date==to_date:
@@ -253,7 +253,7 @@ def amount(fields):
 #### Console####
 def id_value_list(str_sql):
 	def fun():
-		session=DBSession()	
+		session=get_session()	
 		result=session.execute(str_sql())
 		print str_sql()	
 		return [{"id":item.id,"name":item.name} for item in result.fetchall()]
@@ -315,7 +315,7 @@ def console(fields):
 
 	log(from_date)
 	log(to_date)
-	session=DBSession()
+	session=get_session()
 	result_set=None
 	same_date=False
 	if from_date==to_date:

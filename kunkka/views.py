@@ -22,13 +22,14 @@ from pyramid.security import (
     forget,
     )
 from .models import (
-    DBSession,
+    get_session,
     )
 
 @view_config(route_name='doc', renderer='josn')
 def doc(request):
     try:
-        one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
+        session=get_session()
+        one = session.query(MyModel).filter(MyModel.name == 'one').first()
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'one': one, 'project': 'kunkka'}

@@ -7,7 +7,7 @@ from authentication import (
     Auth
     )
 from .models import (
-    DBSession,
+    get_session,
     )    
 import db
 

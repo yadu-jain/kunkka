@@ -7,6 +7,7 @@ from sqlalchemy import (
     Unicode,    
     )
 from sqlalchemy import types
+from sqlalchemy import exc
 
 from sqlalchemy.ext.declarative import declarative_base
 

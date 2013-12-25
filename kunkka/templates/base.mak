@@ -40,8 +40,9 @@
         </div>        
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li id="nav_aff"><a href="/aff/">Affiliates</a></li>
-            <li id="nav_console"><a href="/console/">Console</a></li>
+            <li id="nav_dashboard"><a href="/aff/">Dashboard</a></li>
+            <li id="nav_OTA"><a href="/OTA/">OTA</a></li>
+            <li id="nav_console"><a href="/console/">CONSOLE</a></li>
           </ul>
           <script type="text/javascript">
             var nav_id="nav_"+document.location.href.split("/")[3];            

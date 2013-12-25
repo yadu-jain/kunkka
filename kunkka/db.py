@@ -250,7 +250,7 @@ def amount(fields):
 	chart["plotOptions"]["spline"]["pointStart"]=int(startingPoint.strftime("%s"))*1000			
 	return chart
 
-#### Console####
+#### OTA####
 def id_value_list(str_sql):
 	def fun():
 		session=get_session()	
@@ -292,7 +292,7 @@ result_types={
 "booking":{"title":"Booking","select":""},
 }
 
-def console(fields):
+def OTA(fields):
 	applied_filters=[]
 	applied_filter_values={}
 	for key in filters.keys():
@@ -398,12 +398,14 @@ def console(fields):
 	startingPoint=from_date+datetime.timedelta(hours=5,minutes=30)
 	chart["plotOptions"]["spline"]["pointStart"]=int(startingPoint.strftime("%s"))*1000			
 	return chart
-		
+def today_failed(fields):	
+	return {}
 
+query_set["today_failed"] = today_failed
 query_set["Bookings"] = bookings
 query_set["Seats"] =seats
 query_set["Amount"]=amount
-query_set["console"]=console
+query_set["OTA"]=OTA
 
 rest["agents"]=agent_list
 rest["providers"]=provider_list

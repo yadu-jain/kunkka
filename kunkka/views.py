@@ -67,7 +67,7 @@ def logout(request):
 def transaction(request):
     username =""
     print request.session
-    data={'name':'OTS Report','project_name':'Kunkka','error_msg':'','date_from':None,'date_to':None}
+    data={'name':'OTA Report','project_name':'Kunkka','error_msg':'','date_from':None,'date_to':None}
     if request.GET.has_key("from") and request.GET.has_key("to"):
         log(request.GET["from"])
         log(request.GET["to"]) 
@@ -92,11 +92,11 @@ def transaction(request):
         data["date_to"]=str_today     
     return data
 
-@view_config(route_name='console',renderer='kunkka:templates/console.mak')
+@view_config(route_name='OTA',renderer='kunkka:templates/OTA.mak')
 @Auth('simple')
-def console(request):
+def OTA(request):
     log(request.GET)
-    data={'name':'Console:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
+    data={'name':'OTA:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
     if request.GET.has_key("from") and request.GET.has_key("to"):
         log(request.GET["from"])
         log(request.GET["to"]) 
@@ -121,6 +121,7 @@ def console(request):
         data["date_to"]=str_today        
     return data
 
+#----------------Magnus-----------------------------------------------#
 @view_config(route_name='magnus',renderer='json')
 def magnus_ack(request):
     #log(request.params)
@@ -132,8 +133,21 @@ def magnus_ack(request):
             else:
                 return {'success':True,'id':get_last_booking_id()}
     return {'success':'false'}
+#---------------------------------------------------------------------#
 
-
+#----------------Courier----------------------------------------------#
+@view_config(route_name='courier',renderer='json')
+def courier_ack(request):
+    #log(request.params)
+    if request.params.has_key("key"):
+        key=request.params["key"]
+        if key=='courier':
+            if request.method=="POST":
+                return {'success':'true'}
+            else:
+                return {'success':True}
+    return {'success':'false'}
+#--------------------------------------------------------------------#
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:

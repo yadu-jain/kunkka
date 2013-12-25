@@ -7,7 +7,7 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'pyramid_chameleon', 
+    'pyramid_mako', 
     'pyramid',
     'SQLAlchemy',
     'transaction',
@@ -16,7 +16,8 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'cryptacular',
-    'pycrypto'    
+    'pycrypto',
+    #'pymongo'    
     ]
 
 setup(name='kunkka',

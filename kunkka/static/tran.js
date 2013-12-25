@@ -34,7 +34,7 @@ function load_chart(target_id)
 		//console.log("loading chart..."+str_date_from+"->"+str_date_to+" :"+target_id);	
 		my_charts[target_id+":"+str_date_from+"->"+str_date_to]=true;	
 	}
-	$.getJSON( "/chart/OTS/"+target_id+"/?from="+str_date_from+"&to="+str_date_to, 
+	$.getJSON( "/chart/"+target_id+"/?from="+str_date_from+"&to="+str_date_to, 
 	function( data ){
 			console.log(data)
 		$('#'+target_id+' div').highcharts(data)

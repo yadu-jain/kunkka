@@ -17,7 +17,8 @@ requires = [
     'waitress',
     'cryptacular',
     'pycrypto',
-    #'pymongo'    
+    'pymongo',
+    'google-api-python-client'
     ]
 
 setup(name='kunkka',

@@ -23,7 +23,7 @@ from pyramid.security import (
     )
 
 from zope.sqlalchemy import ZopeTransactionExtension
-
+import json
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -108,9 +108,10 @@ class User(Base):
     """
     __tablename__ = 'users'
     id = Column(types.Integer,primary_key=True)
-    username = Column(Unicode(20), unique=True)
+    username = Column(Unicode(100), unique=True)
     _password = Column('password', Unicode(60))
-
+    perms       = Column(types.String(100))
+    oauth_id      = Column(types.Integer)
     def _get_password(self):
         return self._password
 
@@ -122,7 +123,9 @@ class User(Base):
     def __init__(self, username, password):
         self.username = username
         self.password = password
-
+    def __init__(self, username, oauth_id):
+        self.username = username
+        self.oauth_id = oauth_id
     @classmethod
     def get_by_username(cls, username):
         return DBSession.query(cls).filter(cls.username == username).first()
@@ -133,3 +136,71 @@ class User(Base):
         if not user:
             return False
         return  user.password==password#crypt.check(user.password, password)
+class MongoQuery(Base):
+    """
+    Mongo Query
+    """
+    __tablename__   = 'queries'
+    id              = Column(types.Integer,primary_key=True)
+    name            = Column(types.String(50))
+    #Wrapper=dict_query
+    _str_query      = Column(types.Text)
+    created_user    = Column(types.String(50))
+    creaded_on      = Column(types.DateTime)
+    last_updated    = Column(types.DateTime)
+    level           = Column(types.Integer,default=0)
+    args_count      = Column(types.Integer,default=0)
+    #Wrapper=arguments
+    #_arguments      =Column(types.Text)
+
+    ##Dict Wrapper for _str_query
+    @property
+    def dict_query(self):
+        return json.loads(self._str_query)
+
+    @dict_query.setter
+    def dict_query(self,value):        
+        self._str_query=json.dumps(value)        
+    dict_query=synonym('_str_query',descriptor=dict_query)
+    
+    ##Dict Wrapper for _arguments
+    #@property
+    #def arguments(self):
+    #    return json.loads(self._arguments)
+
+    #@arguments.setter
+    #def arguments(self,value):
+    #    self._arguments=json.dumps(value)
+    #arguments=synonym('_arguments',descriptor=arguments)
+
+
+class Execution(Base):
+    """
+    Mongo Query Execution
+    """
+    __tablename__   = 'executions'
+    id              = Column(types.Integer,primary_key=True)
+    query_id        = Column(types.Integer)
+    count           = Column(types.Integer,default=0)
+    last_executed   = Column(types.DateTime)
+    #Wrapper=last_result
+    _str_last_result     = Column(types.Text)
+
+    @property
+    def last_result(self):
+        return json.loads(self._str_last_result)
+
+    @last_result.setter
+    def last_result(self,value):    
+        self._str_last_result=json.dumps(value)        
+    last_result=synonym('_str_last_result',descriptor=last_result)
+
+class Perms(Base):
+    """
+    User Permissions
+    """
+    __tablename__   = 'perms'
+    id              = Column(types.Integer,primary_key=True)
+    group_id        = Column(types.Integer,default=0)
+    path            = Column(types.String(100))
+    method          = Column(types.String(30),default='GET')

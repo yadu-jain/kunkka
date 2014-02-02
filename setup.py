@@ -7,7 +7,7 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'pyramid_chameleon', 
+    'pyramid_mako', 
     'pyramid',
     'SQLAlchemy',
     'transaction',
@@ -15,9 +15,12 @@ requires = [
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
-    'mysql-python'    
+    'mysql-python',    
     #'cryptacular',
-    #'pycrypto'
+    #'pycrypto',
+    'pymongo',
+    'ordereddict',
+    'google-api-python-client'
     ]
 
 setup(name='kunkka',

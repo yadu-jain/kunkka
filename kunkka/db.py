@@ -6,30 +6,85 @@ from logger import *
 from sqlalchemy import engine_from_config
 from sqlalchemy import func
 from sqlalchemy.sql import select
+from collections import OrderedDict
 import json
+import pickle
 from .models import (
 	Base,    
     Booking,
     get_session,
+    User
     )
-
+from models import *
 query_set={}
 rest={}
 engine = Base.metadata.bind
 ##Queries:
-def get_user(username,password=None):
+#Console Queries:
+
+	
+
+def get_query_list():
+	"""
+	query(User).from_statement(
+...                     "SELECT * FROM users where name=:name").\
+...                     params(name='ed').all()
+	"""
 	session=get_session()
+
+	cursor=session.query(MongoQuery).from_statement("""
+			SELECT id,name,level,created_user,args_count from queries limit 100;
+			""")
+	return cursor.all()
+
+def get_query(id,load_query=False):
+	session=get_session()
+	text_fields=""
+	if load_query==True:
+		text_fields=",_str_query,_arguments"
+	cursor=session.query(MongoQuery).from_statement("""
+			SELECT id,name,level,last_updated,created_user %s from queries where id=:id limit 1;
+			""" % text_fields).params({"id":int(id)})	
+	temp=cursor.all()		
+	cursor.close()
+	return temp
+
+def get_user(username,password=None,oauth_id=None):
+	session=get_session()
+	db_session=None
 	
 	if password:
 		cursor=session.execute("""
 			SELECT * from users where username=:username and password=:password;
 			""",{"username":username,"password":password})
-		return cursor.first()
+		temp_user=cursor.first()
+		cursor.close()
+		return temp_user
 	else:
+
 		cursor=session.execute("""
 			SELECT * from users where username=:username;
 			""",{"username":username})
-		return cursor.first()
+		print cursor
+		temp_user=cursor.first()
+		cursor.close()
+
+		print temp_user
+		if temp_user==None:
+			print 'Creating..'
+			db_session=sessionmaker(bind=Base.metadata.bind)
+			print 'db_session'			
+			user=User(username,1)			
+			db=db_session()
+			db.add(user)        	        	
+			db.commit()        	
+			db.close()
+			cursor=session.execute("""
+					SELECT * from users where username=:username;
+				""",{"username":username})
+			temp_user = cursor.first()
+			print "created"
+		return temp_user
 
 def get_last_booking_id():
 	session=get_session()
@@ -409,6 +464,8 @@ query_set["OTA"]=OTA
 
 rest["agents"]=agent_list
 rest["providers"]=provider_list
+rest["query_list"]=get_query_list
+rest["query"]=get_query
 #rest["tiers"]=tier_list
 
 

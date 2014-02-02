@@ -19,32 +19,7 @@
             </div>
           </div>			
 		</div>
-		<script>
-			var d=new Date();
-			date_from=d;
-			date_to=d;
-			%if not date_from==None:
-				date_from=new Date('${date_from}');
-			%endif
-			%if not date_to==None:
-				date_to=new Date('${date_to}');
-			%endif			
-			$(document).ready(function(){				
-				$(function() {
-				    $( "#from" ).datepicker({				    	
-				    	dateFormat: 'yy-mm-dd'				    	
-				    });
-
-				    $("#to" ).datepicker({				    	
-				    	dateFormat: 'yy-mm-dd'				    	
-				    });
-				    //console.log("${date_from}");					
-				   	$("#from").datepicker( "setDate" ,date_from);
-					$("#to").datepicker( "setDate" ,date_to);
-				   	
-				  });
-			});
-		</script>
+		
 	</div>
 	&nbsp;
 	<div class="row">

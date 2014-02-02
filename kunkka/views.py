@@ -5,10 +5,12 @@ from datetime import datetime
 from sqlalchemy.exc import DBAPIError
 from logger import *
 from db import get_last_booking_id
+from pyramid.threadlocal import get_current_registry
 from authentication import (
     get_username,
     check_user,
-    Auth
+    Auth,
+    checkOAuthUser
     )
 from pyramid.httpexceptions import (
     HTTPMovedPermanently,
@@ -24,7 +26,7 @@ from pyramid.security import (
 from .models import (
     get_session,
     )
-
+from oauth import auth_uri
 @view_config(route_name='doc', renderer='josn')
 def doc(request):
     try:
@@ -37,11 +39,36 @@ def doc(request):
 @view_config(route_name='home')
 @Auth('simple')
 def home(request):    
-    return HTTPMovedPermanently('/aff/')
-###----------------------------------Login---------------------------------------##    
+    return HTTPMovedPermanently('/rms/')
+
+
+###----------------------------------OAuth Login---------------------------------------##    
 @view_config(route_name='login', renderer='kunkka:templates/login.mak')
 def login(request):
+    data={'msg':'','project_name':'Kunkka'}        
+    data["oauth_url"]=auth_uri
+    if request.GET.has_key("code")==True:
+        code=request.GET["code"]
+        #password=request.POST["password"]
+        #user=check_user(username,password)        
+        #if user:
+        #    request.session["username"]=user.username
+        #    #headers = remember(request, username)    
+        if checkOAuthUser(request,code)==True:
+            user=request.user
+            request.session["username"]=user.username
+            return HTTPFound(location="/rms/")    
+        else:
+            return data
+    else:
+        #log(request.session)              
+        return data
+
+###----------------------------------Old Login---------------------------------------##    
+@view_config(route_name='old_login', renderer='kunkka:templates/login.mak')
+def old_login(request):
     data={'msg':'','project_name':'Kunkka'}
+    data["oauth_url"]=auth_uri
     print request.session
     if request.method=="POST":
         username=request.POST["username"]
@@ -121,6 +148,36 @@ def OTA(request):
         data["date_to"]=str_today        
     return data
 
+@view_config(route_name='console',renderer='kunkka:templates/console.mak')
+@Auth('simple')
+def console(request):
+    log(request.GET)    
+    data={'name':'Console:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
+    if request.GET.has_key("from") and request.GET.has_key("to"):
+        log(request.GET["from"])
+        log(request.GET["to"]) 
+        #date format= '2013-07-07'
+        str_from=request.GET["from"]
+        str_to=request.GET["to"]
+        try:
+            date_from=datetime.strptime(str_from,'%Y-%m-%d')       
+            date_to=datetime.strptime(str_to,'%Y-%m-%d')       
+            if date_to<date_from:
+                data['error_msg']='Invalid Range !'
+            else:
+                data["date_from"]=str_from
+                data["date_to"]=str_to
+        except Exception as e:
+            log(str(e))
+            data['error_msg']=str(e)        
+    else:
+        today=datetime.now()
+        str_today=today.strftime('%Y-%m-%d')
+        data["date_from"]=str_today
+        data["date_to"]=str_today        
+    return data
+
+
 #----------------Magnus-----------------------------------------------#
 @view_config(route_name='magnus',renderer='json')
 def magnus_ack(request):
@@ -146,8 +203,13 @@ def courier_ack(request):
                 return {'success':'true'}
             else:
                 return {'success':True}
-    return {'success':'false'}
+    return {'success':'false'}    
 #--------------------------------------------------------------------#
+
+@view_config(route_name='rms',renderer='kunkka:templates/rms.mak')
+@Auth('oauth')
+def rms(request):
+    return {"date_from":None,"date_to":None}
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:

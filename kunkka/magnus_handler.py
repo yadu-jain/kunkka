@@ -28,7 +28,7 @@ def MagnusHandler(event):
 	if event.request.method=='POST':
 		log("Magnus POST")
 		try:			
-			data=json.loads(event.request.body, encoding=event.request.charset)
+#			#ata=json.loads(event.request.body, encoding=event.request.charset)
 			db=DBSession()
 			list_bookings=data["bookings"]
 			counter=0
@@ -62,12 +62,11 @@ def MagnusHandler(event):
 				transaction.commit()
 				db.close()
 				log('DONE')
-        		#one = DBSession.query(Booking).filter(MyModel.name == 'one').first()        		
+				one = DBSession.query(Booking).filter(MyModel.name == 'one').first()        		
 			except DBAPIError as e:
-				#log(str(e))
 				log(e)
 		except Exception as e:
-			#log(str(e))
+		#log(str(e))
 			log(e)
 			#log(event.request.body)
 	else:

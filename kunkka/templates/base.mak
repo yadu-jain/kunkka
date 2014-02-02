@@ -75,7 +75,7 @@
     </div>
       <footer>
         <p>© Mantis 2013</p>
-        <p><small> Developed By: Heera</small></p>
+        <p><small> Under Developement</small></p>
       </footer>
 
     </div><!--/.fluid-container-->

@@ -47,13 +47,17 @@ def get_service(code):
     # Set authorized credentials
     global flow
     credentials = flow.step2_exchange(code)
-
+    print "started"
     # Create a new authorized API client.
     http = httplib2.Http()
     http.disable_ssl_certificate_validation = True
     credentials = flow.step2_exchange(code, http)
+    print credentials
     http = credentials.authorize(http)
+    print http
     service = build('plusDomains', 'v1', http=http)  
+    print service
+    print "Done"
     return service
   except Exception as e:
     print e

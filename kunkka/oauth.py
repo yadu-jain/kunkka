@@ -45,7 +45,11 @@ def init_oauth():
 def get_service(code):
   try:    
     # Set authorized credentials
-    global flow
+    flow = OAuth2WebServerFlow(client_id=CLIENT_ID,
+                             client_secret=CLIENT_SECRET,
+                             scope=SCOPES,
+                             redirect_uri=REDIRECT_URI,
+                             access_type='online')    
     credentials = flow.step2_exchange(code)
     print "started"
     # Create a new authorized API client.

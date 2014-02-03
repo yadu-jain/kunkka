@@ -6,10 +6,10 @@ from oauth2client.client import OAuth2WebServerFlow
 # List the scopes your app requires:
 flow=None
 auth_uri=None
-CLIENT_ID="839932794527-178uqshpfnc7al8ecc5gdml5gopffb8q.apps.googleusercontent.com"
-CLIENT_SECRET="Fiw6f5q_5ZxHC3rvd0HQ4ao7"
-REDIRECT_URI="http://localhost:8080/login/"
-SCOPES = ['https://www.googleapis.com/auth/plus.me','email']
+CLIENT_ID=None #"839932794527-178uqshpfnc7al8ecc5gdml5gopffb8q.apps.googleusercontent.com"
+CLIENT_SECRET=None #"Fiw6f5q_5ZxHC3rvd0HQ4ao7"
+REDIRECT_URI=None#"http://localhost:8080/login/"
+SCOPES = None#['https://www.googleapis.com/auth/plus.me','email']
 def init_oauth():
   global flow
   global auth_uri
@@ -50,6 +50,8 @@ def get_service(code):
 
     # Create a new authorized API client.
     http = httplib2.Http()
+    http.disable_ssl_certificate_validation = True
+    credentials = flow.step2_exchange(code, http)
     http = credentials.authorize(http)
     service = build('plusDomains', 'v1', http=http)  
     return service

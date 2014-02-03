@@ -49,7 +49,9 @@ def chart(request):
 @Auth('simple')
 def rest(request):
 	rest_name=request.matchdict["fun"]	
-	fields={i:request.params[i] for i in request.params}
+	fields={}
+	for i in request.params:
+		fields[i]=request.params[i]
 	print fields
 	if db.rest.has_key(rest_name):
 		try:

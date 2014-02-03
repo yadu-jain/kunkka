@@ -49,8 +49,7 @@ def get_service(code):
                              client_secret=CLIENT_SECRET,
                              scope=SCOPES,
                              redirect_uri=REDIRECT_URI,
-                             access_type='online')    
-    credentials = flow.step2_exchange(code)
+                             access_type='online')        
     print "started"
     # Create a new authorized API client.
     http = httplib2.Http()

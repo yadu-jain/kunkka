@@ -8,7 +8,7 @@ import magnus_handler
 import pymongo
 from urlparse import urlparse
 from mongo import Mongo
-from oauth import init_oauth
+import oauth
 from .models import (
     DBSession,
     Base,
@@ -16,6 +16,7 @@ from .models import (
 
 #authn_policy = AuthTktAuthenticationPolicy('seekrit', hashalg='sha512')
 #authz_policy = ACLAuthorizationPolicy()
+##------------------OAuth Configuration------------------------##
 
 #--------------------Subscriber Filter-------------
 class RequestPathStartsWith(object):
@@ -57,7 +58,11 @@ def main(global_config, **settings):
     #config.set_default_permission()
 
     ##------------------OAuth----------------------##
-    init_oauth()
+    oauth.CLIENT_ID=settings['oauth.CLIENT_ID']
+    oauth.CLIENT_SECRET=settings['oauth.CLIENT_SECRET']
+    oauth.REDIRECT_URI=settings['oauth.REDIRECT_URI']
+    oauth.SCOPES=settings['oauth.SCOPES'].split(",")    
+    oauth.init_oauth()
     ##------------------MongoDB-------------------_###
     mongo_db_url = urlparse(settings['mongo_uri'])
     Mongo.conn = pymongo.Connection(

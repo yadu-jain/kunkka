@@ -6,23 +6,24 @@ from oauth2client.client import OAuth2WebServerFlow
 # List the scopes your app requires:
 flow=None
 auth_uri=None
+CLIENT_ID="839932794527-178uqshpfnc7al8ecc5gdml5gopffb8q.apps.googleusercontent.com"
+CLIENT_SECRET="Fiw6f5q_5ZxHC3rvd0HQ4ao7"
+REDIRECT_URI="http://localhost:8080/login/"
+SCOPES = ['https://www.googleapis.com/auth/plus.me','email']
 def init_oauth():
   global flow
   global auth_uri
-  SCOPES = ['https://www.googleapis.com/auth/plus.me',
-          'email']
+  
 
   # The following redirect URI causes Google to return a code to the user's
   # browser that they then manually provide to your app to complete the
   # OAuth flow.
-  REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
+  #REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
   # For a breakdown of OAuth for Python, see
   # https://developers.google.com/api-client-library/python/guide/aaa_oauth
   # CLIENT_ID and CLIENT_SECRET come from your APIs Console project
-  CLIENT_ID="839932794527-178uqshpfnc7al8ecc5gdml5gopffb8q.apps.googleusercontent.com"
-  CLIENT_SECRET="Fiw6f5q_5ZxHC3rvd0HQ4ao7"
-  REDIRECT_URI="http://localhost:8080/login/"
+  
   flow = OAuth2WebServerFlow(client_id=CLIENT_ID,
                              client_secret=CLIENT_SECRET,
                              scope=SCOPES,

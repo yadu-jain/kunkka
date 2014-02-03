@@ -83,6 +83,7 @@ def get_user(username,password=None,oauth_id=None):
 			db.add(user)        	        	
 			db.commit()        	
 			db.close()
+			session=get_session()
 			cursor=session.execute("""
 					SELECT * from users where username=:username;
 				""",{"username":username})

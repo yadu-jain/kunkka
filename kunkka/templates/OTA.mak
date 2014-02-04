@@ -1,8 +1,8 @@
 <%inherit file="base.mak"/>
 <%block name="inner_content">
-	<script src="${request.static_url('kunkka:static/tran.js')}"></script>
-	<script id="chart_js" src="${request.static_url('kunkka:static/highchart/highcharts.js')}"></script>	
-	<script id="chart_theme" src="${request.static_url('kunkka:static/highchart/themes/dark-green.js')}"></script>
+	<script type="text/javascript" src="${request.static_url('kunkka:static/tran.js')}"></script>
+	<script type="text/javascript" id="chart_js" src="${request.static_url('kunkka:static/highchart/highcharts.js')}"></script>	
+	<script type="text/javascript" id="chart_theme" src="${request.static_url('kunkka:static/highchart/themes/dark-green.js')}"></script>
 	<div class="row">
 		<div class="col-lg-2 input-group">
 			<span class="input-group-addon">From:</span>
@@ -19,7 +19,32 @@
             </div>
           </div>			
 		</div>
-		
+		<script type="text/javascript">
+			var d=new Date();
+			date_from=d;
+			date_to=d;
+			%if not date_from==None:
+				date_from=new Date('${date_from}');
+			%endif
+			%if not date_to==None:
+				date_to=new Date('${date_to}');
+			%endif			
+			$(document).ready(function(){				
+				$(function() {
+				    $( "#from" ).datepicker({				    	
+				    	dateFormat: 'yy-mm-dd'				    	
+				    });
+
+				    $("#to" ).datepicker({				    	
+				    	dateFormat: 'yy-mm-dd'				    	
+				    });
+				    //console.log("${date_from}");					
+				   	$("#from").datepicker( "setDate" ,date_from);
+					$("#to").datepicker( "setDate" ,date_to);
+				   	
+				  });
+			});
+		</script>
 	</div>
 	&nbsp;
 	<div class="row">
@@ -90,7 +115,7 @@
 	
 	<div id="test">
 	</div>
-	<script>	
+	<script type="text/javascript">
 var my_charts=new Object();
 function go()
 {

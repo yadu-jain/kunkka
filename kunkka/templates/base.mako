@@ -151,7 +151,9 @@
     .deactivated{
       color:red;
     }
-    
+    table{
+      white-space: pre;
+    }
     </style>   
 </head>
 

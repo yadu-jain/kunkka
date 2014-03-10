@@ -178,24 +178,27 @@
             }            
             function pickup_callback(response)
             {
-                if (response.success==true)
-                {
-                    console.log(response.data.meta_content);                    
-                    allTableObjects=generateTables(response.data.tables);
-                    //Init area matching
-                    init_area_matching(allTableObjects[0],response.data.raw.Table1);
+                try{
+                     if (response.success==true)
+                    {
+                        console.log(response.data.meta_content);                    
+                        allTableObjects=generateTables(response.data.tables);
+                        //Init area matching
+                        init_area_matching(allTableObjects[0],response.data.raw.Table1);
 
-                    //generateCharts(response.data.charts)
-                    /*
-                    var table=response.data.tables[0];
-                    var div=document.getElementById("content");
-                    div.innerHTML=table.content;
-                    $(div).ready(function() {
-                        var tables=$(div).find("table");
-                        tables.dataTable();
-                    } );
-*/
-                }
+                        //generateCharts(response.data.charts)
+                        /*
+                        var table=response.data.tables[0];
+                        var div=document.getElementById("content");
+                        div.innerHTML=table.content;
+                        $(div).ready(function() {
+                            var tables=$(div).find("table");
+                            tables.dataTable();
+                        } );
+    */
+                    }
+                }catch(error){                    
+                }            
                 $("#get_junk_pickups").text("Go");
                 $("#get_junk_pickups").attr("disabled",null);
             }

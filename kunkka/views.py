@@ -40,7 +40,7 @@ def doc(request):
 
 
 ###----------------------------------OAuth Login---------------------------------------##    
-@view_config(route_name='login', renderer='kunkka:templates/login.mak')
+@view_config(route_name='login', renderer='kunkka:templates/login.mako')
 def login(request):
     data={'msg':'','project_name':'Kunkka'}        
     data["oauth_url"]=auth_uri
@@ -62,7 +62,7 @@ def login(request):
         return data
 
 ###----------------------------------Old Login---------------------------------------##    
-@view_config(route_name='old_login', renderer='kunkka:templates/login.mak')
+@view_config(route_name='old_login', renderer='kunkka:templates/login.mako')
 def old_login(request):
     data={'msg':'','project_name':'Kunkka'}
     data["oauth_url"]=auth_uri
@@ -116,7 +116,7 @@ def transaction(request):
         data["date_to"]=str_today     
     return data
 
-@view_config(route_name='OTA',renderer='kunkka:templates/OTA.mak')
+@view_config(route_name='OTA',renderer='kunkka:templates/OTA.mako')
 @Auth('simple')
 def OTA(request):
     log(request.default_data)

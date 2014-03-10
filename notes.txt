@@ -57,7 +57,7 @@ root password: travel123
 #for mysql_config required for alchemy
 sudo pip install pymysql
 #required for alchemy to use mysql
-sudo apt-get install libmysqlclient-dev python-dev
+
 
 
 #configuring mysql + sqlalchemy into pyramid
@@ -78,6 +78,7 @@ create user kunkka@'%' identified by 'travel123';
 #grant access
 grant all privileges on *.* to kunkka@'%' with grant option;
 select user from mysql.user;
+#create database
 
 #URL Dispatch
 #Pattern
@@ -287,6 +288,8 @@ install adodb
 sudo apt-get install unixODBC-dev
 sudo aptitude install g++
 sudo apt-get install python-dev
+#for centos
+sudo yum install python-devel
 sudo apt-get install tdsodbc
 sudo ~/data_platform/env/bin/python ~/data_platform/env/cron/magnus/pyodbc/setup.py build install
 
@@ -354,4 +357,52 @@ ls -lah /var/lib/mysql/
 
 
 #queries:
-select agent_id, agent_name,booking_hr,count(*) from(select hour(booking_date) as booking_hr,B.* from bookings B where booking_date>= '2013-11-14' and booking_date<'2013-11-15') A group by agent_id, agent_name,booking_hr;
+mysql> select agent_id, agent_name,booking_hr,count(*) from(select hour(booking_date) as booking_hr,B.* from bookings B where booking_date>= '2013-11-14' and booking_date<'2013-11-15') A group by agent_id, agent_name,booking_hr;
+
+mysql> select agent_id, agent_name,booked_date,count(*) from(select date(booking_date) as booked_date,B.* from bookings B where booking_date>= '2013-11-14' and booking_date<'2013-11-16') A group by agent_id, agent_name,booked_date;
+
+
+
+#Changing Data Directory of mysql:
+
+sudo -s
+service mysqld stop
+take backup of /var/lib/mysql with same permission
+cp -R -p /var/lib/mysql destiniation
+change path to destination
+datadir= destination
+service mysqld start
+
+
+configuring server in fabric
+go to /etc/httpd/conf.d 
+edit vhosts.conf
+
+
+restating apache server gracefully:
+apachectl -k gracefull
+
+
+
+#41f6e473daab5ffe82123977f56c2c0044e5ad59gAJKW6CPUkdB1KPoAy81WX1xAVUIdXNlcm5hbWVxAlgFAAAAaGVlcmFxA3OHcQQu
+
+
+#mongodb installation
+1. Follow instructions to install
+http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+2.sudo mkdir -p data
+3.chown mongodb:mongodb data
+4.sudo mkdir -p mongo_log
+5.chown mongodb:mongodb monog_log
+6.update /etc/mongodb.conf
+    a. datapath=<data>
+    b. logpath=<log>
+7. test db
+use test
+j={"name":"abc","val":1}
+db.testData.insert( j )
+show collections
+8. Add User
+
+
+mongod --setParameter enableLocalhostAuthBypass=0

@@ -9,6 +9,7 @@ def jsonToTable(dictObj):
         table=dictObj[table_name]
         headers=OrderedDict()
         thead=''
+        tfoot=''
         tbody=''        
         if len(table)>0:
             item=OrderedDict(table[0])

@@ -3,7 +3,7 @@
     <div class="row clearfix">
         <div class="col-md-12 column">
             <h3 class="text-center text-primary">
-                Junk Pikcups
+                Junk Pickups
             </h3>
         </div>
     </div>    
@@ -14,14 +14,7 @@
             <span class="input-group-addon">                        
             Select City
             </span>
-            <select id="cities" class="form-control form-control">
-                <option value="-">Banglaore</option>
-                <option value="333">Hyderbad</option>
-                <option value="456">Delhi</option>
-                <option value="465">Mumabi</option>
-                <option value="2489">Pune</option>
-                <option value="2914">Mangalore</option>
-                <option value="3029">Jaipur</option>
+            <select id="cities" class="form-control form-control">               
             </select>
           <!--
                   <span class="input-group-btn">
@@ -30,11 +23,18 @@
                   </span>
                   -->
         </div>
+        <div class="col-md-3 column btn-toolbar" role="toolbar">
+            <div class="btn-group btn-group-sm">
+                <button id="get_junk_pickups" type="button" class="btn btn-primary" onclick="get_junk_pickups();">Go</button>
+            </div>            
+        </div>
+        <!--
         <div class="col-md-3 input-group input-group-sm">
             <div class="input-group-btn">
             <button type="button" onclick="get_junk_pickups();" class="run btn btn-primary">Go</button>
-            </div><!-- /btn-group -->       
+            </div>
         </div>  
+        -->
     </div>
     <div style="padding-top:10px;" class="row clearfix">
         <div class="col-md-1">
@@ -196,11 +196,15 @@
                     } );
 */
                 }
+                $("#get_junk_pickups").text("Go");
+                $("#get_junk_pickups").attr("disabled",null);
             }
             function get_junk_pickups()
             {
                 var elem_select=document.getElementById("cities");
                 city_id=elem_select.value;
+                $("#get_junk_pickups").text("Fetcing...");
+                $("#get_junk_pickups").attr("disabled",true);
                 if(city_id.length>0){
                     $.getJSON("${pickups_path}"+"?CITY_ID="+city_id,pickup_callback);
 

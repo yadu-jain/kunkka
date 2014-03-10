@@ -62,10 +62,11 @@ def main(global_config, **settings):
 
     ##------------------gds_api--------------------##
     try:
-        gds_api.api_key=settings['gds.api_key']
-        gds_api.api_url=settings['gds.api_url']
+        gds_api.api_key = settings['gds.api_key']
+        gds_api.api_url = settings['gds.api_url']
+        gds_api.api_file= settings['gds.api_file']
         #if gds_api.test()==True:            
-        with open('kunkka/gds_api.json','rb') as gds_api_file:
+        with open(gds_api.api_file,'rb') as gds_api_file:
             api=json.load(gds_api_file)                
             gds_api.create_gds_api(api["methods"])
         #else:

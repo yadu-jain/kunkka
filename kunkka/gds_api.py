@@ -43,7 +43,7 @@ def execute(data):
                         headers={"content-type":"application/x-www-form-urlencoded"}
                         )        
     if res["status"]=='200':
-        response = json.JSONDecoder(object_hook=OrderedDict).decode(content)         
+        response = json.JSONDecoder(object_pairs_hook=OrderedDict).decode(content)         
         if response.has_key("success") and response["success"]==True:
             return response["data"]
         elif response.has_key("success") and response["success"]==False:

@@ -2,7 +2,7 @@
 It uses GDS's RMS Provider api to get download data from gds
 """
 from httplib2 import Http
-import json
+import simplejson as json
 import codecs
 from urllib import urlencode
 api_url=None

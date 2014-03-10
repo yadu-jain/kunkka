@@ -68,8 +68,8 @@ def main(global_config, **settings):
         with open('kunkka/gds_api.json','rb') as gds_api_file:
             api=json.load(gds_api_file)                
             gds_api.create_gds_api(api["methods"])
-        else:
-            print "Failed to connect gds !"
+        #else:
+        #    print "Failed to connect gds !"
 
     except Exception as e:
         print e

@@ -1,0 +1,103 @@
+{
+    "methods":
+        [
+            {
+                "name":"RMS_AGENT_WISE_REPORT",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"}                        
+                    ],
+                "title":"AGENT WISE MIS"
+            },
+            {
+                "name":"RMS_GET_JUNK_PICKUPS",
+                "type":"query",
+                "params":
+                    [ 
+                    {"name":"CITY_ID","type":"int","default":-1}
+                    ],
+                "title":"JUNK PICKUPS"
+            },
+            {
+                "name":"RMS_SUB_AGENT_STATUS",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"FLAG_ALL_INFO","type":"int","default":1},
+                        {"name":"SUB_AGENT_ID","type":"int","default":-1}                        
+                    ],
+                "title":"SUB AGENT DETAILS"
+            },
+            {
+                "name":"RMS_UPDATE_AREA_OF_PICKUP",
+                "type":"update",
+                "params":
+                    [
+                        {"name":"CITY_ID","type":"int"},
+                        {"name":"AREA_ID","type":"int","default":-1},
+                        {"name":"AREA_NAME","type":"str","default":null},
+                        {"name":"PARENT_AREA_ID","type":"int","default":-1}                        
+                    ],
+                "title":"UPDATE AREA OF PICKUP"
+            },
+            {
+                "name":"RMS_GET_DAY_AGENTS_REPORT",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"},
+                        {"name":"MANTIS_ID","type":"int","default":-1}                        
+                    ],
+                "title":"DATE WISE AGENTS REPORT"
+            },
+            {
+                "name":"RMS_COMPANY_WISE_MIS",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"}                       
+                    ],
+                "title":"COMPANY WISE MIS"
+            },
+            {
+                "name":"RMS_GET_AREA_CITY_LIST",
+                "type":"query",
+                "params":
+                    [                        
+                    ],
+                "title":"ALL CITIES OF AREA"
+            },
+            {
+                "name":"RMS_DAY_TY_CONSOLE_BOOKINGS",
+                "type":"query",
+                "params":
+                    [ 
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"}                       
+                    ],
+                "title":"DAY WISE TY CONSOLE BOOKINGS"  
+            },
+            {
+                "name":"RMS_GET_PROVIDER_STATUS",
+                "type":"query",
+                "params":
+                    [ 
+                    ],
+                "title":"PROVIDERS STATUS"  
+            },
+            {
+                "name":"RMS_GET_COMPANY_STATUS",
+                "type":"query",
+                "params":
+                    [ 
+                        {"name":"PROVIDER_ID","type":"INT"}                        
+                    ],
+                "title":"COMPANIES STATUS"  
+            }
+
+        ]
+}

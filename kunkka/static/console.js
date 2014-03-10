@@ -200,7 +200,8 @@ function open_editor(id)
 			    	}
 			    	
 			    });
-			    editor.setSession(session);			    
+			    editor.setSession(session);		
+			    document.getElementById("query_name").value=""
 			    var d=document.getElementById("editor");
 			    d.setAttribute("query_id",-1);
 			    var args_count_options=document.getElementById("test_args_count");

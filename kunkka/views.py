@@ -1,4 +1,5 @@
 from pyramid.response import Response
+from pyramid.renderers import render_to_response
 from pyramid.httpexceptions import HTTPMovedPermanently
 from pyramid.view import view_config
 from datetime import datetime
@@ -6,6 +7,7 @@ from sqlalchemy.exc import DBAPIError
 from logger import *
 from db import get_last_booking_id
 from pyramid.threadlocal import get_current_registry
+from urllib import urlencode
 from authentication import (
     get_username,
     check_user,
@@ -36,14 +38,9 @@ def doc(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'one': one, 'project': 'kunkka'}
 
-@view_config(route_name='home')
-@Auth('simple')
-def home(request):    
-    return HTTPMovedPermanently('/rms/')
-
 
 ###----------------------------------OAuth Login---------------------------------------##    
-@view_config(route_name='login', renderer='kunkka:templates/login.mak')
+@view_config(route_name='login', renderer='kunkka:templates/login.mako')
 def login(request):
     data={'msg':'','project_name':'Kunkka'}        
     data["oauth_url"]=auth_uri
@@ -55,9 +52,9 @@ def login(request):
         #    request.session["username"]=user.username
         #    #headers = remember(request, username)    
         if checkOAuthUser(request,code)==True:
-            user=request.user
+            user=request.user                        
             request.session["username"]=user.username
-            return HTTPFound(location="/rms/")    
+            return HTTPFound(location="/")    
         else:
             return data
     else:
@@ -65,7 +62,7 @@ def login(request):
         return data
 
 ###----------------------------------Old Login---------------------------------------##    
-@view_config(route_name='old_login', renderer='kunkka:templates/login.mak')
+@view_config(route_name='old_login', renderer='kunkka:templates/login.mako')
 def old_login(request):
     data={'msg':'','project_name':'Kunkka'}
     data["oauth_url"]=auth_uri
@@ -77,11 +74,11 @@ def old_login(request):
         if user:
             request.session["username"]=user.username
             #headers = remember(request, username)    
-            return HTTPFound(location="/aff/")
+            return HTTPFound(location="/")
         else:
             data['msg']='Invalid Login Id and password'
     else:
-        log(request.session)               
+        log(request.session)                
     return data
 @view_config(route_name='logout')
 def logout(request):
@@ -89,8 +86,8 @@ def logout(request):
     return HTTPFound(location="/login/")
 ##-------------------------------------------------------------------------------##
 
-@view_config(route_name='transaction',renderer='kunkka:templates/report.mak')
-@Auth('simple')
+@view_config(route_name='transaction',renderer='kunkka:templates/aff.mako')
+@Auth('oauth',authorize=True)
 def transaction(request):
     username =""
     print request.session
@@ -119,10 +116,10 @@ def transaction(request):
         data["date_to"]=str_today     
     return data
 
-@view_config(route_name='OTA',renderer='kunkka:templates/OTA.mak')
+@view_config(route_name='OTA',renderer='kunkka:templates/OTA.mako')
 @Auth('simple')
 def OTA(request):
-    log(request.GET)
+    log(request.default_data)
     data={'name':'OTA:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
     if request.GET.has_key("from") and request.GET.has_key("to"):
         log(request.GET["from"])
@@ -148,8 +145,8 @@ def OTA(request):
         data["date_to"]=str_today        
     return data
 
-@view_config(route_name='console',renderer='kunkka:templates/console.mak')
-@Auth('simple')
+@view_config(route_name='console',renderer='kunkka:templates/console.mako')
+@Auth('oauth',authorize=True)
 def console(request):
     log(request.GET)    
     data={'name':'Console:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'','date_from':None,'date_to':None}
@@ -206,10 +203,95 @@ def courier_ack(request):
     return {'success':'false'}    
 #--------------------------------------------------------------------#
 
-@view_config(route_name='rms',renderer='kunkka:templates/rms.mak')
+# @view_config(route_name='rms',renderer='kunkka:templates/rms.mako')
+# @Auth('oauth')
+# def rms(request):
+#     data={'msg_type':'success','message':'Pyramid is having a problem using your SQL database.  The problemmight be caused by one of the following things:','name':'Console:Custom Report','project_name':'Kunkka','username':'heera','error_msg':'Test error','date_from':None,'date_to':None}
+#     return data
+################################# GENERIC REPORT #####################################################
+
+@view_config(route_name='report',renderer='kunkka:templates/report.mako')
+@Auth('oauth',authorize=True)
+def report(request):
+    report_name=request.matchdict["fun"]    
+    print report_name
+    if report_name:
+        report_path="/report_ajax/"+report_name+"/?"+urlencode(request.params)        
+        data={'msg_type':'success','message':'','name':request.link.name,
+            'project_name':'Kunkka',
+            "report_path":report_path}
+        return data
+    else:
+        return HTTPNotFound()
+
+
+#################################GENERIC REPORT WITH DATE RANGE SEARCH ################################
+@view_config(route_name='date_report',renderer='kunkka:templates/date_report.mako')
+@Auth('oauth',authorize=True)
+def date_report(request):
+    report_name=request.matchdict["fun"]    
+    print report_name
+    if report_name:
+        report_path="/report_ajax/"+report_name+"/?"+urlencode(request.params)
+        date_from=None
+        date_to=None
+        if "from" in request.params:
+            date_from=request.params["from"]
+        if "to" in request.params:
+            date_to=request.params["to"]
+        data={'msg_type':'success','message':'','name':request.link.name,
+            'project_name':'Kunkka',
+            'date_from':date_from,'date_to':date_to,"report_path":report_path}
+        return data
+    else:
+        return HTTPNotFound()
+
+
+
+
+
+########################################################################################
+## CUSTOM REPORTS
+
+##VALIDATE PICKUPS
+@view_config(route_name='junked_pickups',renderer='kunkka:templates/junk_pickups.mako')
+@Auth('oauth',authorize=True)
+def junk_pickups(request):
+    
+    pickups_path="/report_ajax/"+'junk_pickups/'
+    city_list_path="/report_ajax/"+'get_area_city_list/'
+    update_area_path="/report_ajax/"+'update_area_of_pickup/'
+
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        "pickups_path":pickups_path,
+        "city_list_path":city_list_path,
+        "update_area_path":update_area_path
+        }
+    return data
+
+@view_config(route_name='providers',renderer='kunkka:templates/providers.mako')
+@Auth('oauth',authorize=True)
+def providers(request):    
+    provider_path="/report_ajax/get_provider_status/?"+urlencode(request.params)        
+    company_path="/report_ajax/get_company_status/?"+urlencode(request.params)        
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka','username':'heera',
+        "provider_path":provider_path,
+        "company_path":company_path
+        }
+    return data   
+
+@view_config(route_name='home',renderer='kunkka:templates/home.mako')
 @Auth('oauth')
-def rms(request):
-    return {"date_from":None,"date_to":None}
+def home(request):    
+    provider_path="/report_ajax/get_provider_status/?"+urlencode(request.params)        
+    print request.user
+    data={'msg_type':'success','message':'','name':'Home',
+        'project_name':'Kunkka','username':'heera'
+        }
+    return data
+
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:

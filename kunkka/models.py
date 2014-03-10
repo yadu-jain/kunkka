@@ -106,26 +106,29 @@ class User(Base):
     """
     For Authentication
     """
-    __tablename__ = 'users'
-    id = Column(types.Integer,primary_key=True)
-    username = Column(Unicode(100), unique=True)
-    _password = Column('password', Unicode(60))
-    perms       = Column(types.String(100))
-    oauth_id      = Column(types.Integer)
+    __tablename__   = 'users'
+    id              = Column(types.Integer,primary_key=True)
+    username        = Column(Unicode(100), unique=True)
+    _password       = Column('password', Unicode(60))
+    perms           = Column(types.String(100))
+    oauth_id        = Column(types.Integer)
+    mantis_user_id  = Column(types.Integer)
+    name =Column(types.String(100))
     def _get_password(self):
         return self._password
 
     def _set_password(self, password):
         self._password = password #hash_password(password)
 
-    password = property(_get_password, _set_password)
-    password = synonym('_password', descriptor=password)
+    password        = property(_get_password, _set_password)
+    password        = synonym('_password', descriptor=password)
     def __init__(self, username, password):
         self.username = username
         self.password = password
-    def __init__(self, username, oauth_id):
+    def __init__(self, username, oauth_id,name):
         self.username = username
         self.oauth_id = oauth_id
+        self.name     = name
     @classmethod
     def get_by_username(cls, username):
         return DBSession.query(cls).filter(cls.username == username).first()
@@ -195,12 +198,20 @@ class Execution(Base):
         self._str_last_result=json.dumps(value)        
     last_result=synonym('_str_last_result',descriptor=last_result)
 
+class Links(Base):
+    __tablename__   = 'links'
+    link_id         = Column(types.Integer,primary_key=True)
+    name            = Column(types.String(50),nullable=False)    
+    path            = Column(types.String(100),unique=True)
+    method          = Column(types.String(30),default='GET')
+    enabled         = Column(types.Integer,default=1)
+    category        = Column(types.String(50))
 class Perms(Base):
     """
-    User Permissions
+    User Permissions    
     """
     __tablename__   = 'perms'
-    id              = Column(types.Integer,primary_key=True)
+    id         = Column(types.Integer,primary_key=True)
     group_id        = Column(types.Integer,default=0)
-    path            = Column(types.String(100))
-    method          = Column(types.String(30),default='GET')
+    link_id         = Column(types.Integer)
+    enabled         = Column(types.Integer,default=1)

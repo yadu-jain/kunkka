@@ -11,6 +11,7 @@ except ImportError:
     # python 2.6 or earlier, use backport
     from ordereddict import OrderedDict
 import console
+from reports import reports
 from authentication import (
     Auth,
     check_admin,
@@ -54,6 +55,7 @@ def chart(request):
 def rest(request):
 	rest_name=request.matchdict["fun"]	
 	fields={}
+	print db.rest
 	for i in request.params:
 		fields[i]=request.params[i]
 	print fields
@@ -154,4 +156,26 @@ def save_query(request):
 			return {"success":True,"query":row2dict(updated_result)}
 	except Exception as e:
 		return {"success":False,"msg":str(e)}
-
+##----------------------------Table Render---------------------------------##
+@view_config(route_name='report_ajax',renderer='json')
+@Auth('oauth')
+def report_ajax(request):	
+	rest_name=request.matchdict["fun"]	
+	fields={}
+	for i in request.params:
+		fields[i]=request.params[i]	
+	print rest_name
+	if reports.has_key(rest_name):
+		try:
+			print "Handler="
+			print reports[rest_name]
+			result=reports[rest_name](request=request,**fields)			
+			if result:				
+				return {"success":True,"data":result}
+			else:
+				return {"success":False,"msg":"Not found !"}
+		except Exception as e:
+			print e
+			return {"success":False,"msg":str(e)}
+	else:
+		return JSON_NOT_FOUND(request)

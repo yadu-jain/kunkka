@@ -1,4 +1,5 @@
 from pyramid.config import Configurator
+from pyramid.renderers import render
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
@@ -6,6 +7,8 @@ from pyramid.httpexceptions import HTTPNotFound
 from sqlalchemy import engine_from_config
 import magnus_handler
 import pymongo
+import gds_api
+import json
 from urlparse import urlparse
 from mongo import Mongo
 import oauth
@@ -57,6 +60,21 @@ def main(global_config, **settings):
     #config.include('pyramid_chameleon')    
     #config.set_default_permission()
 
+    ##------------------gds_api--------------------##
+    try:
+        gds_api.api_key=settings['gds.api_key']
+        gds_api.api_url=settings['gds.api_url']
+        if gds_api.test()==True:            
+            with open('kunkka/gds_api.json','rb') as gds_api_file:
+                api=json.load(gds_api_file)                
+                gds_api.create_gds_api(api["methods"])
+        else:
+            print "Failed to connect gds !"
+
+    except Exception as e:
+        print e
+    ##---------------------------------------------##
+
     ##------------------OAuth----------------------##
     oauth.CLIENT_ID=settings['oauth.CLIENT_ID']
     oauth.CLIENT_SECRET=settings['oauth.CLIENT_SECRET']
@@ -72,6 +90,14 @@ def main(global_config, **settings):
     Mongo.username=mongo_db_url.username
     Mongo.password=mongo_db_url.password
     ###-------------------------------------------#####
+
+    ##--------------------Default Data------------#####
+    def default_data(request):
+        return {"message":"","msg_type":""}
+    config.add_request_method(default_data, 'default_data', property=True)    
+    print default_data
+    ##--------------------------------------------#####
+
     #config.add_request_method(Mongo, 'mongo', reify=True)    
     config.add_static_view('static', 'kunkka:static', cache_max_age=3600)
     config.include('pyramid_mako')
@@ -91,6 +117,12 @@ def main(global_config, **settings):
     config.add_route('new_query','/mongo/new/')
     config.add_route('save_query','/mongo/save/')
     config.add_route('rest','/rest/{fun}/')
+    config.add_route('report_ajax','/report_ajax/{fun}/')    
+    config.add_route('report','/report/{fun}/')
+    config.add_route('date_report','/date_report/{fun}/')
+    config.add_route('junked_pickups','/junk_pickups/')
+    config.add_route('providers','/providers/')    
+    #config.add_route('admin','/admin/')
     config.add_notfound_view(notfound, append_slash=True)
     config.add_subscriber_predicate('magnus', RequestPathStartsWith)
     config.add_subscriber_predicate('courier',RequestPathStartsWith)

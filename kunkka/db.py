@@ -17,17 +17,109 @@ from .models import (
 	Base,    
     Booking,
     get_session,
-    User
+    User,
+    Links,
+    Perms
     )
 from models import *
 query_set={}
 rest={}
 engine = Base.metadata.bind
 ##Queries:
-#Console Queries:
 
+#Reporter Query
+def update_perms_links(name,group_ids,path,enabled,category):
+	"""
+	Returns list of links having perm id
+	"""	
+	session=get_session()	
+
+	cursor=session.query(Links).from_statement("""
+			SELECT * FROM links l WHERE l.path=:path;
+			""").params({"path":path})
+	temp=cursor.first()
+	print "saving..."
+	print temp
+	if not temp:
+		temp=Links(path=path)
+		temp.name=name
+		temp.enabled=enabled
+		temp.category=category	
+
+		db_session=sessionmaker(bind=Base.metadata.bind)	
+		new_session=db_session()
+		new_session.add(temp)        	        	
+		new_session.commit()        	
+		new_session.close()
+	else:
+		db_session=sessionmaker(bind=Base.metadata.bind)	
+		new_session=db_session()
+		
+		temp=new_session.merge(temp)
+		temp.name=name
+		temp.enabled=enabled
+		temp.category=category	
+		new_session.add(temp)        	        	
+		new_session.commit()        	
+		new_session.close()
+		print temp
+		
+	print path
 	
+	session=get_session()	
+	cursor=session.query(Links).from_statement("""
+			SELECT * FROM links l WHERE l.path=:path;
+			""").params({"path":path})
+	temp=cursor.first()
+	link_id=temp.link_id	
+	for group_id in group_ids:
+		cursor=session.query(Perms).from_statement("""
+			SELECT * FROM perms p WHERE p.link_id=:link_id and p.group_id=:group_id;
+			""").params({"link_id":link_id,"group_id":group_id})
+		temp=cursor.first()		
+		if not temp:
+			temp=Perms(link_id=link_id,group_id=group_id)			
+			db_session=sessionmaker(bind=Base.metadata.bind)	
+			new_session=db_session()
+			new_session.add(temp)        	        	
+			new_session.commit()        	
+			new_session.close()
 
+	##---Disabling and enabling  perm's groups ##
+	str_group_ids="("+",".join([unicode(group_id)for group_id in group_ids]) +")"
+	db_session=sessionmaker(bind=Base.metadata.bind)	
+	new_session=db_session()
+	new_session.execute("""
+		UPDATE perms 
+		SET enabled=0 
+		WHERE link_id=:link_id and group_id not in %s
+		""" %str_group_ids,{"link_id":link_id})
+	new_session.execute("""
+		UPDATE perms 
+		SET enabled=1 
+		WHERE link_id=:link_id and group_id in %s
+		""" %str_group_ids,{"link_id":link_id})	
+	new_session.commit()        	
+	new_session.close()
+
+	return 1
+
+
+#Permission Queries
+def get_perms_links(strPerms):
+	"""
+	Returns list of links having perm id
+	"""
+	print strPerms
+	session=get_session()
+	cursor=session.query(Links).from_statement("""
+			SELECT l.* from links l inner join perms p on p.link_id=l.link_id where p.group_id in (%s) and p.enabled=1 order by l.name;			
+			""" % strPerms)	
+	
+	return cursor.all()
+
+
+#Console Queries:
 def get_query_list():
 	"""
 	query(User).from_statement(
@@ -39,21 +131,22 @@ def get_query_list():
 	cursor=session.query(MongoQuery).from_statement("""
 			SELECT id,name,level,created_user,args_count from queries limit 100;
 			""")
-	return cursor.all()
+	temp=cursor.all()
+	return temp
 
 def get_query(id,load_query=False):
+	#db_session=sessionmaker(bind=Base.metadata.bind)
 	session=get_session()
 	text_fields=""
 	if load_query==True:
 		text_fields=",_str_query,_arguments"
-	cursor=session.query(MongoQuery).from_statement("""
+	query_cursor=session.query(MongoQuery).from_statement("""
 			SELECT id,name,level,last_updated,created_user %s from queries where id=:id limit 1;
-			""" % text_fields).params({"id":int(id)})	
-	temp=cursor.all()		
-	cursor.close()
+			""" % text_fields).params({"id":int(id)})
+	temp=query_cursor.all()		
 	return temp
 
-def get_user(username,password=None,oauth_id=None):
+def get_user(username,password=None,oauth_id=None,name=""):
 	session=get_session()
 	db_session=None
 	
@@ -74,11 +167,11 @@ def get_user(username,password=None,oauth_id=None):
 		cursor.close()
 
 		print temp_user
-		if temp_user==None:
+		if temp_user==None and oauth_id:
 			print 'Creating..'
 			db_session=sessionmaker(bind=Base.metadata.bind)
 			print 'db_session'			
-			user=User(username,1)			
+			user=User(username,oauth_id,name)			
 			db=db_session()
 			db.add(user)        	        	
 			db.commit()        	
@@ -89,6 +182,9 @@ def get_user(username,password=None,oauth_id=None):
 				""",{"username":username})
 			temp_user = cursor.first()
 			print "created"
+		elif temp_user==None:
+			temp_user=None
+
 		return temp_user
 
 def get_last_booking_id():
@@ -103,7 +199,8 @@ def get_last_booking_id():
 def bookings(fields):	
 	x_axis_title 	="Agents Report"
 	y_axis_title 	="Total"
-	result_type		="Bookings"			
+	result_type		="Bookings"	
+	chart_template	='kunkka:templates/charts/ots.mak'		
 	from_date=datetime.datetime.strptime(fields["from"],'%Y-%m-%d')				
 	to_date=datetime.datetime.strptime(fields["to"],'%Y-%m-%d')				
 	print result_type
@@ -141,7 +238,7 @@ def bookings(fields):
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"from_date":from_date,"to_date_next":to_date_next})
 		result_set=result
-	str_chart=render('kunkka:templates/charts/ots.mak',{})
+	str_chart=render(chart_template,{})
 	chart=json.loads(str_chart)
 	series=[]
 	temp_done={}
@@ -173,7 +270,8 @@ def bookings(fields):
 def seats(fields):	
 	x_axis_title 	="Agents Report"
 	y_axis_title 	="Total"
-	result_type		="Seats"			
+	result_type		="Seats"
+	chart_template	='kunkka:templates/charts/ots.mak'			
 	from_date=datetime.datetime.strptime(fields["from"],'%Y-%m-%d')				
 	to_date=datetime.datetime.strptime(fields["to"],'%Y-%m-%d')				
 	print result_type
@@ -211,7 +309,7 @@ def seats(fields):
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"from_date":from_date,"to_date_next":to_date_next})
 		result_set=result
-	str_chart=render('kunkka:templates/charts/ots.mak',{})
+	str_chart=render(chart_template,{})
 	chart=json.loads(str_chart)
 	series=[]
 	temp_done={}
@@ -244,6 +342,7 @@ def amount(fields):
 	x_axis_title 	="Agents Report"
 	y_axis_title 	="Total"
 	result_type		="Amount"			
+	chart_template	='kunkka:templates/charts/ots.mak'
 	from_date=datetime.datetime.strptime(fields["from"],'%Y-%m-%d')				
 	to_date=datetime.datetime.strptime(fields["to"],'%Y-%m-%d')				
 	print result_type
@@ -281,7 +380,7 @@ def amount(fields):
 		GROUP BY agent_id, agent_name,date_time;
 		""",{"from_date":from_date,"to_date_next":to_date_next})
 		result_set=result
-	str_chart=render('kunkka:templates/charts/ots.mak',{})
+	str_chart=render(chart_template,{})
 	chart=json.loads(str_chart)
 	series=[]
 	temp_done={}
@@ -342,7 +441,7 @@ def tier_list():
 	
 
 
-filters={
+ota_filters={
 "agent":{"field_name":"agent_id"}
 ,"provider":{"field_name":"provider_id"}
 #,"Tier":{"field_name":tier}
@@ -353,11 +452,12 @@ result_types={
 }
 
 def OTA(fields):
-	applied_filters=[]
+	chart_template	='kunkka:templates/charts/ots.mak'
+	applied_filters =[]
 	applied_filter_values={}
-	for key in filters.keys():
+	for key in ota_filters.keys():
 		if fields.has_key(key) and fields[key]!="":
-			field_name=filters[key]["field_name"]
+			field_name=ota_filters[key]["field_name"]
 			applied_filters.append(field_name+"=:"+field_name)
 			applied_filter_values[field_name]=fields[key]
 
@@ -435,7 +535,7 @@ def OTA(fields):
 		GROUP BY status,date_time;
 		""" % applied_filter_str,applied_filter_values)
 		result_set=result
-	str_chart=render('kunkka:templates/charts/ots.mak',{})
+	str_chart=render(chart_template,{})
 	chart=json.loads(str_chart)
 	series=[]
 	temp_done={"B":[],"C":[],"F":[]}	
@@ -461,16 +561,20 @@ def OTA(fields):
 def today_failed(fields):	
 	return {}
 
-query_set["today_failed"] = today_failed
-query_set["Bookings"] = bookings
-query_set["Seats"] =seats
-query_set["Amount"]=amount
-query_set["OTA"]=OTA
+##------------------Chart Data methods set-------------------##
+##----name--------------------Function Name-----------##
+query_set["today_failed"]	= today_failed
+query_set["Bookings"] 		= bookings
+query_set["Seats"] 			= seats
+query_set["Amount"]			= amount
+query_set["OTA"] 			= OTA
 
-rest["agents"]=agent_list
-rest["providers"]=provider_list
-rest["query_list"]=get_query_list
-rest["query"]=get_query
+##------------------Rest Data methods set-------------------##
+##----name--------------------Function Name-----------##
+rest["agents"] 				= agent_list
+rest["providers"] 			= provider_list
+rest["query_list"] 			= get_query_list
+rest["query"]				= get_query
 #rest["tiers"]=tier_list
 
 

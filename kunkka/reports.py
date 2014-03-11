@@ -235,14 +235,14 @@ def get_area_city_list(request,**field):
 
 
 
-@Reporter(perm_enable=True,perm_groups=[1],name="COMPANY MIS REPORT",enable=0,category="Reports",parent_path='date_report')                   
+@Reporter(perm_enable=True,perm_groups=[1,3],name="COMPANY MIS REPORT",enable=0,category="Reports",parent_path='date_report')                   
 @Create_Tables(titles=["COMPANY MIS REPORT"])
 def get_company_wise_mis(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_COMPANY_WISE_MIS(**field)
 
 
-@Reporter(perm_enable=True,perm_groups=[1],name="DAY WISE TY+CONSOLE BOOKINGS",enable=1,category="Reports",parent_path='date_report')                   
+@Reporter(perm_enable=True,perm_groups=[1,4],name="DAY WISE TY+CONSOLE BOOKINGS",enable=1,category="Reports",parent_path='date_report')                   
 @Create_Tables(titles=["DAY WISE TY+CONSOLE BOOKINGS"])
 @Create_Charts(titles=["BOOKINGS","CANCELLED","RETURN BOOKINGS"],chart_configs=[("BOOKING_DATE","BOOKINGS",["NAME"],0),
                                           ("BOOKING_DATE","CANCELLED",["NAME"],0),
@@ -252,19 +252,19 @@ def get_day_ty_console_bookings(request,**field):
     return api.RMS_DAY_TY_CONSOLE_BOOKINGS(**field)
 
 
-@Reporter(perm_enable=True,perm_groups=[1],name="AGENT MIS REPORT",enable=1,category="Reports",parent_path='date_report')                   
+@Reporter(perm_enable=True,perm_groups=[1,5],name="AGENT MIS REPORT",enable=1,category="Reports",parent_path='date_report')                   
 @Create_Tables(titles=["AGENT MIS REPORT","TY BOOKINGS","USERS BOOKINGS","CONSOLE BOOKINGS","API PARTNER","OVER ALL"])
 def get_agent_wise_mis(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_AGENT_WISE_REPORT(**field)
 
-@Reporter(perm_enable=True,perm_groups=[1],name="PROVIDERS STATUS",enable=1,category="")                   
+@Reporter(perm_enable=True,perm_groups=[1,6],name="PROVIDERS STATUS",enable=1,category="")                   
 @Create_Tables(titles=["PROVIDERS STATUS"])
 def get_provider_status(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_GET_PROVIDER_STATUS(**field)
 
-@Reporter(perm_enable=True,perm_groups=[1],name="COMPANIES STATUS",enable=1,category="")
+@Reporter(perm_enable=True,perm_groups=[1,6],name="COMPANIES STATUS",enable=1,category="")
 @Create_Tables(titles=["COMPANIES STATUS"])
 def get_company_status(request,**field):
     api=gds_api.Gds_Api()

@@ -253,7 +253,7 @@ def get_day_ty_console_bookings(request,**field):
 
 
 @Reporter(perm_enable=True,perm_groups=[1,5],name="AGENT MIS REPORT",enable=1,category="Reports",parent_path='date_report')                   
-@Create_Tables(titles=["AGENT MIS REPORT","TY BOOKINGS","USERS BOOKINGS","CONSOLE BOOKINGS","API PARTNER","OVER ALL"])
+@Create_Tables(titles=["SUB-AGENT WISE","TY USER WISE","API PARTNER WISE","TY OVER ALL","CONSOLE OVER ALL","API PARTNER OVER ALL","AGENTS OVER ALL","GDS OVER ALL"])
 def get_agent_wise_mis(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_AGENT_WISE_REPORT(**field)

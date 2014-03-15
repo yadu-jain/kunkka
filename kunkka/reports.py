@@ -158,7 +158,7 @@ def agents_details(request,**fields):
     fields["SUB_AGENT_ID"]=333
     return api.RMS_SUB_AGENT_STATUS(**fields)
 
-@Reporter(perm_enable=True,perm_groups=[1],name="Agent Bookings",enable=1,category="Reports",parent_path='date_report')
+@Reporter(perm_enable=True,perm_groups=[1,7],name="Agent Bookings",enable=1,category="Reports",parent_path='date_report')
 @Create_Tables(titles=["SUB AGENT STATS"])
 @Create_Charts(titles=["BOOKED","CANCELLED","FAILED"],chart_configs=[("BOOKING_DATE","TOTAL_BOOKED",["SUB_AGENT_NAME"],0),
                                           ("BOOKING_DATE","TOTAL_CANCELLED",["SUB_AGENT_NAME"],0),

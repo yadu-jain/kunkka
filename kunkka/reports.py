@@ -146,7 +146,7 @@ class Reporter(object):
 #6. SP_NAME must be configured before in gds_api.json file specifying parameters details(name,type,default value)
 #7. It requires server to be refreshed in order to reflect the report
 ##-------------------------------Reports---------------------------##
-@Reporter(perm_enable=True,perm_groups=[1],name="Agent Details",enable=1,category="Reports",parent_path='report')
+@Reporter(perm_enable=True,perm_groups=[1,8],name="Agent Details",enable=1,category="Reports",parent_path='report')
 @Create_Tables(titles=["Agent Details","Company Wise Commission"])
 #@Create_Charts(titles=[""],chart_configs=[("IS_ACTIVE","$count",[],0),("provider_name","$count",[],1)]) #(X,Y,[groups],table_no)
 def agents_details(request,**fields):

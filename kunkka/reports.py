@@ -11,7 +11,7 @@ import email_sender
 reports={}
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=False
+REFRESH_REPORT_IN_DB=True
 class Create_Tables:
     def __init__(self,titles):
 
@@ -309,8 +309,13 @@ def update_provider_status(request,**field):
     ##-------------------------------------------------------##
     return temp_response
 
+@Reporter(perm_enable=True,perm_groups=[1,10],name="GDS INVENTORY",enable=1,category="")
+@Create_Tables(titles=["TOTAL INVENTORY","OPERATOR WISE INVENTORY"])
+def gds_inventory(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GDS_INVENTORY_STATUS(**field)
 
-    
+
 #print update_area_of_pickup.dataGenerators
 #print junk_pickups.dataGenerators
 #print agents_details.dataGenerators

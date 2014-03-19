@@ -71,10 +71,10 @@
             {
                 if (response.success==true)
                 {
-                    $("#go").text("Generating...");
+                    $("#go").text("Fetching...");
                     console.log( response.data.meta_content);
-                    generateTables(response.data.tables)
-                    generateCharts(response.data.charts)                 
+                    generateTables(response.data.tables);
+                    generateCharts(response.data.charts) ;                
                     $("#go").text("Go");
                     $("#go").attr("disabled",null);
                 }

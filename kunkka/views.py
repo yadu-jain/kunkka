@@ -270,6 +270,7 @@ def junk_pickups(request):
         }
     return data
 
+##PROVIDER/OPERATOR STATUS
 @view_config(route_name='providers',renderer='kunkka:templates/providers.mako')
 @Auth('oauth',authorize=True)
 def providers(request):    
@@ -282,13 +283,26 @@ def providers(request):
         "company_path":company_path,
         "update_provider_status":update_provider_status
         }
-    return data   
+    return data
+
+##GDS INVENTORY
+@view_config(route_name='gds_inventory',renderer='kunkka:templates/gds_inventory.mako')
+@Auth('oauth',authorize=True)
+def gds_inventory(request):
+    
+    report_path="/report_ajax/"+'gds_inventory/?'
+    city_list_path="/report_ajax/"+'get_area_city_list/?'        
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        "report_path":report_path,        
+        "city_list_path":city_list_path        
+        }
+    return data  
 
 @view_config(route_name='home',renderer='kunkka:templates/home.mako')
 @Auth('oauth')
-def home(request):    
-    provider_path="/report_ajax/get_provider_status/?"+urlencode(request.params)        
-    print request.user
+def home(request):        
+    print request.allowed_links
     data={'msg_type':'success','message':'','name':'Home',
         'project_name':'Kunkka','username':'heera'
         }

@@ -18,7 +18,10 @@ requires = [
     'cryptacular',
     'pycrypto',
     'pymongo',
-    'google-api-python-client'
+    'google-api-python-client',
+    'simplejson', #only required for python 2.6
+    'fabric',
+    'pylibmc'
     ]
 
 setup(name='kunkka',

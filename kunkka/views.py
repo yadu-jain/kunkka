@@ -275,10 +275,12 @@ def junk_pickups(request):
 def providers(request):    
     provider_path="/report_ajax/get_provider_status/?"+urlencode(request.params)        
     company_path="/report_ajax/get_company_status/?"+urlencode(request.params)        
+    update_provider_status="/report_ajax/update_provider_status/?"+urlencode(request.params)        
     data={'msg_type':'success','message':'','name':request.link.name,
         'project_name':'Kunkka','username':'heera',
         "provider_path":provider_path,
-        "company_path":company_path
+        "company_path":company_path,
+        "update_provider_status":update_provider_status
         }
     return data   
 

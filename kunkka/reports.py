@@ -5,10 +5,13 @@ import table
 import gds_api
 import chart
 from file_cache import FileCache
+#from mem_client import clear_companies
+from fabric_api import delete_allowed_compaies
+import email_sender
 reports={}
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=True
+REFRESH_REPORT_IN_DB=False
 class Create_Tables:
     def __init__(self,titles):
 
@@ -155,7 +158,7 @@ def agents_details(request,**fields):
         fields["SUB_AGENT_ID"]=int(fields["SUB_AGENT_ID"])
     if fields.has_key("FLAG_ALL_INFO"):
         fields["FLAG_ALL_INFO"]=int(fields["FLAG_ALL_INFO"])    
-    fields["SUB_AGENT_ID"]=333
+    fields["SUB_AGENT_ID"]=-1
     return api.RMS_SUB_AGENT_STATUS(**fields)
 
 @Reporter(perm_enable=True,perm_groups=[1,7],name="Agent Bookings",enable=1,category="Reports",parent_path='date_report')
@@ -270,8 +273,44 @@ def get_company_status(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_GET_COMPANY_STATUS(**field)
 
+@Reporter(perm_enable=True,perm_groups=[1,9],name="PROVIDER ACTIVATE/DEACTIVATE",enable=1,category="")
+def update_provider_status(request,**field):
+    api=gds_api.Gds_Api()    
+    field["TYPE"]="PROVIDER"
+    field["USER"]=request.user.username
+    provider_name=field["PROVIDER_NAME"]
+    comment=field["COMMENT"]
+    ##-------------Updating status in GDS DB----------------##
+    temp_response = api.RMS_UPDATE_STATUS(**field)
+    ##------------------------------------------------------##    
+    
+    ##----Clear cache of  allowed companies for each agent--##
+    agents_field={"FLAG_ALL_INFO":0,"SUB_AGENT_ID":-1}
+    all_agents=api.RMS_SUB_AGENT_STATUS(**agents_field)["Table"]
+    chunk_ids=[]
+    for agent in all_agents:
+        chunk_ids.append(str(agent["SUB_AGENT_ID"]))                   
+    flag_status=delete_allowed_compaies(chunk_ids)
+    ##------------------------------------------------------##
+
+    ##------Notify team through mail------------------------##
+    ACTIVATION_STATUS=""
+    if field["ACTIVE"]=="1":
+        ACTIVATION_STATUS='<span style="color:darkGreen"><b>Activated</b></span><br/><br/>'
+    elif field["ACTIVE"]=="0":
+        ACTIVATION_STATUS='<span style="color:red"><b>Deactivated</b></span><br/><br/>'
+
+    msg_body=ACTIVATION_STATUS
+    msg_body+='<span>By: '+request.user.name+'</span><br/>'
+    msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'
+    msg_body+='<span>comment: '+comment+'</span><br/>'
+    msg_body='<div>'+msg_body+'</div>'
+    flag_status=email_sender.sendmail(email_sender.PROVIDER_UPDATE_LIST,"RMS: "+provider_name+" Changed",msg_body,provider_name)
+    ##-------------------------------------------------------##
+    return temp_response
 
 
+    
 #print update_area_of_pickup.dataGenerators
 #print junk_pickups.dataGenerators
 #print agents_details.dataGenerators

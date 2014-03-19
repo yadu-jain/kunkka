@@ -12,6 +12,9 @@ import json
 from urlparse import urlparse
 from mongo import Mongo
 import oauth
+import mem_client
+import email_sender
+import fabric_api
 from .models import (
     DBSession,
     Base,
@@ -19,7 +22,8 @@ from .models import (
 
 #authn_policy = AuthTktAuthenticationPolicy('seekrit', hashalg='sha512')
 #authz_policy = ACLAuthorizationPolicy()
-##------------------OAuth Configuration------------------------##
+
+
 
 #--------------------Subscriber Filter-------------
 class RequestPathStartsWith(object):
@@ -59,7 +63,33 @@ def main(global_config, **settings):
     
     #config.include('pyramid_chameleon')    
     #config.set_default_permission()
+    
+    ##----------------- RMS EMAIL LIST-------------##
+    try:
+        email_sender.username   =settings['email_sender.username'].strip()
+        email_sender.password   =settings['email_sender.password'].strip()
+        email_sender.html_file  =settings['email_sender.template'].strip()
+        email_sender.PROVIDER_UPDATE_LIST=[email.strip() for email in settings['email_list.PROVIDER_UPDATE_LIST'].split(",")]
+    except Exception as e:
+        print e
 
+    ##---------------------------------------------------##
+
+    
+    ##-----------------Fabric----------------------##
+    fabric_api.temp_path=settings['fabric_api.temp_path'].strip()
+    ##---------------------------------------------##
+
+
+    ##-----------------gds Memcache Server---------##
+    try:
+        mem_client.host = settings['gds_memcache']
+    except Exception as e:
+        print e
+    ##---------------------------------------------##
+
+
+    
     ##------------------gds_api--------------------##
     try:
         gds_api.api_key = settings['gds.api_key']
@@ -76,21 +106,27 @@ def main(global_config, **settings):
         print e
     ##---------------------------------------------##
 
+
+
     ##------------------OAuth----------------------##
     oauth.CLIENT_ID=settings['oauth.CLIENT_ID']
     oauth.CLIENT_SECRET=settings['oauth.CLIENT_SECRET']
     oauth.REDIRECT_URI=settings['oauth.REDIRECT_URI']
     oauth.SCOPES=settings['oauth.SCOPES'].split(",")    
     oauth.init_oauth()
+    ##---------------------------------------------##
+
+
     ##------------------MongoDB-------------------_###
-    mongo_db_url = urlparse(settings['mongo_uri'])
-    Mongo.conn = pymongo.Connection(
-       host=mongo_db_url.hostname,
-       port=mongo_db_url.port,
-    )
-    Mongo.username=mongo_db_url.username
-    Mongo.password=mongo_db_url.password
+    # mongo_db_url = urlparse(settings['mongo_uri'])
+    # Mongo.conn = pymongo.Connection(
+    #    host=mongo_db_url.hostname,
+    #    port=mongo_db_url.port,
+    # )
+    # Mongo.username=mongo_db_url.username
+    # Mongo.password=mongo_db_url.password
     ###-------------------------------------------#####
+
 
     ##--------------------Default Data------------#####
     def default_data(request):
@@ -98,6 +134,8 @@ def main(global_config, **settings):
     config.add_request_method(default_data, 'default_data', property=True)    
     print default_data
     ##--------------------------------------------#####
+
+
 
     #config.add_request_method(Mongo, 'mongo', reify=True)    
     config.add_static_view('static', 'kunkka:static', cache_max_age=3600)

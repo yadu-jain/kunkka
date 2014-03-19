@@ -46,7 +46,7 @@ def jsonToTable(dictObj):
                     if is_active=="1" or is_active.lower()=="true":                                            
                         is_active_class="activated"
                     else:
-                        is_active_class="deactivated"
+                        is_active_class="deactivated"                
                 if row.has_key("id"):
                     listTbody.append('<tr id='+table_name+'_'+str(row["id"])+' class=" '+is_active_class+' table_row gradeA"><td>'+'</td><td>'.join(values)+'</td></tr>')
                 else:    

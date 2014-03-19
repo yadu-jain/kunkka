@@ -11,18 +11,15 @@
                 <button id="open_company" type="button" class="btn btn-primary" onclick="GetCompanies();" href="#company_tables">Open</button>
             </div>
             <div class="btn-group btn-group-xs">
-              <button type="button" disabled="true" class="btn btn-success">Activate</button>
-              <button type="button" disabled="true"  class="btn btn-danger">Deactivate</button>
+              <button type="button" id="btn_activate_prov" onclick="activate_provider();" disabled="true" class="btn btn-success">Activate</button>
+              <button type="button" id="btn_deactivate_prov" onclick="deactivate_provider();" disabled="true"  class="btn btn-danger">Deactivate</button>
             </div>
         </div>
     </div>
     <div class="row clearfix">        
         <div class="col-md-12 column" style="padding-left:0px;"id="tables">
             
-        </div>               
-        <div class="col-md-12 column" style="padding-left:0px;"id="company_tables">
-            
-        </div >
+        </div>                       
         <style type="text/css">
             #contextMenu {
                 position: absolute;
@@ -59,26 +56,104 @@
 
             }
             function activate_provider(){
-                var PROVIDER_ID=$("tables").find(".row_selected").attr("id").split("_")[1];
-
-
+                $("#btn_activate_prov").attr("disabled",true);
+                var PROVIDER_ID=$("#tables").find(".row_selected").attr("id").split("_")[1];
+                var PROVIDER_NAME=$("#tables").find(".row_selected").find("td")[1].innerHTML;
+                BootstrapDialog.show({
+                    title: 'Activate '+PROVIDER_NAME +' (ID='+PROVIDER_ID+')',
+                    type: BootstrapDialog.TYPE_SUCCESS,
+                    closable:false,
+                    message: $('<textarea id="comment" class="form-control" placeholder="Write a comment..."></textarea>'),                    
+                    buttons: [{
+                        label: 'Cancel',
+                        action: function(dialogRef){
+                            console.log("Cancelled");
+                            $("#btn_activate_prov").attr("disabled",null);
+                            dialogRef.close();                            
+                        }
+                    }, {
+                        label: 'Confirm',
+                        cssClass: 'btn-warning',
+                        hotkey: 13, // Enter.
+                        action: function(dialogRef){
+                            // You can also use BootstrapDialog.closeAll() to close all dialogs.
+                            var comment=document.getElementById("comment").value;
+                            $("#btn_activate_prov").text("Activating...");                                                        
+                            $.getJSON("${update_provider_status}"+"&ACTIVE=1&ID="+PROVIDER_ID+"&PROVIDER_NAME="+PROVIDER_NAME+"&COMMENT="+comment
+                            ,function(res){
+                                if(res.success==true){
+                                    refresh();
+                                }
+                                $("#btn_activate_prov").text("Activate");                            
+                                $("#btn_activate_prov").attr("disabled",null);
+                            })
+                            dialogRef.close();
+                        }
+                    }]
+                });
+/*
+                $.getJSON("${update_provider_status}"+"&ACTIVE=1&ID="+PROVIDER_ID+"&PROVIDER_NAME="+PROVIDER_NAME+"&COMMENT="+"Testing provider activation/deactivation, please ignore"
+                    ,function(res){console.log(res)})
+*/
             }
             function deactivate_provider(){
-                var PROVIDER_ID=$("tables").find(".row_selected").attr("id").split("_")[1];
+                $("#btn_deactivate_prov").attr("disabled",true);
+                var PROVIDER_ID=$("#tables").find(".row_selected").attr("id").split("_")[1];
+                var PROVIDER_NAME=$("#tables").find(".row_selected").find("td")[1].innerHTML;
+                BootstrapDialog.show({
+                    title: 'Deactivate '+PROVIDER_NAME +' (ID='+PROVIDER_ID+')',
+                    type: BootstrapDialog.TYPE_DANGER,
+                    closable:false,
+                    message: $('<textarea id="comment" class="form-control" placeholder="Write a comment..."></textarea>'),                    
+                    buttons: [{
+                        label: 'Cancel',
+                        action: function(dialogRef){
+                            console.log("Cancelled");
+                            $("#btn_deactivate_prov").attr("disabled",null);
+                            dialogRef.close();                            
+                        }
+                    }, {
+                        label: 'Confirm',
+                        cssClass: 'btn-warning',
+                        hotkey: 13, // Enter.
+                        action: function(dialogRef){
+                            // You can also use BootstrapDialog.closeAll() to close all dialogs.
+                            var comment=document.getElementById("comment").value;
+                            $("#btn_deactivate_prov").text("Deactivating...");                                                        
+                            $.getJSON("${update_provider_status}"+"&ACTIVE=0&ID="+PROVIDER_ID+"&PROVIDER_NAME="+PROVIDER_NAME+"&COMMENT="+comment
+                            ,function(res){
+                                if(res.success==true){
+                                    refresh();
+                                }
+                                $("#btn_deactivate_prov").text("Deactivate");                            
+                                $("#btn_deactivate_prov").attr("disabled",null);
+                            })
+                            dialogRef.close();
+                        }
+                    }]
+                });
 
             }
             function activate_company(){
-                var COMPANY_ID=$("company_tables").find(".row_selected").attr("id").split("_")[1];
+                var COMPANY_ID=$("#company_tables").find(".row_selected").attr("id").split("_")[1];
 
             }
             function deactivate_company(){
-                var COMPANY_ID=$("company_tables").find(".row_selected").attr("id").split("_")[1];
+                var COMPANY_ID=$("#company_tables").find(".row_selected").attr("id").split("_")[1];
 
             }
             function select_it(e){
-                var PROVIDER_ID=e.currentTarget.id.split("_")[1];                
+                var PROVIDER_ID=e.target.parentNode.id.split("_")[1];                
                 $(".table_row").removeClass("row_selected");                
-                $("#Table_"+PROVIDER_ID).addClass("row_selected");
+                var temp =$("#Table_"+PROVIDER_ID).addClass("row_selected");
+                if (temp.length>=1){
+                    $("#btn_activate_prov").attr("disabled",null);   
+                    $("#btn_deactivate_prov").attr("disabled",null);
+                }else
+                {
+                    $("#btn_activate_prov").attr("disabled",true);   
+                    $("#btn_deactivate_prov").attr("disabled",true);
+                }
             }            
             function refresh(){
                 callback=function(response)
@@ -86,10 +161,13 @@
                     if (response.success==true)
                     {
                         console.log( response.data.meta_content);
-                        generateTables(response.data.tables)
+                        var temp=generateTables(response.data.tables)
                         generateCharts(response.data.charts)
-                        $(".table_row").on("dblclick",GetCompanies); 
-                        $(".table_row").on("click",select_it);
+                        $("#tables").on("click",select_it);
+                        //$(".table_row").on("dblclick",GetCompanies); 
+                        //$(".table_row").on("click",select_it);
+                        
+                        //$("#tables").on("dblclick",GetCompanies);
                         //process_active_providers();
                         /*
                         var table=response.data.tables[0];
@@ -121,6 +199,11 @@
         </ul>
         </div>
 
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="padding-left:0px;"id="company_tables">
+            
+        </div >
     </div>
 </%block>    
 <%block name="post_content">

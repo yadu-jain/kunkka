@@ -97,6 +97,18 @@
                         {"name":"PROVIDER_ID","type":"INT"}                        
                     ],
                 "title":"COMPANIES STATUS"  
+            },
+            {
+                "name":"RMS_UPDATE_STATUS",
+                "type":"update",
+                "params":
+                    [
+                        {"name":"ACTIVE","type":"INT"},
+                        {"name":"TYPE","type":"STR"},
+                        {"name":"ID","type":"INT"},
+                        {"name":"USER","type":"STR"}
+                    ],
+                "title":"UPDATE STATUS OF PROVIDER/COMPANY/ROUTE"
             }
 
         ]

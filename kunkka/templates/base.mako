@@ -12,7 +12,9 @@
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!-- Le styles -->
-    <link href="${request.static_url('kunkka:static/bootstrap/css/bootstrap.min.css')}" rel="stylesheet">    
+  <link href="${request.static_url('kunkka:static/bootstrap/css/bootstrap.min.css')}" rel="stylesheet">    
+  <link href="${request.static_url('kunkka:static/bootstrap-dialog/css/bootstrap-dialog.min.css')}" rel="stylesheet">
+
 	<!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
 	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
 	<!--script src="js/less-1.3.3.min.js"></script-->
@@ -34,6 +36,7 @@
   <script src="${request.static_url('kunkka:static/dataTable/js/jquery.dataTables.min.js')}"></script>    
   <link href="${request.static_url('kunkka:static/dataTable/css/jquery.dataTables.css')}" rel="stylesheet">  
   <script src="${request.static_url('kunkka:static/dataTable/DT_bootstrap.js')}"></script>    
+  <script src="${request.static_url('kunkka:static/bootstrap-dialog/js/bootstrap-dialog.min.js')}"></script>
   <link href="${request.static_url('kunkka:static/dataTable/DT_bootstrap.css')}" rel="stylesheet">      
   
   <script src="http://code.highcharts.com/highcharts.js"></script>

@@ -20,9 +20,11 @@ requires = [
     #'pycrypto',
     'pymongo',
     'ordereddict',
-    'google-api-python-client',
     'certifi',
-    'simplejson'
+    'google-api-python-client',
+    'simplejson', #only required for python 2.6
+    'fabric',
+    'pylibmc'
     ]
 
 setup(name='kunkka',

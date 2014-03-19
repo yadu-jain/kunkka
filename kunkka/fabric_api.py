@@ -15,7 +15,7 @@ def __delete_from_cache__():
 def delete_allowed_compaies(userids):
     global temp_path
     temp_file=os.path.join(temp_path,"keys.txt")
-    str_userids="\n".join(userids)
+    str_userids="\n".join(["user_cmp_"+ userid for userid in userids])
     with open(temp_file,"wb") as f:
         f.write(str_userids)
         f.flush()

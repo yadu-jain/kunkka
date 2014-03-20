@@ -57,7 +57,7 @@ def sendmail(to_,sub_,content,header=""):
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.starttls()
         server.login(username,password)
-        server.sendmail(msg['From'], [msg['To']], msg.as_string())
+        server.sendmail(msg['From'], to_.split(","), msg.as_string())
         server.quit()
 
     except Exception as ex:

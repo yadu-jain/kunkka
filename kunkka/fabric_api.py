@@ -9,8 +9,9 @@ temp_path="/home/heera/data_platform/env/kunkka/temp/"
 def __delete_from_cache__():
     global temp_path
     temp_file=os.path.join(temp_path,"keys.txt")
-    put(temp_file,"/root/scripts/")    
-    run("python /root/scripts/delete_keys_in_file.py "+"/root/scripts/keys.txt")
+    with hide('output','running','warnings'):
+        put(temp_file,"/root/scripts/")    
+        run("python /root/scripts/delete_keys_in_file.py "+"/root/scripts/keys.txt")
 
 def delete_allowed_compaies(userids):
     global temp_path

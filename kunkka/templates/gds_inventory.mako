@@ -58,8 +58,12 @@
                 {
                     
                     console.log( response.data.meta_content);
-                    generateTables(response.data.tables)
-                    generateCharts(response.data.charts)                 
+                    try{
+                        generateTables(response.data.tables)
+                        generateCharts(response.data.charts)                 
+                    }catch(error){
+                        
+                    }
                     $("#go").text("Go");
                     $("#go").attr("disabled",null);
                 }else

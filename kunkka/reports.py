@@ -281,7 +281,7 @@ def update_provider_status(request,**field):
     provider_name=field["PROVIDER_NAME"]
     comment=field["COMMENT"]
     ##-------------Updating status in GDS DB----------------##
-    temp_response = api.RMS_UPDATE_STATUS(**field)
+    temp_response ={}# api.RMS_UPDATE_STATUS(**field)
     ##------------------------------------------------------##    
     
     ##----Clear cache of  allowed companies for each agent--##
@@ -305,7 +305,7 @@ def update_provider_status(request,**field):
     msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'
     msg_body+='<span>comment: '+comment+'</span><br/>'
     msg_body='<div>'+msg_body+'</div>'
-    flag_status=email_sender.sendmail(email_sender.PROVIDER_UPDATE_LIST,"RMS: "+provider_name+" Changed",msg_body,provider_name)
+    #flag_status=email_sender.sendmail(email_sender.PROVIDER_UPDATE_LIST,"RMS: "+provider_name+" Changed",msg_body,provider_name)
     ##-------------------------------------------------------##
     return temp_response
 

@@ -273,7 +273,7 @@ def get_company_status(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_GET_COMPANY_STATUS(**field)
 
-@Reporter(perm_enable=True,perm_groups=[1,9],name="PROVIDER ACTIVATE/DEACTIVATE",enable=1,category="")
+@Reporter(perm_enable=True,perm_groups=[1,6],name="PROVIDER ACTIVATE/DEACTIVATE",enable=1,category="")
 def update_provider_status(request,**field):
     api=gds_api.Gds_Api()    
     field["TYPE"]="PROVIDER"

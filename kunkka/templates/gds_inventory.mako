@@ -62,6 +62,11 @@
                     generateCharts(response.data.charts)                 
                     $("#go").text("Go");
                     $("#go").attr("disabled",null);
+                }else
+                {
+                    $("#go").text("Go");
+                    $("#go").attr("disabled",null);
+                    BootstrapDialog.alert(response.msg);
                 }
             }
             function get_gds_inventory(){

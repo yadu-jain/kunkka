@@ -161,6 +161,7 @@ def main(global_config, **settings):
     config.add_route('date_report','/date_report/{fun}/')
     config.add_route('junked_pickups','/junk_pickups/')
     config.add_route('providers','/providers/')    
+    config.add_route('gds_inventory','/gds_inventory/')    
     #config.add_route('admin','/admin/')
     config.add_notfound_view(notfound, append_slash=True)
     config.add_subscriber_predicate('magnus', RequestPathStartsWith)

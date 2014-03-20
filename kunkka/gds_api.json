@@ -109,6 +109,17 @@
                         {"name":"USER","type":"STR"}
                     ],
                 "title":"UPDATE STATUS OF PROVIDER/COMPANY/ROUTE"
+            },
+            {
+                "name":"RMS_GDS_INVENTORY_STATUS",
+                "type":"query",
+                "params":
+                    [ 
+                        {"name":"FROM_CITY","type":"INT"},
+                        {"name":"TO_CITY","type":"INT"},
+                        {"name":"STR_JD","type":"STR"}
+                    ],
+                "title":"GDS INVENTORY STATUS"  
             }
 
         ]

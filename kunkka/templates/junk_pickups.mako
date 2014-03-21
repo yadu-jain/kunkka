@@ -69,6 +69,12 @@
             <div class="input-group-btn">
                 <button type="button" onclick="update_area();" disabled="true" id="update" class="run btn btn-primary">Update</button>
             </div><!-- /btn-group -->
+            
+        </div>
+        <div class="col-md-3 column btn-toolbar" role="toolbar">
+            <div class="btn-group btn-group-sm">
+                <button type="button" onclick="create_area();" id="create" disabled="true" class="run btn btn-primary">New</button>
+            </div><!-- /btn-group -->
         </div>
               
     </div>    
@@ -80,6 +86,40 @@
         </div>               
         <script type="text/javascript">
             var current_area_matcher=null;
+            function create_area(){
+                BootstrapDialog.show({
+                    title: 'CREATE NEW AREA',
+                    type: BootstrapDialog.TYPE_PRIMARY,
+                    closable:false,
+                    message: $('<input id="new_area_name" class="form-control" placeholder="Area Name"></textarea>'),                    
+                    buttons: [{
+                        label: 'Cancel',
+                        action: function(dialogRef){
+                            console.log("Cancelled");
+                            $("#btn_activate_prov").attr("disabled",null);
+                            dialogRef.close();                            
+                        }
+                    }, {
+                        label: 'Create',
+                        cssClass: 'btn-primary',
+                        hotkey: 13, // Enter.
+                        action: function(dialogRef){
+                            // You can also use BootstrapDialog.closeAll() to close all dialogs.
+                            $("#new_area_name").attr("disabled",true);                        
+                            var new_area_name=document.getElementById("new_area_name").value;
+                            $.ajax({
+                                url:"${create_area}"+"?CITY_ID="+city_id+"&"+"AREA_NAME="+new_area_name,
+                                success:function(response){console.log(response);                                    
+                                    dialogRef.close();        
+                                    get_junk_pickups();                                    
+                                }
+                            })
+                            
+                        }
+                    }]
+                });
+
+            }
             function update_area()
             {
                 var area_name=$("#area").val();
@@ -200,6 +240,7 @@
                         //Init area matching
                         init_area_matching(allTableObjects[0],response.data.raw.Table1);
                         current_area_matcher();
+                        $("#create").attr("disabled",null);
                         //generateCharts(response.data.charts)
                         /*
                         var table=response.data.tables[0];
@@ -227,8 +268,7 @@
 
                 }
             }
-            $(document).ready(function(){               
-                
+            $(document).ready(function(){                               
                 city_list_callback= function(response)
                 {
                     if (response.success==true){

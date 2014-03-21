@@ -79,6 +79,7 @@
             
         </div>               
         <script type="text/javascript">
+            var current_area_matcher=null;
             function update_area()
             {
                 var area_name=$("#area").val();
@@ -91,7 +92,8 @@
                     success:function(response){console.log(response);                        
                         $("#update").text("Update");
                         get_junk_pickups();
-                        $("#update").attr("disabled",null);
+                        $("#update").attr("disabled",null);                        
+                        
                     }
                 })
                 $("#update").text("Updating");
@@ -121,11 +123,22 @@
                     }
 
                 }
+                current_area_matcher=fun_area_match
 
                 var area_result=[]
                 var obj;
                 var option;
                 document.getElementById("parent_area").innerHTML="";
+                option=document.createElement("option");
+                option.value=0;
+                option.innerHTML="INVALID_CITY";               
+                $("#parent_area").append(option);
+
+
+                option=document.createElement("optgroup");                
+                option.label="-----";               
+                $("#parent_area").append(option);
+                
                 for(var i in areas){
                     obj=areas[i];
                     option=document.createElement("option");
@@ -140,6 +153,7 @@
                     */
                     $("#parent_area").append(option);
                 } 
+                
 
                 /*
                 $( "#parent_area" ).autocomplete({
@@ -185,7 +199,7 @@
                         allTableObjects=generateTables(response.data.tables);
                         //Init area matching
                         init_area_matching(allTableObjects[0],response.data.raw.Table1);
-
+                        current_area_matcher();
                         //generateCharts(response.data.charts)
                         /*
                         var table=response.data.tables[0];

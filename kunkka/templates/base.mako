@@ -276,5 +276,14 @@
 	</div>
 	<script src="${request.static_url('kunkka:static/bootstrap/js/bootstrap.min.js')}"></script>
 </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).ajaxSuccess(function(event,xhr,settings){          
+      //TODO
+      console.log("response");
+    })
+  });
+</script>
 </body>
+
 </html>

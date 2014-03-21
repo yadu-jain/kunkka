@@ -261,12 +261,13 @@ def junk_pickups(request):
     pickups_path="/report_ajax/"+'junk_pickups/'
     city_list_path="/report_ajax/"+'get_area_city_list/'
     update_area_path="/report_ajax/"+'update_area_of_pickup/'
-
+    create_area="/report_ajax/"+"create_area/"
     data={'msg_type':'success','message':'','name':request.link.name,
         'project_name':'Kunkka',
         "pickups_path":pickups_path,
         "city_list_path":city_list_path,
-        "update_area_path":update_area_path
+        "update_area_path":update_area_path,
+        "create_area":create_area
         }
     return data
 

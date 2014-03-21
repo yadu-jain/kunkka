@@ -317,6 +317,12 @@ def gds_inventory(request,**field):
     return api.RMS_GDS_INVENTORY_STATUS(**field)
 
 
+@Reporter(perm_enable=True,perm_groups=[1,2],name="Create Area Name",enable=1,category="")                       
+def create_area(request,**field):
+    api=gds_api.Gds_Api()            
+    field["USER"]=request.user.username
+    return api.RMS_CREATE_MAIN_AREA(**field)
+
 #print update_area_of_pickup.dataGenerators
 #print junk_pickups.dataGenerators
 #print agents_details.dataGenerators

@@ -121,6 +121,17 @@
                         {"name":"STR_JD","type":"STR"}
                     ],
                 "title":"GDS INVENTORY STATUS"  
+            },
+            {
+                "name":"RMS_CREATE_MAIN_AREA",
+                "type":"update",
+                "params":
+                    [
+                        {"name":"AREA_NAME","type":"str","default":null},
+                        {"name":"CITY_ID","type":"int"},  
+                        {"name":"USER","type":"str","default":"AUTO"}                        
+                    ],
+                "title":"UPDATE AREA OF PICKUP"
             }
 
         ]

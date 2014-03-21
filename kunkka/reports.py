@@ -228,6 +228,7 @@ def junk_pickups(request,**field):
 @Reporter(perm_enable=True,perm_groups=[1,2],name="Update Junk Pickups",enable=1,category="")                       
 def update_area_of_pickup(request,**field):
     api=gds_api.Gds_Api()            
+    field["USER"]=request.user.username
     return api.RMS_UPDATE_AREA_OF_PICKUP(**field)
  
 

@@ -38,7 +38,8 @@
                         {"name":"CITY_ID","type":"int"},
                         {"name":"AREA_ID","type":"int","default":-1},
                         {"name":"AREA_NAME","type":"str","default":null},
-                        {"name":"PARENT_AREA_ID","type":"int","default":-1}                        
+                        {"name":"PARENT_AREA_ID","type":"int","default":-1},
+                        {"name":"USER","type":"str","default":"AUTO"}                        
                     ],
                 "title":"UPDATE AREA OF PICKUP"
             },

@@ -42,14 +42,17 @@
         <div class="col-md-8 input-group input-group-sm">
             <span id="lbl_area" class="input-group-addon">Area</span>
             <input type="text" class="form-control" id="area">
+            <span id="lbl_flag_address" class="input-group-addon">To Address:&nbsp<input id="map_to_address" type="checkbox"></span>
+            
             <!--
+
             <div class="input-group-btn">
             <button type="button" class="run btn btn-primary" disabled>Update</button>
             </div>
             -->
             <!-- /btn-group -->            
 
-        </div>
+        </div>               
         <!--
         <div class="col-md-3 input-group input-group-sm">
             <div class="input-group-btn">
@@ -124,11 +127,16 @@
             {
                 var area_name=$("#area").val();
                 var parent_area_id=$("#parent_area").val();
+                var FLAG_TO_ADDRESS=0;
                 console.log(area_name);
                 console.log(parent_area_id);                
-
+                if($("#map_to_address")[0].checked){
+                    FLAG_TO_ADDRESS=1;
+                }else{
+                    FLAG_TO_ADDRESS=0;
+                }
                 $.ajax({
-                    url:"${update_area_path}"+"?CITY_ID="+city_id+"&"+"AREA_NAME="+area_name+"&"+"PARENT_AREA_ID="+parent_area_id,
+                    url:"${update_area_path}"+"?CITY_ID="+city_id+"&"+"AREA_NAME="+area_name+"&"+"PARENT_AREA_ID="+parent_area_id+"&"+"FLAG_TO_ADDRESS="+FLAG_TO_ADDRESS,
                     success:function(response){console.log(response);                        
                         $("#update").text("Update");
                         get_junk_pickups();
@@ -144,9 +152,18 @@
             {               
                 fun_area_match=function () {
                     /* Filter on the column (the index) of this element */
+                    console.log($("#map_to_address")[0].checked);
                     var area_name=$("#area").val().toUpperCase();                  
-                    if (area_name.length>2){
-                        dataTable.fnFilter( area_name,0,false,false);
+                    if (area_name.length>2)
+                    {
+                        if($("#map_to_address")[0].checked){
+                            dataTable.fnFilter( "",0);
+                            dataTable.fnFilter( area_name,4,false,false);
+                        }else{
+                            dataTable.fnFilter( "",4);
+                            dataTable.fnFilter( area_name,0,false,false);
+                        }
+                        
                         var n=dataTable.fnSettings().fnRecordsDisplay();
                         if (n>0){
                             $("#lbl_area").removeClass("label-danger").addClass("label-success").text("Area("+n+")");
@@ -158,9 +175,11 @@
                         }
                     }else{
                         dataTable.fnFilter( "",0);
+                        dataTable.fnFilter( "",4);
                         $("#lbl_area").removeClass("label-danger").removeClass("label-success").text("Area");
                         $("#update").attr("disabled",true);
                     }
+                
 
                 }
                 current_area_matcher=fun_area_match
@@ -229,6 +248,7 @@
                 );
                 */
                 $("#area").keyup(fun_area_match);
+                $("#map_to_address").change(fun_area_match);
             }            
             function pickup_callback(response)
             {

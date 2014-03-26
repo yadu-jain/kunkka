@@ -220,7 +220,7 @@ def user_agents_report(request,**fields):
 #         raise Exception("Mantis User Id not Specified !")
 
 @Reporter(perm_enable=True,perm_groups=[1,2],name="Junk Pickups",enable=1,category="")                   
-@Create_Tables(titles=["Junk Pickups","Main Areas"])
+@Create_Tables(titles=["Junk Pickups","Main Areas","Mapped Area Stats Across India"])
 def junk_pickups(request,**field):
     api=gds_api.Gds_Api()            
     return api.RMS_GET_JUNK_PICKUPS(**field)

@@ -39,7 +39,9 @@
                         {"name":"AREA_ID","type":"int","default":-1},
                         {"name":"AREA_NAME","type":"str","default":null},
                         {"name":"PARENT_AREA_ID","type":"int","default":-1},
-                        {"name":"USER","type":"str","default":"AUTO"}                        
+                        {"name":"USER","type":"str","default":"AUTO"},
+                        {"name":"FLAG_TO_ADDRESS","type":"int","default":0}
+
                     ],
                 "title":"UPDATE AREA OF PICKUP"
             },

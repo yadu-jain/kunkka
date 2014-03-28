@@ -3,7 +3,9 @@ from fabric.api import *
 import os
 env.hosts=["216.185.100.203"]
 env.user="root"
-env.password="m@l@vtez@l6804"
+#env.password="m@l@vtez@l6804"
+env.password="5UGjGAU77iaCKGIE"
+
 temp_path="/home/heera/data_platform/env/kunkka/temp/"
 ##################### Fab function ##########################
 def __delete_from_cache__():

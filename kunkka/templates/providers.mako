@@ -4,15 +4,15 @@
 <%block name="inner_content">
 <%inherit file="base.mako"/>        
     <div style="" class="row clearfix">        
-        <div class="col-md-4 column">
+        <div class="col-md-3 column">
         </div>
-        <div class="col-md-4 column btn-toolbar" role="toolbar">
+        <div class="col-md-7 column btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs">
-                <button id="open_company" type="button" class="btn btn-primary" onclick="GetCompanies();" href="#company_tables">Open</button>
+                <button id="get_companies" type="button" class="btn btn-primary" onclick="GetCompanies();"  disabled="true" href="#company_tables">Open Provider</button>
             </div>
             <div class="btn-group btn-group-xs">
-              <button type="button" id="btn_activate_prov" onclick="activate_provider();" disabled="true" class="btn btn-success">Activate</button>
-              <button type="button" id="btn_deactivate_prov" onclick="deactivate_provider();" disabled="true"  class="btn btn-danger">Deactivate</button>
+              <button type="button" id="btn_activate_prov" onclick="activate_provider();" disabled="true" class="btn btn-success">Activate Provider</button>
+              <button type="button" id="btn_deactivate_prov" onclick="deactivate_provider();" disabled="true"  class="btn btn-danger">Deactivate Provider</button>
             </div>
         </div>
     </div>
@@ -27,6 +27,22 @@
             }
         </style>
         <script type="text/javascript">           
+            function select_comp(e){
+                var COMPANY_ID=e.target.parentNode.id.split("_")[1];                
+                $("#company_tables .table_row").removeClass("row_selected");                
+                var temp =$("#company_tables #Table_"+COMPANY_ID).addClass("row_selected");
+                if (temp.length>=1){
+                    $("#open_company").attr("disabled",null)
+                    $("#btn_activate_comp").attr("disabled",null);   
+                    $("#btn_deactivate_comp").attr("disabled",null);
+                }else
+                {
+                    $("#open_company").attr("disabled",true)
+                    $("#btn_activate_comp").attr("disabled",true);   
+                    $("#btn_deactivate_comp").attr("disabled",true);
+                }
+            }
+
             function GetCompanies(){
                 var table=$("#tables").find("table")[0];
                 var temp_str=$(table).find(".row_selected").attr("id");                
@@ -35,17 +51,18 @@
                     return;
                 }
                 var PROVIDER_ID=temp_str.split("_")[1];
-                $("#open_company").text("Opening...");
-                $("#open_company").attr("disabled",true);
+                $("#get_companies").text("Opening...");
+                $("#get_companies").attr("disabled",true);
                 GetCompanies_callback=function(response){
                     if (response.success==true)
                     {
                         generateTables(response.data.tables,"company_tables")
                         //generateCharts(response.data.charts,"company_tables")
+                        $("#company_tables").click(select_comp);
                         location.href = "#";
                         location.href = "#company_tables";
-                        $("#open_company").text("Open");
-                        $("#open_company").attr("disabled",false);
+                        $("#get_companies").text("Open");
+                        $("#get_companies").attr("disabled",false);
                     }
                 }               
                 
@@ -136,21 +153,93 @@
             }
             function activate_company(){
                 var COMPANY_ID=$("#company_tables").find(".row_selected").attr("id").split("_")[1];
+                $("#btn_activate_comp").attr("disabled",true);                
+                var COMPANY_NAME=$("#company_tables").find(".row_selected").find("td")[1].innerHTML;
+                BootstrapDialog.show({
+                    title: 'Activate '+COMPANY_NAME +' (ID='+COMPANY_ID+')',
+                    type: BootstrapDialog.TYPE_SUCCESS,
+                    closable:false,
+                    message: $('<textarea id="comment" class="form-control" placeholder="Write a comment..."></textarea>'),                    
+                    buttons: [{
+                        label: 'Cancel',
+                        action: function(dialogRef){
+                            console.log("Cancelled");
+                            $("#btn_activate_comp").attr("disabled",null);
+                            dialogRef.close();                            
+                        }
+                    }, {
+                        label: 'Confirm',
+                        cssClass: 'btn-warning',
+                        hotkey: 13, // Enter.
+                        action: function(dialogRef){
+                            // You can also use BootstrapDialog.closeAll() to close all dialogs.
+                            var comment=document.getElementById("comment").value;
+                            $("#btn_activate_comp").text("Activating "+COMPANY_NAME+"..");                                                        
+                            $.getJSON("${update_company_status}"+"&ACTIVE=1&ID="+COMPANY_ID+"&COMPANY_NAME="+COMPANY_NAME+"&COMMENT="+comment
+                            ,function(res){
+                                if(res.success==true){
+                                    GetCompanies();
+                                }
+                                $("#btn_activate_comp").text("Activate Company");                            
+                                $("#btn_activate_comp").attr("disabled",null);
+                            })
+                            dialogRef.close();
+                        }
+                    }]
+                });
+
 
             }
+
             function deactivate_company(){
                 var COMPANY_ID=$("#company_tables").find(".row_selected").attr("id").split("_")[1];
+                $("#btn_deactivate_comp").attr("disabled",true);                
+                var COMPANY_NAME=$("#company_tables").find(".row_selected").find("td")[1].innerHTML;
+                BootstrapDialog.show({
+                    title: 'Deactivate '+COMPANY_NAME +' (ID='+COMPANY_ID+')',
+                    type: BootstrapDialog.TYPE_DANGER,
+                    closable:false,
+                    message: $('<textarea id="comment" class="form-control" placeholder="Write a comment..."></textarea>'),                    
+                    buttons: [{
+                        label: 'Cancel',
+                        action: function(dialogRef){
+                            console.log("Cancelled");
+                            $("#btn_deactivate_comp").attr("disabled",null);
+                            dialogRef.close();                            
+                        }
+                    }, {
+                        label: 'Confirm',
+                        cssClass: 'btn-warning',
+                        hotkey: 13, // Enter.
+                        action: function(dialogRef){
+                            // You can also use BootstrapDialog.closeAll() to close all dialogs.
+                            var comment=document.getElementById("comment").value;
+                            $("#btn_deactivate_comp").text("Deactivating "+COMPANY_NAME+"..");                                                        
+                            $.getJSON("${update_company_status}"+"&ACTIVE=0&ID="+COMPANY_ID+"&COMPANY_NAME="+COMPANY_NAME+"&COMMENT="+comment
+                            ,function(res){
+                                if(res.success==true){
+                                    GetCompanies();
+                                }
+                                $("#btn_deactivate_comp").text("Deactivate Company");                            
+                                $("#btn_deactivate_comp").attr("disabled",null);
+                            })
+                            dialogRef.close();
+                        }
+                    }]
+                });
 
             }
-            function select_it(e){
+            function select_prov(e){
                 var PROVIDER_ID=e.target.parentNode.id.split("_")[1];                
-                $(".table_row").removeClass("row_selected");                
+                $("#tables .table_row").removeClass("row_selected");                
                 var temp =$("#Table_"+PROVIDER_ID).addClass("row_selected");
                 if (temp.length>=1){
+                    $("#get_companies").attr("disabled",null);   
                     $("#btn_activate_prov").attr("disabled",null);   
                     $("#btn_deactivate_prov").attr("disabled",null);
                 }else
                 {
+                    $("#get_companies").attr("disabled",true);   
                     $("#btn_activate_prov").attr("disabled",true);   
                     $("#btn_deactivate_prov").attr("disabled",true);
                 }
@@ -163,7 +252,7 @@
                         console.log( response.data.meta_content);
                         var temp=generateTables(response.data.tables)
                         generateCharts(response.data.charts)
-                        $("#tables").on("click",select_it);
+                        $("#tables").on("click",select_prov);
                         //$(".table_row").on("dblclick",GetCompanies); 
                         //$(".table_row").on("click",select_it);
                         
@@ -199,6 +288,19 @@
         </ul>
         </div>
 
+    </div>
+    <div style="" class="row clearfix">        
+        <div class="col-md-3 column">
+        </div>
+        <div class="col-md-7 column btn-toolbar" role="toolbar">
+            <div class="btn-group btn-group-xs">
+                <button id="open_company" type="button" class="btn btn-primary" onclick="GetDetails();"  disabled="true" href="#">Open Company</button>
+            </div>
+            <div class="btn-group btn-group-xs">
+              <button type="button" id="btn_activate_comp" onclick="activate_company();" disabled="true" class="btn btn-success">Activate Company</button>
+              <button type="button" id="btn_deactivate_comp" onclick="deactivate_company();" disabled="true"  class="btn btn-danger">Deactivate Company</button>
+            </div>
+        </div>
     </div>
     <div class="row clearfix">
         <div class="col-md-12 column" style="padding-left:0px;"id="company_tables">

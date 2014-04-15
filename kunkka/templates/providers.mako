@@ -293,7 +293,7 @@
         <div class="col-md-3 column">
         </div>
         <div class="col-md-7 column btn-toolbar" role="toolbar">
-            <div class="btn-group btn-group-xs">
+            <div class="btn-group btn-group-xs" style="display:none;">
                 <button id="open_company" type="button" class="btn btn-primary" onclick="GetDetails();"  disabled="true" href="#">Open Company</button>
             </div>
             <div class="btn-group btn-group-xs">

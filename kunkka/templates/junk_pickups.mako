@@ -281,7 +281,7 @@
             {
                 var elem_select=document.getElementById("cities");
                 city_id=elem_select.value;
-                $("#get_junk_pickups").text("Fetcing...");
+                $("#get_junk_pickups").text("Fetching...");
                 $("#get_junk_pickups").attr("disabled",true);
                 if(city_id.length>0){
                     $.getJSON("${pickups_path}"+"?CITY_ID="+city_id,pickup_callback);

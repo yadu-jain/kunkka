@@ -5,7 +5,7 @@ except ImportError:
     from ordereddict import OrderedDict
 def jsonToTable(dictObj):
     tables=[]
-    for table_name in dictObj.keys():
+    for table_name in dictObj.keys():        
         table=dictObj[table_name]
         headers=OrderedDict()
         thead=''

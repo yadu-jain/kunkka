@@ -310,6 +310,45 @@ def update_provider_status(request,**field):
     ##-------------------------------------------------------##
     return temp_response
 
+@Reporter(perm_enable=True,perm_groups=[1,6],name="COMPANY ACTIVATE/DEACTIVATE",enable=1,category="")
+def update_company_status(request,**field):
+    api=gds_api.Gds_Api()    
+    field["TYPE"]="COMPANY"
+    field["USER"]=request.user.username
+    company_name=field["COMPANY_NAME"]
+    company_id=field["ID"]
+    comment=field["COMMENT"]
+    ##-------------Updating status in GDS DB----------------##
+    temp_response = api.RMS_UPDATE_STATUS(**field)
+    ##------------------------------------------------------##    
+    
+    ##----Clear cache of  allowed companies for each agent--##
+    agents_field={"FLAG_ALL_INFO":0,"SUB_AGENT_ID":-1}
+    all_agents=api.RMS_SUB_AGENT_STATUS(**agents_field)["Table"]
+    chunk_ids=[]
+    for agent in all_agents:
+        chunk_ids.append(str(agent["SUB_AGENT_ID"]))                   
+    flag_status=delete_allowed_compaies(chunk_ids)
+    ##------------------------------------------------------##
+
+    ##------Notify team through mail------------------------##
+    ACTIVATION_STATUS=""
+    if field["ACTIVE"]=="1":
+        ACTIVATION_STATUS='<span style="color:darkGreen"><b>Activated</b></span><br/><br/>'
+    elif field["ACTIVE"]=="0":
+        ACTIVATION_STATUS='<span style="color:red"><b>Deactivated</b></span><br/><br/>'
+
+    msg_body=ACTIVATION_STATUS
+    msg_body+='<span>Company: '+company_name+'(ID='+str(company_id)+')</span><br/>'
+    msg_body+='<span>By: '+request.user.name+'</span><br/>'
+    msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'
+    msg_body+='<span>comment: '+comment+'</span><br/>'
+    msg_body='<div>'+msg_body+'</div>'
+    flag_status=email_sender.sendmail(email_sender.PROVIDER_UPDATE_LIST,"RMS: "+company_name+" Changed",msg_body,company_name)
+    ##-------------------------------------------------------##
+    return temp_response    
+
+
 @Reporter(perm_enable=True,perm_groups=[1,10],name="GDS INVENTORY",enable=1,category="")
 @Create_Tables(titles=["TOTAL INVENTORY","OPERATOR WISE INVENTORY"])
 def gds_inventory(request,**field):

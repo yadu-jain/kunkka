@@ -239,8 +239,8 @@ def get_area_city_list(request,**field):
 
 
 
-@Reporter(perm_enable=True,perm_groups=[1,3],name="COMPANY MIS REPORT",enable=0,category="Reports",parent_path='date_report')                   
-@Create_Tables(titles=["COMPANY MIS REPORT"])
+@Reporter(perm_enable=True,perm_groups=[1,3],name="COMPANY/ROUTE BOOKING REPORT",enable=1,category="Reports",parent_path='date_report')                   
+@Create_Tables(titles=["COMPANY WISE BOOKINGS(TY+CONSOLE)","ROUTE WISE BOOKINGS(TY+CONSOLE)"])
 def get_company_wise_mis(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_COMPANY_WISE_MIS(**field)

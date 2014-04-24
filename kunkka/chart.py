@@ -60,7 +60,9 @@ def getChart(dictObj,configs,titles):
             continue
         table_name=dictObj.keys()[config[3]]
         table=dictObj[table_name]
-        
+        x_axis=config[0]
+        y_axis=config[1]
+        groups=config[2]
         if len(table)>0:
             item=OrderedDict(table[0])
             print item.keys()
@@ -77,9 +79,7 @@ def getChart(dictObj,configs,titles):
                     raise Exception("Group column not found")
             if config[1]!='$count' and (type(item[config[1]])!=int and type(item[config[1]])!=float):
                 raise Exception("Invalid Y-Axis. It should be int or float")
-            x_axis=config[0]
-            y_axis=config[1]
-            groups=config[2]
+            
             meta_content,series,categories=__getChartData(x_axis,y_axis,groups,table)
             meta_content["x_axis_title"]=x_axis
             meta_content["y_axis_title"]=y_axis
@@ -90,7 +90,7 @@ def getChart(dictObj,configs,titles):
             chart=renderChart(meta_content,series,categories)
             charts.append((meta_content,chart))
         else:
-            #TODO return chart with no data
+            
             meta_content,series,categories={},[],[]
             meta_content["x_axis_title"]=x_axis
             meta_content["y_axis_title"]=y_axis

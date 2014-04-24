@@ -26,7 +26,7 @@
                 "params":
                     [
                         {"name":"FLAG_ALL_INFO","type":"int","default":1},
-                        {"name":"SUB_AGENT_ID","type":"int","default":-1}                        
+                        {"name":"USER_ID","type":"str","default":null}
                     ],
                 "title":"SUB AGENT DETAILS"
             },
@@ -51,8 +51,8 @@
                 "params":
                     [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"},
-                        {"name":"MANTIS_ID","type":"int","default":-1}                        
+                        {"name":"STR_TO_DATE","type":"str"},                        
+                        {"name":"USER_ID","type":"str","default":null}
                     ],
                 "title":"DATE WISE AGENTS REPORT"
             },

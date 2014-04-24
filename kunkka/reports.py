@@ -154,11 +154,11 @@ class Reporter(object):
 #@Create_Charts(titles=[""],chart_configs=[("IS_ACTIVE","$count",[],0),("provider_name","$count",[],1)]) #(X,Y,[groups],table_no)
 def agents_details(request,**fields):
     api=gds_api.Gds_Api()
-    if fields.has_key("SUB_AGENT_ID"):
-        fields["SUB_AGENT_ID"]=int(fields["SUB_AGENT_ID"])
+    user_id=request.user.username            
+    if user_id:        
+        fields["USER_ID"]=user_id        
     if fields.has_key("FLAG_ALL_INFO"):
-        fields["FLAG_ALL_INFO"]=int(fields["FLAG_ALL_INFO"])    
-    fields["SUB_AGENT_ID"]=-1
+        fields["FLAG_ALL_INFO"]=int(fields["FLAG_ALL_INFO"])        
     return api.RMS_SUB_AGENT_STATUS(**fields)
 
 @Reporter(perm_enable=True,perm_groups=[1,7],name="Agent Bookings",enable=1,category="Reports",parent_path='date_report')
@@ -167,14 +167,12 @@ def agents_details(request,**fields):
                                           ("BOOKING_DATE","TOTAL_CANCELLED",["SUB_AGENT_NAME"],0),
                                           ("BOOKING_DATE","TOTAL_FAILED",["SUB_AGENT_NAME"],0)]) #(X,Y,[groups])
 def user_agents_report(request,**fields):
-    api=gds_api.Gds_Api()
-    print "mantis_user_id"
-    mantis_user_id=request.user.mantis_user_id    
-    print mantis_user_id
-   
+    api=gds_api.Gds_Api()    
+    user_id=request.user.username            
+    
     result_set=[]
-    if mantis_user_id:        
-        fields["MANTIS_ID"]=mantis_user_id
+    if user_id:        
+        fields["USER_ID"]=user_id
         return api.RMS_GET_DAY_AGENTS_REPORT(**fields)
     else:        
         raise Exception("Mantis User Id not Specified !")
@@ -286,7 +284,7 @@ def update_provider_status(request,**field):
     ##------------------------------------------------------##    
     
     ##----Clear cache of  allowed companies for each agent--##
-    agents_field={"FLAG_ALL_INFO":0,"SUB_AGENT_ID":-1}
+    agents_field={"FLAG_ALL_INFO":0}
     all_agents=api.RMS_SUB_AGENT_STATUS(**agents_field)["Table"]
     chunk_ids=[]
     for agent in all_agents:
@@ -323,7 +321,7 @@ def update_company_status(request,**field):
     ##------------------------------------------------------##    
     
     ##----Clear cache of  allowed companies for each agent--##
-    agents_field={"FLAG_ALL_INFO":0,"SUB_AGENT_ID":-1}
+    agents_field={"FLAG_ALL_INFO":0}
     all_agents=api.RMS_SUB_AGENT_STATUS(**agents_field)["Table"]
     chunk_ids=[]
     for agent in all_agents:

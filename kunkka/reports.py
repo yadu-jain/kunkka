@@ -288,7 +288,7 @@ def update_provider_status(request,**field):
     all_agents=api.RMS_SUB_AGENT_STATUS(**agents_field)["Table"]
     chunk_ids=[]
     for agent in all_agents:
-        chunk_ids.append(str(agent["SUB_AGENT_ID"]))                   
+        chunk_ids.append(str(agent["id"]))                   
     flag_status=delete_allowed_compaies(chunk_ids)
     ##------------------------------------------------------##
 
@@ -325,7 +325,7 @@ def update_company_status(request,**field):
     all_agents=api.RMS_SUB_AGENT_STATUS(**agents_field)["Table"]
     chunk_ids=[]
     for agent in all_agents:
-        chunk_ids.append(str(agent["SUB_AGENT_ID"]))                   
+        chunk_ids.append(str(agent["id"]))                   
     flag_status=delete_allowed_compaies(chunk_ids)
     ##------------------------------------------------------##
 

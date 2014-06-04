@@ -48,11 +48,19 @@
             
         </div>               
         <script type="text/javascript">  
-
+            function selet_city(e){
+                var city_id=e.target.parentNode.id.split("_")[1];                                
+                var obj=$("#Table_"+city_id);
+                if(obj.hasClass("row_selected")){
+                    obj.removeClass("row_selected");
+                }else{
+                    obj.addClass("row_selected");
+                }
+            }
             function merge(real_city_id){
                 var d=$("#tables table").dataTable().fnGetNodes();
                 var cids=[];                          
-                $("input:checked",d).parent().parent().each(function(index,tr_obj){
+                $("tr.row_selected",d).each(function(index,tr_obj){
                     cids.push(tr_obj.id.split("_")[1]);
                 });
                 console.log(cids);
@@ -78,9 +86,9 @@
                 var d=$("#tables table").dataTable().fnGetNodes();
                 var ul_obj=$(".merge-city ul.dropdown-menu");
                 ul_obj.empty();
-                $("input:checked",d).parent().parent().each(function(index,tr_obj){
+                $(d).filter("tr.row_selected").each(function(index,tr_obj){
                     var id=tr_obj.id.split("_")[1];
-                    var name=$($(tr_obj).find("td")[2]).text();
+                    var name=$($(tr_obj).find("td")[1]).text();
                     var li=document.createElement("li");
                     li.innerHTML='<a onclick="merge('+id+')" href="#">'+name+'</a>';
                     ul_obj.append(li);
@@ -90,7 +98,7 @@
                 var d=$("#tables table").dataTable().fnGetNodes();
                 var cids=[];
                 var parent_city_id=$("#parent_city").val();
-                $("input:checked",d).parent().parent().each(function(index,tr_obj){
+                $(d).filter("tr.row_selected").each(function(index,tr_obj){
                     cids.push(tr_obj.id.split("_")[1]);
                 });
                 console.log(cids);
@@ -153,6 +161,7 @@
             $(document).ready(function(){
                 get_state_list();
                 $("#state").change(get_city_list);
+                $("#tables").click(selet_city);
             })
         </script>
         <style type="text/css">

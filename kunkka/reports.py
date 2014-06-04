@@ -269,7 +269,7 @@ def get_provider_status(request,**field):
 @Reporter(perm_enable=True,perm_groups=[1,6],name="COMPANIES STATUS",enable=1,category="")
 @Create_Tables(titles=["COMPANIES STATUS"])
 def get_company_status(request,**field):
-    api=gds_api.Gds_Api()
+    api=gds_api.Gds_Api()    
     return api.RMS_GET_COMPANY_STATUS(**field)
 
 @Reporter(perm_enable=True,perm_groups=[1,6],name="PROVIDER ACTIVATE/DEACTIVATE",enable=1,category="")
@@ -360,6 +360,27 @@ def create_area(request,**field):
     field["USER"]=request.user.username
     return api.RMS_CREATE_MAIN_AREA(**field)
 
+@Reporter(perm_enable=True,perm_groups=[1,11],name="Get State List",enable=1,category="")                       
+def  get_state_list(request,**field):
+    api=gds_api.Gds_Api()            
+    return api.RMS_GET_STATE_LIST(**field)
+
+@Reporter(perm_enable=True,perm_groups=[1,11],name="Get City List of the State",enable=1,category="")                       
+@Create_Tables(titles=["Cities"])
+def  get_state_city_list(request,**field):
+    api=gds_api.Gds_Api()            
+    return api.RMS_GET_STATE_CITY_LIST(**field)
+
+
+@Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: MERGE CITIES",enable=1,category="")                       
+def  merge_city(request,**field):
+    api=gds_api.Gds_Api()            
+    return api.RMS_UPDATE_REAL_CITY(**field)    
+
+@Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: SET PARENT CITY",enable=1,category="")                       
+def  set_parent_city(request,**field):
+    api=gds_api.Gds_Api()            
+    return api.RMS_UPDATE_PARENT_CITY(**field)     
 #print update_area_of_pickup.dataGenerators
 #print junk_pickups.dataGenerators
 #print agents_details.dataGenerators

@@ -1,6 +1,8 @@
 sudo mount -t  vboxsf shared_folder host
 cd host
 ssh -i DataPlatform.pem ubuntu@175.41.137.227
+ssh -i production.pem ec2-user@ec2-175-41-167-239.ap-southeast-1.compute.amazonaws.com
+TY Beta URL=ec2-user@ec2-175-41-167-239.ap-southeast-1.compute.amazonaws.com
 
 #Creating Pyramid Project
 virtualenv env
@@ -50,6 +52,10 @@ might be caused by one of the following things:
 After you fix the problem, please restart the Pyramid application to
 try it again.
 
+#required for pylibmc
+download latest version of libmemcached from site
+https://launchpad.net/libmemcached/+download
+
 
 #installing mysql server and client
 sudo apt-get install mysql-server mysql-client
@@ -57,8 +63,10 @@ root password: travel123
 #for mysql_config required for alchemy
 sudo pip install pymysql
 #required for alchemy to use mysql
-
-
+#Reuqired to create mysql_config to install mysql-python
+sudo apt-get install python-dev
+#Reuqired to create mysql_config
+sudo apt-get install libmysqlclient-dev
 
 #configuring mysql + sqlalchemy into pyramid
 1. Add 'mysql-python' in require list of file setup.py
@@ -345,6 +353,7 @@ WSGIScriptAlias / /home/gruffi/env/pyramid.wsgi
 
 #4. Restart apache server
 sudo /usr/sbin/apachectl restart
+sudo /usr/sbin/apachectl -k gracefull
 
 #5. Check server logs
 sudo tail /var/log/apache2/error.log
@@ -406,3 +415,6 @@ show collections
 
 
 mongod --setParameter enableLocalhostAuthBypass=0
+
+
+##Manual Data Entry in DB

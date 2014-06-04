@@ -112,10 +112,19 @@ def get_perms_links(strPerms):
 	"""
 	print strPerms
 	session=get_session()
-	cursor=session.query(Links).from_statement("""
-			SELECT l.* from links l inner join perms p on p.link_id=l.link_id where p.group_id in (%s) and p.enabled=1 order by l.name;			
-			""" % strPerms)	
-	
+	if "1" in strPerms:
+		cursor=session.query(Links).from_statement("""
+			SELECT l.* from links l 
+			inner join perms p on p.link_id=l.link_id 
+			where p.enabled=1 order by l.name;			
+			""")	
+	else:		
+		cursor=session.query(Links).from_statement("""
+				SELECT l.* from links l 
+				inner join perms p on p.link_id=l.link_id 
+				where p.group_id in (%s) and p.enabled=1 order by l.name;			
+				""" % strPerms)	
+		
 	return cursor.all()
 
 

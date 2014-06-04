@@ -25,12 +25,15 @@ def jsonToTable(dictObj):
                         headers[key]["type"]="float"
                     else:
                         headers[key]["type"]="str"
-            thead='<thead><tr class="gradeA"><th>'+'</th><th>'.join(headers)+'</th></tr></thead>'
+            if headers.has_key("id"):
+                thead='<thead><tr class="gradeA"><th class="select-check"><span class="glyphicon glyphicon-ok"></span></th><th>'+'</th><th>'.join(headers)+'</th></tr></thead>'
+            else:
+                thead='<thead><tr class="gradeA"><th>'+'</th><th>'.join(headers)+'</th></tr></thead>'
             tfoot='<tfoot><tr>'
             ip_index=0
-            print headers
+            #print headers
             for key in headers.keys():
-                tfoot+='<th><div class="input-group-sm"><input name="'+"search"+key+'" type="text" class="search_init form-control" placeholder="'+key+'"></div></th>'
+                #tfoot+='<th><div class="input-group-sm"><input name="'+"search"+key+'" type="text" class="search_init form-control" placeholder="'+key+'"></div></th>'
                 #tfoot+='<th><input ip_index='+str(ip_index)+' type="text" name="'+"search"+key+'" value="Search '+key+'" class="search_init" /></th>'
                 ip_index+=1
             tfoot+='</tr></tfoot>'            
@@ -48,7 +51,7 @@ def jsonToTable(dictObj):
                     else:
                         is_active_class="deactivated"                
                 if row.has_key("id"):
-                    listTbody.append('<tr id='+table_name+'_'+str(row["id"])+' class=" '+is_active_class+' table_row gradeA"><td>'+'</td><td>'.join(values)+'</td></tr>')
+                    listTbody.append('<tr id='+table_name+'_'+str(row["id"])+' class=" '+is_active_class+' table_row gradeA"><td class="select-check"><input type="checkbox"></td><td>'+'</td><td>'.join(values)+'</td></tr>')                
                 else:    
                     listTbody.append('<tr class="gradeA"><td>'+'</td><td>'.join(values)+'</td></tr>')
                 

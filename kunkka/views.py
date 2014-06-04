@@ -303,6 +303,25 @@ def gds_inventory(request):
         }
     return data  
 
+##GDS City Management
+@view_config(route_name='city_management',renderer='kunkka:templates/city_management.mako')
+@Auth('oauth',authorize=True)
+def city_management(request):
+    
+    merge_city_path="/report_ajax/"+'merge_city/?'
+    set_parent_city_path="/report_ajax/"+'set_parent_city/?'
+    city_list_path="/report_ajax/"+'get_state_city_list/?'        
+    state_list_path="/report_ajax/"+'get_state_list/?'        
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        "merge_city_path":merge_city_path,        
+        "city_list_path":city_list_path,
+        "state_list_path":state_list_path,
+        "set_parent_city_path":set_parent_city_path
+
+        }
+    return data  
+
 @view_config(route_name='home',renderer='kunkka:templates/home.mako')
 @Auth('oauth')
 def home(request):        

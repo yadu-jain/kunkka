@@ -134,6 +134,41 @@
                         {"name":"USER","type":"str","default":"AUTO"}                        
                     ],
                 "title":"UPDATE AREA OF PICKUP"
+            },
+            {
+                "name":"RMS_GET_STATE_CITY_LIST",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STATE_ID","type":"INT","default":null}                        
+                    ],
+                "title":"GET CITY LIST OF THE STATE"
+            },
+            {
+                "name":"RMS_GET_STATE_LIST",
+                "type":"query",
+                "params":
+                    [                        
+                    ],
+                "title":"GET STATE LIST"
+            },
+            {
+                "name":"RMS_UPDATE_REAL_CITY",
+                "type":"update",
+                "params":
+                    [
+                        {"name":"REAL_CITY_ID","type":"INT","default":null},
+                        {"name":"CIDS","type":"STR","default":""}
+                    ]
+            },
+            {
+                "name":"RMS_UPDATE_PARENT_CITY",
+                "type":"update",
+                "params":
+                    [
+                        {"name":"PARENT_CITY_ID","type":"INT","default":null},
+                        {"name":"CIDS","type":"STR","default":""}
+                    ]
             }
 
         ]

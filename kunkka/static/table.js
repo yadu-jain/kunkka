@@ -65,7 +65,8 @@ function generateTables(tables,add_to)
                     rendered_tables.addClass("table-bordered")
                     rendered_tables.addClass("table-striped")                    
                     var oTables=$(rendered_tables).dataTable({
-                        "aoColumnDefs": columns,                        
+                        "aoColumnDefs": columns,
+                        "iDisplayLength":50
                          //"sDom": "<'row'<'col-xs-6'T><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>"                                             
                     });
                     console.log(oTables)

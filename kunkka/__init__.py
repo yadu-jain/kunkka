@@ -163,6 +163,8 @@ def main(global_config, **settings):
     config.add_route('providers','/providers/')    
     config.add_route('gds_inventory','/gds_inventory/')    
     config.add_route('city_management','/city_management/')    
+    config.add_route('user_management','/user_management/')    
+    config.add_route('group_management','/group_management/')    
     #config.add_route('admin','/admin/')
     config.add_notfound_view(notfound, append_slash=True)
     config.add_subscriber_predicate('magnus', RequestPathStartsWith)

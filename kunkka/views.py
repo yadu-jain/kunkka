@@ -322,6 +322,50 @@ def city_management(request):
         }
     return data  
 
+##GDS User Management
+@view_config(route_name='user_management',renderer='kunkka:templates/user_management.mako')
+@Auth('oauth',authorize=True)
+def user_management(request):
+        
+    gds_users_path="/report_ajax/"+'get_user_list/?'        
+    gds_get_uuid_path="/report_ajax/"+'get_gds_uuid/?'
+    update_user_perms_path="/report_ajax/"+'update_user_perms/?'        
+    add_group_to_user_path="/report_ajax/"+'add_group_to_user/?'        
+    get_group_list_path="/report_ajax/"+'get_group_list/?'        
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        'gds_users_path':gds_users_path,
+        'update_user_perms_path':update_user_perms_path,
+        'gds_get_uuid_path':gds_get_uuid_path,
+        'add_group_to_user_path':add_group_to_user_path,
+        'get_group_list_path':get_group_list_path
+        }
+    return data  
+
+##GDS User Management
+@view_config(route_name='group_management',renderer='kunkka:templates/group_management.mako')
+@Auth('oauth',authorize=True)
+def group_management(request):
+        
+    get_group_list_path="/report_ajax/"+'get_group_list/?'        
+    get_group_links_path="/report_ajax/"+'get_group_links/?'
+    add_group_path="/report_ajax/"+'add_group/?'
+    add_group_link_path="/report_ajax/"+'add_group_link/?'
+    update_groups_perms_path="/report_ajax/"+'update_groups_perms/?'        
+    create_gds_group_path="/report_ajax/"+'create_gds_group/?'        
+    
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        'get_group_list_path':get_group_list_path,
+        'get_group_links_path':get_group_links_path,
+        'add_group_path':add_group_path,
+        'add_group_link_path':add_group_link_path,
+        'update_groups_perms_path':update_groups_perms_path,
+        'create_gds_group_path':create_gds_group_path        
+        }
+    return data
+
+
 @view_config(route_name='home',renderer='kunkka:templates/home.mako')
 @Auth('oauth')
 def home(request):        

@@ -169,7 +169,95 @@
                         {"name":"PARENT_CITY_ID","type":"INT","default":null},
                         {"name":"CIDS","type":"STR","default":""}
                     ]
+            },
+            {
+                "name":"RMS_GET_GDS_USER_LIST",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"SUB_AGENT_ID","type":"INT","default": 0}                        
+                    ]
+            },
+             {
+                "name":"RMS_GET_GDS_UUID",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"UUID","type":"INT"}                        
+                    ]
+            },
+            {
+                "name":"RMS_GDS_PROVIDER_INVENTORY",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"} 
+                    ]
+            },
+            {
+                "name":"RMS_GET_GROUP_LIST",
+                "type":"query",
+                "params":
+                    [                      
+                    ]
+            },
+            {
+                "name":"RMS_GET_GROUP_LINKS",
+                "type":"query",
+                "params":
+                    [     
+                        {"name":"GROUP_ID","type":"INT"}                                         
+                    ]
+            },
+            {
+                "name":"RMS_UPDATE_GROUP_PERM",
+                "type":"update",
+                "params":
+                    [     
+                        {"name":"STATUS","type":"INT"},
+                        {"name":"PERM_IDS","type":"STR"}                                                                                 
+                    ]
+            },            
+            {
+                "name":"RMS_ADD_GROUP_LINK",
+                "type":"update",
+                "params":
+                    [     
+                        {"name":"GROUP_ID","type":"INT"},
+                        {"name":"LINK_ID","type":"INT"}                                         
+
+                    ]
+            },
+            {
+                "name":"RMS_CREATE_GDS_GROUP",
+                "type":"update",
+                "params":
+                    [     
+                        {"name":"NAME","type":"STR"}                     
+
+                    ]
+            },
+            {
+                "name":"RMS_ADD_GROUP_TO_USER",
+                "type":"update",
+                "params":
+                    [     
+                        {"name":"GROUP_ID","type":"INT"},
+                        {"name":"UUID","type":"INT"}                                          
+
+                    ]
+            },            
+             {
+                "name":"RMS_GET_CORPORATE_BOOKINGS",
+                "type":"query",
+                "params":
+                    [     
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"}                                       
+                    ]
             }
+
 
         ]
 }

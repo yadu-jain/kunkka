@@ -380,7 +380,66 @@ def  merge_city(request,**field):
 @Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: SET PARENT CITY",enable=1,category="")                       
 def  set_parent_city(request,**field):
     api=gds_api.Gds_Api()            
-    return api.RMS_UPDATE_PARENT_CITY(**field)     
+    return api.RMS_UPDATE_PARENT_CITY(**field)   
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="GET GDS USER LIST(SUB AGENTS/SUB AGENT USERS)",enable=1,category="")                       
+def get_user_list(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_GDS_USER_LIST(**field)      
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="GET GDS USER LIST(SUB AGENTS/SUB AGENT USERS)",enable=1,category="")                       
+@Create_Tables(titles=["User Details","User Groups","Default City"])
+def get_gds_uuid(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_GDS_UUID(**field)          
+
+@Reporter(perm_enable=True,perm_groups=[1,13],name="PROVIDER WISE INVENTORY STATS",enable=1,category="Reports",parent_path='date_report')
+@Create_Tables(titles=["ROUTES STATS","CITY PAIRS STATS"])
+@Create_Charts(titles=["ROUTES STATS","CITY PAIRS STATS"],chart_configs=[("JOURNEY_DATE","TOTAL_ROUTES",["PROVIDER_NAME"],0),
+                                          ("JOURNEY_DATE","CITY_PAIRS_COUNT",["PROVIDER_NAME"],1),
+                                          ("Date","total",["PROVIDER_NAME"],2)
+                                          ]) #(X,Y,[groups],TABLE_NO)
+def provider_inventory_stats(request,**fields):
+    api=gds_api.Gds_Api()        
+    return api.RMS_GDS_PROVIDER_INVENTORY(**fields)    
+
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="GDS GROUPS",enable=1,category="")                       
+def get_group_list(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_GROUP_LIST(**field)  
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="GDS GROUP LINKs",enable=1,category="")                       
+@Create_Tables(titles=["Group Links","Group Users"])
+def get_group_links(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_GROUP_LINKS(**field) 
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="ADD LINK TO GROUP",enable=1,category="")                       
+def add_group_link(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_ADD_GROUP_LINK (**field)  
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="UPDATE GROUP PERMS",enable=1,category="")                       
+def update_groups_perms(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_UPDATE_GROUP_PERM(**field)     
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="CREATE GDS GROUP",enable=1,category="")                       
+def  create_gds_group(request,**field):
+    api=gds_api.Gds_Api() 
+    return api.RMS_CREATE_GDS_GROUP(**field)         
+
+@Reporter(perm_enable=True,perm_groups=[1,12],name="ADD GROUP TO USER",enable=1,category="")                       
+def  add_group_to_user(request,**field):
+    api=gds_api.Gds_Api() 
+    return api.RMS_ADD_GROUP_TO_USER(**field)    
+         
+@Reporter(perm_enable=True,perm_groups=[1,14],name="Corporate Bookings",enable=1,category="Reports",parent_path='date_report')         
+@Create_Tables(titles=["CORPORATE BOOKINGS"])
+def  corporate_bookings(request,**field):
+    api=gds_api.Gds_Api() 
+    return api.RMS_GET_CORPORATE_BOOKINGS(**field)    
 #print update_area_of_pickup.dataGenerators
 #print junk_pickups.dataGenerators
-#print agents_details.dataGenerators
+#print agents_details.dataGenerators 

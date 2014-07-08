@@ -157,6 +157,9 @@
     table{
       white-space: pre;
     }
+    .select-check{
+      display: none;
+    }
     </style>   
 </head>
 

@@ -59,6 +59,10 @@ function generateTables(tables,add_to)
                     div.appendChild(h3);
                     div.appendChild(table_div);
                     document.getElementById(add_to).appendChild(div);
+                    if($(div).find("tr").length==0)
+                    {
+                        continue;
+                    }
                     $(table_div).addClass("table-responsive");
                     rendered_tables=$(table_div).find("table");
                     rendered_tables.addClass("table");

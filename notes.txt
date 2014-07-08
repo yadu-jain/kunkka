@@ -353,7 +353,7 @@ WSGIScriptAlias / /home/gruffi/env/pyramid.wsgi
 
 #4. Restart apache server
 sudo /usr/sbin/apachectl restart
-sudo /usr/sbin/apachectl -k gracefull
+sudo /usr/sbin/apachectl -k graceful
 
 #5. Check server logs
 sudo tail /var/log/apache2/error.log

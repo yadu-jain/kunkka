@@ -443,7 +443,7 @@ def  corporate_bookings(request,**field):
 
 @Reporter(perm_enable=True,perm_groups=[1,15],name="RMS Report",enable=1,category="Reports",parent_path='date_report')         
 @Create_Tables(titles=["RMS REPORT"])
-def  corporate_bookings(request,**field):
+def  rms_report(request,**field):
     api=gds_api.Gds_Api() 
     return api.RMS_GET_RMS_REPORT(**field)         
 #print update_area_of_pickup.dataGenerators

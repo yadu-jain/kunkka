@@ -439,7 +439,13 @@ def  add_group_to_user(request,**field):
 @Create_Tables(titles=["CORPORATE BOOKINGS"])
 def  corporate_bookings(request,**field):
     api=gds_api.Gds_Api() 
-    return api.RMS_GET_CORPORATE_BOOKINGS(**field)    
+    return api.RMS_GET_CORPORATE_BOOKINGS(**field)  
+
+@Reporter(perm_enable=True,perm_groups=[1,15],name="RMS Report",enable=1,category="Reports",parent_path='date_report')         
+@Create_Tables(titles=["RMS REPORT"])
+def  corporate_bookings(request,**field):
+    api=gds_api.Gds_Api() 
+    return api.RMS_GET_RMS_REPORT(**field)         
 #print update_area_of_pickup.dataGenerators
 #print junk_pickups.dataGenerators
 #print agents_details.dataGenerators 

@@ -6,6 +6,7 @@ function getHandler(oTable){
                     oTable.fnFilter( this.value,$(this).parent().parent().find("input").index(this));
                 }    
             }
+var flash_path="http://www.datatables.net/release-datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf";            
 function generateTables(tables,add_to)
             {
                 var content;
@@ -80,7 +81,7 @@ function generateTables(tables,add_to)
                                 "pdf",
                                 { "type": "print", "buttonText": "Print me!" }
                             ],
-                            "sSwfPath" : "/static/dataTable/copy_csv_xls_pdf.swf"                        
+                            "sSwfPath" : flash_path
                         }
 
                          //"sDom": "<'row'<'col-xs-6'T><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>"                                             

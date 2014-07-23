@@ -289,7 +289,7 @@
       console.log("response");
     })
   });
-  flash_path="${request.static_url('kunkka:static/dataTable/copy_csv_xls_pdf.swf')}"
+  
 </script>
 </body>
 

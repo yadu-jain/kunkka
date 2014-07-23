@@ -34,15 +34,18 @@
   <link rel="apple-touch-icon-precomposed" href="${request.static_url('kunkka:static/bootstrap/img/apple-touch-icon-57-precomposed.png')}">
   <link rel="shortcut icon" href="${request.static_url('kunkka:static/img/favicon.png')}">  
   <script src="${request.static_url('kunkka:static/dataTable/js/jquery.dataTables.min.js')}"></script>    
+  <script src="${request.static_url('kunkka:static/dataTable/js/dataTables.tableTools.js')}"></script>    
   <link href="${request.static_url('kunkka:static/dataTable/css/jquery.dataTables.css')}" rel="stylesheet">  
-  <script src="${request.static_url('kunkka:static/dataTable/DT_bootstrap.js')}"></script>    
+  <link href="${request.static_url('kunkka:static/dataTable/css/dataTables.tableTools.css')}" rel="stylesheet">    
+  <!--<script src="${request.static_url('kunkka:static/dataTable/DT_bootstrap.js')}"></script>    -->
   <script src="${request.static_url('kunkka:static/bootstrap-dialog/js/bootstrap-dialog.min.js')}"></script>
-  <link href="${request.static_url('kunkka:static/dataTable/DT_bootstrap.css')}" rel="stylesheet">      
+  <!--<link href="${request.static_url('kunkka:static/dataTable/DT_bootstrap.css')}" rel="stylesheet">      -->
   
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-  <script src="${request.static_url('kunkka:static/table.js')}"></script>
+  <script src="${request.static_url('kunkka:static/tablev2.js')}"></script>
+  
   <script src="${request.static_url('kunkka:static/chart.js')}"></script>
   <script type="text/javascript">
     var allChartObjects;

@@ -265,6 +265,28 @@
                         {"name":"STR_FROM_DATE","type":"str"},
                         {"name":"STR_TO_DATE","type":"str"}                                       
                     ]
+            },
+             {
+                "name":"RMS_GET_ROUTE_LIST",
+                "type":"query",
+                "params":
+                    [     
+                        {"name":"TRIP_ID","type":"int","default":0},
+                        {"name":"SERVICE_ID","type":"int","default":0},                                       
+                        {"name":"STR_FROM_JOURNEY_DATE","type":"str"},                                       
+                        {"name":"STR_TO_JOURNEY_DATE","type":"str"}                                      
+                    ]
+            },
+             {
+                "name":"RMS_REFRESH_INACTIVE_ROUTE",
+                "type":"update",
+                "params":
+                    [     
+                        {"name":"TRIP_ID","type":"int"},
+                        {"name":"SERVICE_ID","type":"int"},                                       
+                        {"name":"STR_FROM_JOURNEY_DATE","type":"str"},                                       
+                        {"name":"STR_TO_JOURNEY_DATE","type":"str"}                                      
+                    ]
             }
 
 

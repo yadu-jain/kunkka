@@ -3,6 +3,7 @@ cd host
 ssh -i DataPlatform.pem ubuntu@175.41.137.227
 ssh -i production.pem ec2-user@ec2-175-41-167-239.ap-southeast-1.compute.amazonaws.com
 TY Beta URL=ec2-user@ec2-175-41-167-239.ap-southeast-1.compute.amazonaws.com
+sudo /usr/sbin/apachectl -k graceful
 
 #Creating Pyramid Project
 virtualenv env

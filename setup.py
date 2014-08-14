@@ -24,7 +24,8 @@ requires = [
     'google-api-python-client',
     'simplejson', #only required for python 2.6
     'fabric',
-    'pylibmc'
+    'paste'
+    #'pylibmc' # need to install manually
     ]
 
 setup(name='kunkka',
@@ -37,8 +38,8 @@ setup(name='kunkka',
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
-      author='',
-      author_email='',
+      author='Heera',
+      author_email='heera.jaiswal810@gmail.com',
       url='',
       keywords='web wsgi bfg pylons pyramid',
       packages=find_packages(),

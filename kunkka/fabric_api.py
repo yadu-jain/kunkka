@@ -25,3 +25,17 @@ def delete_allowed_compaies(userids):
         f.close()
     execute(__delete_from_cache__)
     return True
+
+
+def delete_search_routes(table):
+    global temp_path
+    temp_file=os.path.join(temp_path,"keys.txt")
+    key_list="\n".join([ "_".join(["sr_new",str(row["FROM_CITY_ID"]),str(row["TO_CITY_ID"]),row["JOURNEY_DATE"].replace("-","_") ]) for row in table])
+    print "clear caching..."
+    print key_list
+    with open(temp_file,"wb") as f:
+        f.write(key_list)
+        f.flush()
+        f.close()
+    execute(__delete_from_cache__)
+    return True    

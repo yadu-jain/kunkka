@@ -365,6 +365,19 @@ def group_management(request):
         }
     return data
 
+#################################Refresh Routes ################################
+@view_config(route_name='refresh_routes',renderer='kunkka:templates/refresh_routes.mako')
+@Auth('oauth',authorize=True)
+def refresh_routes(request):
+
+    refresh_routes_path="/report_ajax/"+'refresh_routes/?'        
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        'refresh_routes_path':refresh_routes_path        
+        }
+    
+    return data
+
 
 @view_config(route_name='home',renderer='kunkka:templates/home.mako')
 @Auth('oauth')

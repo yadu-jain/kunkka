@@ -6,7 +6,7 @@ import gds_api
 import chart
 from file_cache import FileCache
 #from mem_client import clear_companies
-from fabric_api import delete_allowed_compaies
+from fabric_api import delete_allowed_compaies,delete_search_routes
 import email_sender
 reports={}
 ##-----------------------------------Decorators------------------------##
@@ -446,6 +446,25 @@ def  corporate_bookings(request,**field):
 def  rms_report(request,**field):
     api=gds_api.Gds_Api() 
     return api.RMS_GET_RMS_REPORT(**field)         
+
+
+@Reporter(perm_enable=True,perm_groups=[1,16],name="Refresh Routes",enable=1,category="")
+@Create_Tables(titles=["REFRESH ROUTES","INACTIVE ROUTES REFRESHED"])
+def refresh_routes(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_ROUTE_LIST(**field)      
+    inactive_count=response["Table1"][0]["INACTIVE"]
+    print inactive_count
+    if inactive_count >0 and inactive_count<=100:
+        #activating inactive routes
+        api.RMS_REFRESH_INACTIVE_ROUTE(**field)
+    ## Deleting cache
+    print response["Table"]
+    delete_search_routes(response["Table"])
+    return response
+
+
+    
 #print update_area_of_pickup.dataGenerators
 #print junk_pickups.dataGenerators
 #print agents_details.dataGenerators 

@@ -287,8 +287,13 @@
                         {"name":"STR_FROM_JOURNEY_DATE","type":"str"},                                       
                         {"name":"STR_TO_JOURNEY_DATE","type":"str"}                                      
                     ]
+            },            
+            {
+                "name":"RMS_GET_NEW_ROUTE_LIST",
+                "type":"query",
+                "params":[]
+                
             }
-
 
         ]
 }

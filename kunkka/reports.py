@@ -8,7 +8,8 @@ from file_cache import FileCache
 #from mem_client import clear_companies
 from fabric_api import delete_allowed_compaies,delete_search_routes
 import email_sender
-reports={}
+reports={} ## oauth based
+service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
 REFRESH_REPORT_IN_DB=True
@@ -75,6 +76,40 @@ class Create_Charts:
         fun.dataGenerators.append(generator)
         return fun
 
+
+##-------------------Key based service report---------###
+
+class Service_Reporter(object):
+    def __init__(self,shared_key=None):
+        self.shared_key=shared_key
+    def __call__(self,fun):
+        def wrapper(*args, **kwargs):
+            if self.shared_key !=None and( kwargs.has_key("shared_key")==False or (kwargs.has_key("shared_key")==True and  kwargs["shared_key"]!=self.shared_key)):
+                raise Exception("Invalid shared key")
+            response=fun(*args, **kwargs)     
+            new_response={}
+            new_response["raw"]=response
+            if hasattr(fun,'dataGenerators')== True:
+                print fun.dataGenerators                
+                for dataGenerator in fun.dataGenerators:                    
+                    generatedData = dataGenerator(response)                    
+                    count=0
+                    resultItems=[]
+                    if len(dataGenerator.titles)<len(generatedData):
+                        dataGenerator.titles=dataGenerator.titles
+                        dataGenerator.titles.extend(["Default Title"]*(len(generatedData)-len(dataGenerator.titles)))
+                    for item in generatedData:
+                        print "Preparing result"                         
+                        if not len(item)==0:
+                            resultItems.append({"title":dataGenerator.titles[count],"meta_content":item[0],"content":item[1]})
+                        count+=1
+                    print "added "+dataGenerator.name
+                    new_response[dataGenerator.name]=resultItems            
+            print new_response.keys()
+            return new_response
+        wrapper.__name__=fun.__name__
+        service_reports[fun.__name__]=wrapper        
+###---------------------------------------------------###
 class Reporter(object):
     def __init__(self,perm_enable=True,perm_groups=[],name=None,enable=1,category=None,parent_path="report"):
         self.perm_enable=perm_enable
@@ -458,11 +493,21 @@ def refresh_routes(request,**field):
     if inactive_count >0 and inactive_count<=100:
         #activating inactive routes
         api.RMS_REFRESH_INACTIVE_ROUTE(**field)
-    ## Deleting cache
-    print response["Table"]
+    ## Deleting cache    
     delete_search_routes(response["Table"])
     return response
 
+@Service_Reporter(shared_key="32b4c10da70ece0cd5a74f8109503cd5")
+def refresh_new_routes(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_NEW_ROUTE_LIST(**field)          
+    ## Deleting cache    
+    delete_search_routes(response["Table"])
+    return response    
+
+@Service_Reporter(shared_key="abc")    
+def test(request,**field):    
+    return None
 
     
 #print update_area_of_pickup.dataGenerators

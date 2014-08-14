@@ -11,7 +11,7 @@ except ImportError:
     # python 2.6 or earlier, use backport
     from ordereddict import OrderedDict
 import console
-from reports import reports
+from reports import reports,service_reports
 from authentication import (
     Auth,
     check_admin,
@@ -179,3 +179,29 @@ def report_ajax(request):
 			return {"success":False,"msg":str(e)}
 	else:
 		return JSON_NOT_FOUND(request)
+
+@view_config(route_name='service_report_ajax',renderer='json')
+##@Auth('oauth') #TODO
+def service_report_ajax(request):	
+	if not request.matchdict.has_key("fun"):
+		return JSON_NOT_FOUND(request)
+	rest_name=request.matchdict["fun"]	
+	fields={}
+	for i in request.params:
+		fields[i]=request.params[i]	
+	print rest_name
+	if service_reports.has_key(rest_name):
+		try:
+			print "Handler="
+			print service_reports[rest_name]
+			result=service_reports[rest_name](request=request,**fields)			
+			if result:				
+				return {"success":True,"data":result}
+			else:
+				return {"success":False,"msg":"Not found !"}
+		except Exception as e:
+			print e
+			return {"success":False,"msg":str(e)}
+	else:
+		return JSON_NOT_FOUND(request)		
+

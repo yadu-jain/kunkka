@@ -1,3 +1,4 @@
+from pyramid.renderers import JSON
 from pyramid.config import Configurator
 from pyramid.renderers import render
 from pyramid.authentication import AuthTktAuthenticationPolicy
@@ -172,5 +173,6 @@ def main(global_config, **settings):
     config.add_notfound_view(notfound, append_slash=True)
     config.add_subscriber_predicate('magnus', RequestPathStartsWith)
     config.add_subscriber_predicate('courier',RequestPathStartsWith)
+    config.add_renderer('prettyjson', JSON(indent=4,sort_keys=False))
     config.scan()
     return config.make_wsgi_app()

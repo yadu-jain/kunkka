@@ -180,7 +180,7 @@ def report_ajax(request):
 	else:
 		return JSON_NOT_FOUND(request)
 
-@view_config(route_name='service_report_ajax',renderer='json')
+@view_config(route_name='service_report_ajax',renderer='prettyjson')
 ##@Auth('oauth') #TODO
 def service_report_ajax(request):	
 	if not request.matchdict.has_key("fun"):

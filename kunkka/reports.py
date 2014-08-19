@@ -497,7 +497,7 @@ def refresh_routes(request,**field):
     delete_search_routes(response["Table"])
     return response
 
-@Service_Reporter(shared_key="32b4c10da70ece0cd5a74f8109503cd5")
+@Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")
 def refresh_new_routes(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_NEW_ROUTE_LIST(**field)          

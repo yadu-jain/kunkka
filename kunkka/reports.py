@@ -497,6 +497,16 @@ def refresh_routes(request,**field):
     delete_search_routes(response["Table"])
     return response
 
+@Reporter(perm_enable=True,perm_groups=[1,17],name="Karnataka Agents Report",enable=1,category="Reports",parent_path='date_report')         
+@Create_Tables(titles=["KARNATAKA AGENTS REPORT"])
+@Create_Charts(titles=["KARNATAKA AGENTS REPORT"],chart_configs=[("STATE","TOTAL_BOOKED",["MANTIS_USER"],0)]) #(X,Y,[groups],TABLE_NO)
+def  karnataka_bookings(request,**field):
+    api=gds_api.Gds_Api() 
+    field["STATE_ID"]=9
+    return api.RMS_GET_STATE_AGENT_BOOKINGS(**field)  
+
+
+##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")
 def refresh_new_routes(request,**field):
     api=gds_api.Gds_Api() 

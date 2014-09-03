@@ -303,7 +303,16 @@
                         {"name":"STR_TO_DATE","type":"str"},
                         {"name":"STATE_ID","type":"int"}                                       
                     ]
-            }            
+            },
+            {
+                "name":"RMS_PROVIDER_WISE_DAILY_BOOKINGS",
+                "type":"query",
+                "params":
+                    [     
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"}                    
+                    ]
+            }             
 
 
         ]

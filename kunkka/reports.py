@@ -505,6 +505,14 @@ def  karnataka_bookings(request,**field):
     field["STATE_ID"]=9
     return api.RMS_GET_STATE_AGENT_BOOKINGS(**field)  
 
+@Reporter(perm_enable=True,perm_groups=[1,18],name="PROVIDER WISE DAILY BOOKINGS",enable=1,category="Reports",parent_path='date_report')
+#@Create_Tables(titles=["TY BOOKINGS","OVERALL BOOKINGS"])
+@Create_Charts(titles=["TY BOOKINGS","OVERALL BOOKINGS"],chart_configs=[("BOOKING_DATE","TOTAL",["PROVIDER_NAME"],0),
+                                          ("BOOKING_DATE","TOTAL",["PROVIDER_NAME"],1)]) #(X,Y,[groups],TABLE_NO)
+def provider_daily_bookings(request,**fields):
+    api=gds_api.Gds_Api()        
+    return api.RMS_PROVIDER_WISE_DAILY_BOOKINGS(**fields)   
+
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

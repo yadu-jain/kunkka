@@ -12,7 +12,7 @@ reports={} ## oauth based
 service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=True
+REFRESH_REPORT_IN_DB=False
 class Create_Tables:
     def __init__(self,titles):
 
@@ -191,9 +191,9 @@ def agents_details(request,**fields):
     api=gds_api.Gds_Api()
     user_id=request.user.username            
     if user_id:        
-        fields["USER_ID"]=user_id        
+        fields["USER_ID"]=user_id
     if fields.has_key("FLAG_ALL_INFO"):
-        fields["FLAG_ALL_INFO"]=int(fields["FLAG_ALL_INFO"])        
+        fields["FLAG_ALL_INFO"]=int(fields["FLAG_ALL_INFO"])
     return api.RMS_SUB_AGENT_STATUS(**fields)
 
 @Reporter(perm_enable=True,perm_groups=[1,7],name="Agent Bookings",enable=1,category="Reports",parent_path='date_report')
@@ -410,7 +410,7 @@ def  get_state_city_list(request,**field):
 @Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: MERGE CITIES",enable=1,category="")                       
 def  merge_city(request,**field):
     api=gds_api.Gds_Api()            
-    return api.RMS_UPDATE_REAL_CITY(**field)    
+    return api.RMS_MERGE_CITIES(**field)
 
 @Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: SET PARENT CITY",enable=1,category="")                       
 def  set_parent_city(request,**field):
@@ -512,7 +512,6 @@ def  karnataka_bookings(request,**field):
 def provider_daily_bookings(request,**fields):
     api=gds_api.Gds_Api()        
     return api.RMS_PROVIDER_WISE_DAILY_BOOKINGS(**fields)   
-
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

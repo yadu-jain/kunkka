@@ -312,8 +312,15 @@
                         {"name":"STR_FROM_DATE","type":"str"},
                         {"name":"STR_TO_DATE","type":"str"}                    
                     ]
-            }             
-
-
+            },
+            {
+                "name":"RMS_MERGE_CITIES",
+                "type":"update",
+                "params":
+                    [
+                        {"name":"CityId","type":"int"},
+                        {"name":"CIDS","type":"str"}
+                    ]
+            }
         ]
 }

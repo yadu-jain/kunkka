@@ -523,6 +523,23 @@ def refresh_new_routes(request,**field):
     delete_search_routes(response["Table"])
     return response    
 
+@Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")
+def refresh_route_pickups(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_ROUTES_PICKUP(**field)          
+    ## Deleting cache    
+    delete_search_routes(response["Table"])
+    return response
+
+@Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")
+def refresh_pickups(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_PICKUP(**field)          
+    ## Deleting cache    
+    delete_search_routes(response["Table"])
+    return response
+
+
 @Service_Reporter(shared_key="abc")    
 def test(request,**field):    
     return None

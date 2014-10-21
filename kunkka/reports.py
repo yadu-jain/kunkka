@@ -12,7 +12,7 @@ reports={} ## oauth based
 service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=False
+REFRESH_REPORT_IN_DB=True
 class Create_Tables:
     def __init__(self,titles):
 
@@ -409,7 +409,8 @@ def  get_state_city_list(request,**field):
 
 @Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: MERGE CITIES",enable=1,category="")                       
 def  merge_city(request,**field):
-    api=gds_api.Gds_Api()            
+    api=gds_api.Gds_Api() 
+    field["USER"]=request.user.username           
     return api.RMS_MERGE_CITIES(**field)
 
 @Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: SET PARENT CITY",enable=1,category="")                       

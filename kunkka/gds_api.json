@@ -306,7 +306,8 @@
                 "params":
                     [
                         {"name":"CityId","type":"int"},
-                        {"name":"CIDS","type":"str"}
+                        {"name":"CIDS","type":"str"},
+                        {"name":"USER","type":"str"}
                     ]
             },
             {

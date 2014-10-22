@@ -6,7 +6,7 @@ import gds_api
 import chart
 from file_cache import FileCache
 #from mem_client import clear_companies
-from fabric_api import delete_allowed_compaies,delete_search_routes
+from fabric_api import delete_allowed_compaies,delete_search_routes,delete_route_pickups
 import email_sender
 reports={} ## oauth based
 service_reports={} ## Key Based
@@ -388,7 +388,6 @@ def gds_inventory(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_GDS_INVENTORY_STATUS(**field)
 
-
 @Reporter(perm_enable=True,perm_groups=[1,2],name="Create Area Name",enable=1,category="")                       
 def create_area(request,**field):
     api=gds_api.Gds_Api()            
@@ -405,7 +404,6 @@ def  get_state_list(request,**field):
 def  get_state_city_list(request,**field):
     api=gds_api.Gds_Api()            
     return api.RMS_GET_STATE_CITY_LIST(**field)
-
 
 @Reporter(perm_enable=True,perm_groups=[1,11],name="UPDATE CITY: MERGE CITIES",enable=1,category="")                       
 def  merge_city(request,**field):
@@ -482,7 +480,6 @@ def  rms_report(request,**field):
     api=gds_api.Gds_Api() 
     return api.RMS_GET_RMS_REPORT(**field)         
 
-
 @Reporter(perm_enable=True,perm_groups=[1,16],name="Refresh Routes",enable=1,category="")
 @Create_Tables(titles=["REFRESH ROUTES","INACTIVE ROUTES REFRESHED"])
 def refresh_routes(request,**field):
@@ -512,6 +509,17 @@ def  karnataka_bookings(request,**field):
 def provider_daily_bookings(request,**fields):
     api=gds_api.Gds_Api()        
     return api.RMS_PROVIDER_WISE_DAILY_BOOKINGS(**fields)   
+
+@Reporter(perm_enable=True,perm_groups=[1],name="Refresh Pickups",enable=1,category="")
+@Create_Tables(titles=["REFRESH ROUTE PICKUPS"])
+def refresh_pickups(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_PICKUPS_LIST(**field)
+    if field["HARD_REFRESH"] == "true":
+        api.RMS_UPDATE_ROUTE_PICKUPS(**field)
+    ## Deleting cache    
+    delete_route_pickups(response["Table"])
+    return response
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

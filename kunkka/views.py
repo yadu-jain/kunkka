@@ -373,6 +373,16 @@ def refresh_routes(request):
     
     return data
 
+#################################Refresh Pickups ################################
+@view_config(route_name='refresh_pickups',renderer='kunkka:templates/refresh_pickups.mako')
+@Auth('oauth',authorize=True)
+def refresh_routes(request):
+    refresh_pickups_path="/report_ajax/"+'refresh_pickups/?'
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        'refresh_pickups_path':refresh_pickups_path
+        }
+    return data
 
 @view_config(route_name='home',renderer='kunkka:templates/home.mako')
 @Auth('oauth')

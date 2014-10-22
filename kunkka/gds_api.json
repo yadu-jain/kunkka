@@ -7,7 +7,7 @@
                 "params":
                     [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"}                        
+                        {"name":"STR_TO_DATE","type":"str"}
                     ],
                 "title":"AGENT WISE MIS"
             },
@@ -15,8 +15,8 @@
                 "name":"RMS_GET_JUNK_PICKUPS",
                 "type":"query",
                 "params":
-                    [ 
-                    {"name":"CITY_ID","type":"int","default":-1}
+                    [
+                        {"name":"CITY_ID","type":"int","default":-1}
                     ],
                 "title":"JUNK PICKUPS"
             },
@@ -41,7 +41,6 @@
                         {"name":"PARENT_AREA_ID","type":"int","default":-1},
                         {"name":"USER","type":"str","default":"AUTO"},
                         {"name":"FLAG_TO_ADDRESS","type":"int","default":0}
-
                     ],
                 "title":"UPDATE AREA OF PICKUP"
             },
@@ -51,7 +50,7 @@
                 "params":
                     [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"},                        
+                        {"name":"STR_TO_DATE","type":"str"},
                         {"name":"USER_ID","type":"str","default":null}
                     ],
                 "title":"DATE WISE AGENTS REPORT"
@@ -62,44 +61,40 @@
                 "params":
                     [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"}                       
+                        {"name":"STR_TO_DATE","type":"str"}
                     ],
                 "title":"COMPANY WISE MIS"
             },
             {
                 "name":"RMS_GET_AREA_CITY_LIST",
                 "type":"query",
-                "params":
-                    [                        
-                    ],
+                "params":[],
                 "title":"ALL CITIES OF AREA"
             },
             {
                 "name":"RMS_DAY_TY_CONSOLE_BOOKINGS",
                 "type":"query",
                 "params":
-                    [ 
+                    [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"}                       
+                        {"name":"STR_TO_DATE","type":"str"}
                     ],
-                "title":"DAY WISE TY CONSOLE BOOKINGS"  
+                "title":"DAY WISE TY CONSOLE BOOKINGS"
             },
             {
                 "name":"RMS_GET_PROVIDER_STATUS",
                 "type":"query",
-                "params":
-                    [ 
-                    ],
-                "title":"PROVIDERS STATUS"  
+                "params":[],
+                "title":"PROVIDERS STATUS"
             },
             {
                 "name":"RMS_GET_COMPANY_STATUS",
                 "type":"query",
                 "params":
-                    [ 
-                        {"name":"PROVIDER_ID","type":"INT"}                        
+                    [
+                        {"name":"PROVIDER_ID","type":"INT"}
                     ],
-                "title":"COMPANIES STATUS"  
+                "title":"COMPANIES STATUS"
             },
             {
                 "name":"RMS_UPDATE_STATUS",
@@ -117,12 +112,12 @@
                 "name":"RMS_GDS_INVENTORY_STATUS",
                 "type":"query",
                 "params":
-                    [ 
+                    [
                         {"name":"FROM_CITY","type":"INT"},
                         {"name":"TO_CITY","type":"INT"},
                         {"name":"STR_JD","type":"STR"}
                     ],
-                "title":"GDS INVENTORY STATUS"  
+                "title":"GDS INVENTORY STATUS"
             },
             {
                 "name":"RMS_CREATE_MAIN_AREA",
@@ -130,8 +125,8 @@
                 "params":
                     [
                         {"name":"AREA_NAME","type":"str","default":null},
-                        {"name":"CITY_ID","type":"int"},  
-                        {"name":"USER","type":"str","default":"AUTO"}                        
+                        {"name":"CITY_ID","type":"int"},
+                        {"name":"USER","type":"str","default":"AUTO"}
                     ],
                 "title":"UPDATE AREA OF PICKUP"
             },
@@ -140,16 +135,14 @@
                 "type":"query",
                 "params":
                     [
-                        {"name":"STATE_ID","type":"INT","default":null}                        
+                        {"name":"STATE_ID","type":"INT","default":null}
                     ],
                 "title":"GET CITY LIST OF THE STATE"
             },
             {
                 "name":"RMS_GET_STATE_LIST",
                 "type":"query",
-                "params":
-                    [                        
-                    ],
+                "params":[],
                 "title":"GET STATE LIST"
             },
             {
@@ -175,15 +168,15 @@
                 "type":"query",
                 "params":
                     [
-                        {"name":"SUB_AGENT_ID","type":"INT","default": 0}                        
+                        {"name":"SUB_AGENT_ID","type":"INT","default": 0}
                     ]
             },
-             {
+            {
                 "name":"RMS_GET_GDS_UUID",
                 "type":"query",
                 "params":
                     [
-                        {"name":"UUID","type":"INT"}                        
+                        {"name":"UUID","type":"INT"}
                     ]
             },
             {
@@ -192,125 +185,119 @@
                 "params":
                     [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"} 
+                        {"name":"STR_TO_DATE","type":"str"}
                     ]
             },
             {
                 "name":"RMS_GET_GROUP_LIST",
                 "type":"query",
-                "params":
-                    [                      
-                    ]
+                "params":[]
             },
             {
                 "name":"RMS_GET_GROUP_LINKS",
                 "type":"query",
                 "params":
-                    [     
-                        {"name":"GROUP_ID","type":"INT"}                                         
+                    [
+                        {"name":"GROUP_ID","type":"INT"}
                     ]
             },
             {
                 "name":"RMS_UPDATE_GROUP_PERM",
                 "type":"update",
                 "params":
-                    [     
+                    [
                         {"name":"STATUS","type":"INT"},
-                        {"name":"PERM_IDS","type":"STR"}                                                                                 
+                        {"name":"PERM_IDS","type":"STR"}
                     ]
-            },            
+            },
             {
                 "name":"RMS_ADD_GROUP_LINK",
                 "type":"update",
                 "params":
-                    [     
+                    [
                         {"name":"GROUP_ID","type":"INT"},
-                        {"name":"LINK_ID","type":"INT"}                                         
-
+                        {"name":"LINK_ID","type":"INT"}
                     ]
             },
             {
                 "name":"RMS_CREATE_GDS_GROUP",
                 "type":"update",
                 "params":
-                    [     
-                        {"name":"NAME","type":"STR"}                     
-
+                    [
+                        {"name":"NAME","type":"STR"}
                     ]
             },
             {
                 "name":"RMS_ADD_GROUP_TO_USER",
                 "type":"update",
                 "params":
-                    [     
+                    [
                         {"name":"GROUP_ID","type":"INT"},
-                        {"name":"UUID","type":"INT"}                                          
-
+                        {"name":"UUID","type":"INT"}
                     ]
-            },            
-             {
+            },
+            {
                 "name":"RMS_GET_CORPORATE_BOOKINGS",
                 "type":"query",
                 "params":
-                    [     
+                    [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"}                                       
+                        {"name":"STR_TO_DATE","type":"str"}
                     ]
             },
             {
                 "name":"RMS_GET_RMS_REPORT",
                 "type":"query",
                 "params":
-                    [     
+                    [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"}                                       
+                        {"name":"STR_TO_DATE","type":"str"}
                     ]
             },
-             {
+            {
                 "name":"RMS_GET_ROUTE_LIST",
                 "type":"query",
                 "params":
-                    [     
+                    [
                         {"name":"TRIP_ID","type":"int","default":0},
-                        {"name":"SERVICE_ID","type":"int","default":0},                                       
-                        {"name":"STR_FROM_JOURNEY_DATE","type":"str"},                                       
-                        {"name":"STR_TO_JOURNEY_DATE","type":"str"}                                      
+                        {"name":"SERVICE_ID","type":"int","default":0},
+                        {"name":"STR_FROM_JOURNEY_DATE","type":"str"},
+                        {"name":"STR_TO_JOURNEY_DATE","type":"str"}
                     ]
             },
-             {
+            {
                 "name":"RMS_REFRESH_INACTIVE_ROUTE",
                 "type":"update",
                 "params":
-                    [     
+                    [
                         {"name":"TRIP_ID","type":"int"},
-                        {"name":"SERVICE_ID","type":"int"},                                       
-                        {"name":"STR_FROM_JOURNEY_DATE","type":"str"},                                       
-                        {"name":"STR_TO_JOURNEY_DATE","type":"str"}                                      
+                        {"name":"SERVICE_ID","type":"int"},
+                        {"name":"STR_FROM_JOURNEY_DATE","type":"str"},
+                        {"name":"STR_TO_JOURNEY_DATE","type":"str"}
                     ]
-            },            
+            },
             {
                 "name":"RMS_GET_NEW_ROUTE_LIST",
                 "type":"query",
                 "params":[]
-                
             },
             {
                 "name":"RMS_GET_STATE_AGENT_BOOKINGS",
                 "type":"query",
                 "params":
-                    [     
+                    [
                         {"name":"STR_FROM_DATE","type":"str"},
                         {"name":"STR_TO_DATE","type":"str"},
-                        {"name":"STATE_ID","type":"int"}                                       
+                        {"name":"STATE_ID","type":"int"}
                     ]
             },
             {
                 "name":"RMS_PROVIDER_WISE_DAILY_BOOKINGS",
                 "type":"query",
                 "params":
-                    [     
+                    [
                         {"name":"STR_FROM_DATE","type":"str"},
-                        {"name":"STR_TO_DATE","type":"str"}                    
+                        {"name":"STR_TO_DATE","type":"str"}
                     ]
             },
             {
@@ -320,6 +307,24 @@
                     [
                         {"name":"CityId","type":"int"},
                         {"name":"CIDS","type":"str"}
+                    ]
+            },
+            {
+                "name":"RMS_GET_PICKUPS_LIST",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"TRIP_ID","type":"int","default":0},
+                        {"name":"SERVICE_ID","type":"int","default":0}
+                    ]
+            },
+            {
+                "name":"RMS_UPDATE_ROUTE_PICKUPS",
+                "type":"update",
+                "params":
+                    [
+                        {"name":"TRIP_ID","type":"int","default":0},
+                        {"name":"SERVICE_ID","type":"int","default":0}
                     ]
             }
         ]

@@ -6,7 +6,8 @@ env.user="root"
 #env.password="m@l@vtez@l6804"
 env.password="5UGjGAU77iaCKGIE"
 
-temp_path="/home/heera/data_platform/env/kunkka/temp/"
+# temp_path="/home/heera/data_platform/env/kunkka/temp/"
+temp_path="/home/swarthi/projects/env/kunkka/temp/"
 ##################### Fab function ##########################
 def __delete_from_cache__():
     global temp_path
@@ -38,4 +39,17 @@ def delete_search_routes(table):
         f.flush()
         f.close()
     execute(__delete_from_cache__)
-    return True    
+    return True
+
+def delete_route_pickups(table):
+    global temp_path
+    temp_file=os.path.join(temp_path,"keys.txt")
+    key_list="\n".join(["pkps_new_"+str(row["ROUTE_SCHEDULE_ID"]) for row in table])
+    print "clear caching..."
+    print key_list
+    with open(temp_file,"wb") as f:
+        f.write(key_list)
+        f.flush()
+        f.close()
+    execute(__delete_from_cache__)
+    return True

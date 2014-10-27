@@ -6,13 +6,13 @@ import gds_api
 import chart
 from file_cache import FileCache
 #from mem_client import clear_companies
-from fabric_api import delete_allowed_compaies,delete_search_routes,delete_route_pickups
+from fabric_api import delete_allowed_compaies,delete_search_routes,delete_route_pickups,delete_route_pickup_details
 import email_sender
 reports={} ## oauth based
 service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=True
+REFRESH_REPORT_IN_DB=False
 class Create_Tables:
     def __init__(self,titles):
 
@@ -512,14 +512,15 @@ def provider_daily_bookings(request,**fields):
     return api.RMS_PROVIDER_WISE_DAILY_BOOKINGS(**fields)   
 
 @Reporter(perm_enable=True,perm_groups=[1],name="Refresh Pickups",enable=1,category="")
-@Create_Tables(titles=["REFRESH ROUTE PICKUPS"])
-def refresh_pickups(request,**field):
-    api=gds_api.Gds_Api() 
+@Create_Tables(titles=["REFRESH ROUTE PICKUPS","PICKUP LIST"])
+def refresh_route_pickups(request,**field):
+    api=gds_api.Gds_Api()
     response=api.RMS_GET_PICKUPS_LIST(**field)
     if field["HARD_REFRESH"] == "true":
         api.RMS_UPDATE_ROUTE_PICKUPS(**field)
-    ## Deleting cache    
+    ## Deleting cache
     delete_route_pickups(response["Table"])
+    delete_route_pickup_details(response["Table1"])
     return response
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
@@ -532,7 +533,7 @@ def refresh_new_routes(request,**field):
     return response    
 
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")
-def refresh_route_pickups(request,**field):
+def service_refresh_route_pickups(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_ROUTES_PICKUP(**field)          
     ## Deleting cache    
@@ -540,13 +541,12 @@ def refresh_route_pickups(request,**field):
     return response
 
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")
-def refresh_pickups(request,**field):
+def service_refresh_pickups(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_PICKUP(**field)          
     ## Deleting cache    
     delete_search_routes(response["Table"])
     return response
-
 
 @Service_Reporter(shared_key="abc")    
 def test(request,**field):    

@@ -44,6 +44,7 @@ def delete_route_pickups(table):
     global temp_path
     temp_file=os.path.join(temp_path,"keys.txt")
     key_list="\n".join(["pkps_new_"+str(row["ROUTE_SCHEDULE_ID"]) for row in table])
+    key_list+="\n".join(["delete pkpdtl_"+str()])
     print "clear pickups caching..."
     with open(temp_file,"wb") as f:
         f.write(key_list)
@@ -51,6 +52,18 @@ def delete_route_pickups(table):
         f.close()
     execute(__delete_from_cache__)
     return True    
+
+def delete_route_pickup_details(table):
+    global temp_path
+    temp_file=os.path.join(temp_path,"keys.txt")
+    key_list="\n".join(["pkpdtl_"+str(row["PICKUP_ID"]) for row in table])
+    print "clear pickups details caching..."
+    with open(temp_file,"wb") as f:
+        f.write(key_list)
+        f.flush()
+        f.close()
+    execute(__delete_from_cache__)
+    return True
 
 def delete_origin_cities():
     global temp_path

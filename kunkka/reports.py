@@ -12,7 +12,7 @@ reports={} ## oauth based
 service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=False
+REFRESH_REPORT_IN_DB=True
 class Create_Tables:
     def __init__(self,titles):
 
@@ -511,7 +511,7 @@ def provider_daily_bookings(request,**fields):
     api=gds_api.Gds_Api()        
     return api.RMS_PROVIDER_WISE_DAILY_BOOKINGS(**fields)   
 
-@Reporter(perm_enable=True,perm_groups=[1],name="Refresh Pickups",enable=1,category="")
+@Reporter(perm_enable=True,perm_groups=[1,19],name="Refresh Pickups",enable=1,category="")
 @Create_Tables(titles=["REFRESH ROUTE PICKUPS","PICKUP LIST"])
 def refresh_route_pickups(request,**field):
     api=gds_api.Gds_Api()

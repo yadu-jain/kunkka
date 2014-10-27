@@ -112,7 +112,7 @@ def get_perms_links(strPerms):
 	"""
 	print strPerms
 	session=get_session()
-	if "1" in strPerms:
+	if "1" in strPerms.split(","):
 		cursor=session.query(Links).from_statement("""
 			SELECT l.* from links l 
 			inner join perms p on p.link_id=l.link_id 

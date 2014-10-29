@@ -307,6 +307,8 @@
                     [
                         {"name":"CityId","type":"int"},
                         {"name":"CIDS","type":"str"},
+                        {"name":"FROM","type":"int"},
+                        {"name":"TO","type":"int"},
                         {"name":"USER","type":"str"}
                     ]
             },

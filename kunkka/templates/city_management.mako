@@ -5,13 +5,22 @@
             <h3 class="text-center text-primary">City Management</h3>
         </div>
     </div>
-    <div class="row clearfix">
-        <div class="col-md-2 column"></div>
+    <div class="row clearfix">        
+        <div class="col-md-2"></div>
         <div class="col-md-6 input-group input-group-sm">
             <span class="input-group-addon">State: </span>
             <select id="state" class="form-control form-control"></select>
+        </div>    
+    </div>
+    <hr/>
+    <div class="row clearfix">        
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+                <input type="checkbox" checked="true" id="display_from"> Display From</input>
+                <br/>
+                <input type="checkbox"  id="display_to"> Display To</input>
         </div>
-        <div class="col-md-4 col btn-toolbar merge-city">
+        <div class="col-md-4 col btn-toolbar merge-city">            
             <div class="btn-group-sm">
               <button id="btn_merge" type="button" onclick="pre_merge();" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Merge To<span class="caret"></span></button>
               <ul class="dropdown-menu" role="menu"></ul>
@@ -36,7 +45,13 @@
                 $(d).filter("tr.row_selected").each(function(index,tr_obj){
                     cids.push(tr_obj.id.split("_")[1]);
                 });
-                var merge_city_path="${merge_city_path}"+"CityId="+city_id+"&CIDS="+cids.join(",");
+                var FLAG_FROM=$("#display_from").prop("checked")+0
+                var FLAG_TO=$("#display_to").prop("checked")+0
+                if (FLAG_TO+FLAG_FROM==0)
+                {
+                    alert("Please select display type(FROM/TO)");
+                }
+                var merge_city_path="${merge_city_path}"+"CityId="+city_id+"&CIDS="+cids.join(",")+"&FROM="+FLAG_FROM+"&TO"+FLAG_TO;
                 $("#btn_merge").text("Merging...");
                 $("#btn_merge").attr("disabled",true);
                 $.ajax({

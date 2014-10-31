@@ -523,6 +523,13 @@ def refresh_route_pickups(request,**field):
     delete_route_pickup_details(response["Table1"])
     return response
 
+@Reporter(perm_enable=True,perm_groups=[1,20],name="B2C Booking Report",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["B2C BOOKING REPORT"])
+def b2c_booking_report(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              
+    return response  
+
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")
 def refresh_new_routes(request,**field):

@@ -329,6 +329,17 @@
                         {"name":"TRIP_ID","type":"int","default":0},
                         {"name":"SERVICE_ID","type":"int","default":0}
                     ]
+            },
+            {
+                "name":"RMS_GET_TY_DAY_BOOKINGS_REPORT",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"},
+                        {"name":"BOOKED","type":"int","default":1},
+                        {"name":"BASED_ON","type":"str","default":"BD"}
+                    ]
             }
         ]
 }

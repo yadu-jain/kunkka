@@ -528,7 +528,14 @@ def refresh_route_pickups(request,**field):
 def b2c_booking_report(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              
-    return response  
+    return response
+
+@Reporter(perm_enable=True,perm_groups=[1,21],name="Revenue Report",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["COMPANY WISE REVENUE"])
+def revenue_report(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
+    return response   
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

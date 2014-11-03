@@ -6,8 +6,8 @@ from oauth2client.client import OAuth2WebServerFlow
 # List the scopes your app requires:
 flow=None
 auth_uri=None
-CLIENT_ID=None #"839932794527-178uqshpfnc7al8ecc5gdml5gopffb8q.apps.googleusercontent.com"
-CLIENT_SECRET=None #"Fiw6f5q_5ZxHC3rvd0HQ4ao7"
+CLIENT_ID=None #"blah blah"
+CLIENT_SECRET=None #"blah blah"
 REDIRECT_URI=None#"http://localhost:8080/login/"
 SCOPES = None#['https://www.googleapis.com/auth/plus.me','email']
 def init_oauth():

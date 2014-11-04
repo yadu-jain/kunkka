@@ -34,12 +34,15 @@ class TableAggregators(object):
             try:
                 index=fields.index(aggregator_config["field"])
                 print aggregator_config["aggregator"].get_value()
-                aggagated_data[index]=aggregator_config["aggregator"].get_name()+": "+str(aggregator_config["aggregator"].get_value())
+                if aggagated_data[index]=="":
+                    aggagated_data[index]=aggregator_config["aggregator"].get_name()+": "+str(aggregator_config["aggregator"].get_value())
+                else:
+                    aggagated_data[index]+="\n"+aggregator_config["aggregator"].get_name()+": "+str(aggregator_config["aggregator"].get_value())
             except Exception as e:
                 print e
         if len(aggagated_data)>0:
             tr='<tr>'                
-            tr+='<th><div class="input-group-sm">'+'</div></th><th><div class="input-group-sm">'.join(aggagated_data)+'</div></th>'
+            tr+='<th><div style="color: rgb(211, 114, 25);">'+'</div></th><th><div style="color: rgb(211, 114, 25);">'.join(aggagated_data)+'</div></th>'
             tr+='</tr>'            
             return tr
         else:

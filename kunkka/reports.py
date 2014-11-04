@@ -529,7 +529,8 @@ def refresh_route_pickups(request,**field):
 @Create_Tables(titles=["B2C BOOKING REPORT"],aggregators=[
     ("ORDER_ID",aggregator.Count,0),
     ("AMOUNT",aggregator.Sum,0),
-    ("AGENT_COMM",aggregator.Sum,0)
+    ("AGENT_COMM",aggregator.Sum,0),
+    ("DISCOUNT",aggregator.Sum,0)
     ])
 def b2c_booking_report(request,**field):
     api=gds_api.Gds_Api() 
@@ -543,7 +544,11 @@ def b2c_booking_report(request,**field):
     ("B2C COMM",aggregator.Sum,0),
     ("B2B TOTAL",aggregator.Sum,0),
     ("B2B AMOUNT",aggregator.Sum,0),
-    ("B2B COMM",aggregator.Sum,0)
+    ("B2B COMM",aggregator.Sum,0),
+    ("B2C CC_EARNED",aggregator.Sum,0),
+    ("B2C ADDITIONAL_CC",aggregator.Sum,0),
+    ("B2B CC_EARNED",aggregator.Sum,0),
+    ("B2B ADDITIONAL_CC",aggregator.Sum,0)
     ])
 def revenue_report(request,**field):
     api=gds_api.Gds_Api() 

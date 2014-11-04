@@ -525,8 +525,12 @@ def refresh_route_pickups(request,**field):
     delete_route_pickup_details(response["Table1"])
     return response
 
-@Reporter(perm_enable=True,perm_groups=[1,20],name="Bl2C Booking Report",enable=1,category="Reports",parent_path="date_report")
-@Create_Tables(titles=["B2C BOOKING REPORT"],aggregators=[("ORDER_ID",aggregator.Count,0),("AMOUNT",aggregator.Sum,0),("AGENT_COMM",aggregator.Sum,0)])
+@Reporter(perm_enable=True,perm_groups=[1,20],name="B2C Booking Report",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["B2C BOOKING REPORT"],aggregators=[
+    ("ORDER_ID",aggregator.Count,0),
+    ("AMOUNT",aggregator.Sum,0),
+    ("AGENT_COMM",aggregator.Sum,0)
+    ])
 def b2c_booking_report(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              

@@ -8,24 +8,26 @@ from file_cache import FileCache
 #from mem_client import clear_companies
 from fabric_api import delete_allowed_compaies,delete_search_routes,delete_route_pickups,delete_route_pickup_details
 import email_sender
+import aggregator
 reports={} ## oauth based
 service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
 REFRESH_REPORT_IN_DB=True
 class Create_Tables:
-    def __init__(self,titles):
+    def __init__(self,titles,aggregators=None):
 
         if len(titles)==0:
             self.titles=[""]
         else:
-            self.titles=titles        
+            self.titles=titles
+            self.aggregators=aggregators        
         print self.titles
     def __call__(self,fun): 
         if hasattr(fun,'dataGenerators')== False:
             fun.dataGenerators=[]
         def getTable(response):            
-            return table.jsonToTable(response)
+            return table.jsonToTable(response,self.aggregators)
         generator=getTable
         generator.titles=self.titles
         generator.name='tables'
@@ -523,15 +525,22 @@ def refresh_route_pickups(request,**field):
     delete_route_pickup_details(response["Table1"])
     return response
 
-@Reporter(perm_enable=True,perm_groups=[1,20],name="B2C Booking Report",enable=1,category="Reports",parent_path="date_report")
-@Create_Tables(titles=["B2C BOOKING REPORT"])
+@Reporter(perm_enable=True,perm_groups=[1,20],name="Bl2C Booking Report",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["B2C BOOKING REPORT"],aggregators=[("ORDER_ID",aggregator.Count,0),("AMOUNT",aggregator.Sum,0),("AGENT_COMM",aggregator.Sum,0)])
 def b2c_booking_report(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              
     return response
 
 @Reporter(perm_enable=True,perm_groups=[1,21],name="Revenue Report",enable=1,category="Reports",parent_path="date_report")
-@Create_Tables(titles=["COMPANY WISE REVENUE"])
+@Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
+    ("B2C TOTAL",aggregator.Sum,0),
+    ("B2C AMOUNT",aggregator.Sum,0),
+    ("B2C COMM",aggregator.Sum,0),
+    ("B2B TOTAL",aggregator.Sum,0),
+    ("B2B AMOUNT",aggregator.Sum,0),
+    ("B2B COMM",aggregator.Sum,0)
+    ])
 def revenue_report(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              

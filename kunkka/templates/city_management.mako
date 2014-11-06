@@ -51,7 +51,7 @@
                 {
                     alert("Please select display type(FROM/TO)");
                 }
-                var merge_city_path="${merge_city_path}"+"CityId="+city_id+"&CIDS="+cids.join(",")+"&FROM="+FLAG_FROM+"&TO"+FLAG_TO;
+                var merge_city_path="${merge_city_path}"+"CityId="+city_id+"&CIDS="+cids.join(",")+"&FROM="+FLAG_FROM+"&TO="+FLAG_TO;
                 $("#btn_merge").text("Merging...");
                 $("#btn_merge").attr("disabled",true);
                 $.ajax({

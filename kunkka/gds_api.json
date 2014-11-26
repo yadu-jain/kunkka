@@ -348,7 +348,8 @@
                     [
                         {"name":"STR_FROM_DATE","type":"str"},
                         {"name":"STR_TO_DATE","type":"str"},                        
-                        {"name":"BASED_ON","type":"str","default":"BD"}
+                        {"name":"BASED_ON","type":"str","default":"BD"},
+                        {"name":"REGION_NAME","type":"str","default":""}
                     ]
             }
         ]

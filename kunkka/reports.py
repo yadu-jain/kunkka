@@ -537,7 +537,7 @@ def b2c_booking_report(request,**field):
     response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              
     return response
 
-@Reporter(perm_enable=True,perm_groups=[1,21],name="Revenue Report",enable=1,category="Reports",parent_path="date_report")
+@Reporter(perm_enable=True,perm_groups=[1,21],name="All Regions Revenue",enable=1,category="Reports",parent_path="date_report")
 @Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
     ("B2C TOTAL",aggregator.Sum,0),
     ("B2C AMOUNT",aggregator.Sum,0),
@@ -553,7 +553,121 @@ def b2c_booking_report(request,**field):
 def revenue_report(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
-    return response   
+    return response  
+
+@Reporter(perm_enable=True,perm_groups=[1,22],name="Central Region Revenue",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
+    ("B2C TOTAL",aggregator.Sum,0),
+    ("B2C AMOUNT",aggregator.Sum,0),
+    ("B2C COMM",aggregator.Sum,0),
+    ("B2B TOTAL",aggregator.Sum,0),
+    ("B2B AMOUNT",aggregator.Sum,0),
+    ("B2B COMM",aggregator.Sum,0),
+    ("B2C CC_EARNED",aggregator.Sum,0),
+    ("B2C ADDITIONAL_CC",aggregator.Sum,0),
+    ("B2B CC_EARNED",aggregator.Sum,0),
+    ("B2B ADDITIONAL_CC",aggregator.Sum,0)
+    ])
+def central_revenue_report(request,**field):
+    api=gds_api.Gds_Api() 
+    field["REGION_NAME"]="Central"
+    response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
+    return response     
+
+@Reporter(perm_enable=True,perm_groups=[1,23],name="East Region Revenue",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
+    ("B2C TOTAL",aggregator.Sum,0),
+    ("B2C AMOUNT",aggregator.Sum,0),
+    ("B2C COMM",aggregator.Sum,0),
+    ("B2B TOTAL",aggregator.Sum,0),
+    ("B2B AMOUNT",aggregator.Sum,0),
+    ("B2B COMM",aggregator.Sum,0),
+    ("B2C CC_EARNED",aggregator.Sum,0),
+    ("B2C ADDITIONAL_CC",aggregator.Sum,0),
+    ("B2B CC_EARNED",aggregator.Sum,0),
+    ("B2B ADDITIONAL_CC",aggregator.Sum,0)
+    ])
+def east_revenue_report(request,**field):
+    api=gds_api.Gds_Api() 
+    field["REGION_NAME"]="East"
+    response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
+    return response
+
+@Reporter(perm_enable=True,perm_groups=[1,24],name="North Region Revenue",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
+    ("B2C TOTAL",aggregator.Sum,0),
+    ("B2C AMOUNT",aggregator.Sum,0),
+    ("B2C COMM",aggregator.Sum,0),
+    ("B2B TOTAL",aggregator.Sum,0),
+    ("B2B AMOUNT",aggregator.Sum,0),
+    ("B2B COMM",aggregator.Sum,0),
+    ("B2C CC_EARNED",aggregator.Sum,0),
+    ("B2C ADDITIONAL_CC",aggregator.Sum,0),
+    ("B2B CC_EARNED",aggregator.Sum,0),
+    ("B2B ADDITIONAL_CC",aggregator.Sum,0)
+    ])
+def north_revenue_report(request,**field):
+    api=gds_api.Gds_Api() 
+    field["REGION_NAME"]="North"
+    response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
+    return response
+
+@Reporter(perm_enable=True,perm_groups=[1,25],name="South Report Revenue",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
+    ("B2C TOTAL",aggregator.Sum,0),
+    ("B2C AMOUNT",aggregator.Sum,0),
+    ("B2C COMM",aggregator.Sum,0),
+    ("B2B TOTAL",aggregator.Sum,0),
+    ("B2B AMOUNT",aggregator.Sum,0),
+    ("B2B COMM",aggregator.Sum,0),
+    ("B2C CC_EARNED",aggregator.Sum,0),
+    ("B2C ADDITIONAL_CC",aggregator.Sum,0),
+    ("B2B CC_EARNED",aggregator.Sum,0),
+    ("B2B ADDITIONAL_CC",aggregator.Sum,0)
+    ])
+def south_revenue_report(request,**field):
+    api=gds_api.Gds_Api() 
+    field["REGION_NAME"]="South"
+    response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
+    return response
+
+@Reporter(perm_enable=True,perm_groups=[1,26],name="Tamil Nadu Region Revenue",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
+    ("B2C TOTAL",aggregator.Sum,0),
+    ("B2C AMOUNT",aggregator.Sum,0),
+    ("B2C COMM",aggregator.Sum,0),
+    ("B2B TOTAL",aggregator.Sum,0),
+    ("B2B AMOUNT",aggregator.Sum,0),
+    ("B2B COMM",aggregator.Sum,0),
+    ("B2C CC_EARNED",aggregator.Sum,0),
+    ("B2C ADDITIONAL_CC",aggregator.Sum,0),
+    ("B2B CC_EARNED",aggregator.Sum,0),
+    ("B2B ADDITIONAL_CC",aggregator.Sum,0)
+    ])
+def tamilnadu_revenue_report(request,**field):
+    api=gds_api.Gds_Api() 
+    field["REGION_NAME"]="Tamil Nadu"
+    response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
+    return response    
+
+@Reporter(perm_enable=True,perm_groups=[1,27],name="West Region Revenue",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
+    ("B2C TOTAL",aggregator.Sum,0),
+    ("B2C AMOUNT",aggregator.Sum,0),
+    ("B2C COMM",aggregator.Sum,0),
+    ("B2B TOTAL",aggregator.Sum,0),
+    ("B2B AMOUNT",aggregator.Sum,0),
+    ("B2B COMM",aggregator.Sum,0),
+    ("B2C CC_EARNED",aggregator.Sum,0),
+    ("B2C ADDITIONAL_CC",aggregator.Sum,0),
+    ("B2B CC_EARNED",aggregator.Sum,0),
+    ("B2B ADDITIONAL_CC",aggregator.Sum,0)
+    ])
+def west_revenue_report(request,**field):
+    api=gds_api.Gds_Api() 
+    field["REGION_NAME"]="West"
+    response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
+    return response    
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

@@ -170,6 +170,7 @@ def main(global_config, **settings):
     config.add_route('service_report_ajax','/service_report_ajax/{fun}')    
     config.add_route('refresh_route_pickups','/refresh_route_pickups/')
     # config.add_route('company_details','/company_details/')
+    config.add_route('operators_payment','/operators_payment/')
     #config.add_route('admin','/admin/')
     config.add_notfound_view(notfound, append_slash=True)
     config.add_subscriber_predicate('magnus', RequestPathStartsWith)

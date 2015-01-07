@@ -13,7 +13,7 @@ reports={} ## oauth based
 service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=True
+REFRESH_REPORT_IN_DB=False
 class Create_Tables:
     def __init__(self,titles,aggregators=None):
 
@@ -668,6 +668,29 @@ def west_revenue_report(request,**field):
     field["REGION_NAME"]="West"
     response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
     return response    
+
+################################# Operator Payments ################################
+# author          : sWaRtHi
+# date            : January 07, 2015
+# description     : Retrive the operator booking and cancellation report Booking/Journey Date wise
+@Reporter(perm_enable=True,perm_groups=[1,28],name="Get Provider List",enable=1,category="")
+def  get_provider_list(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_PROVIDER_LIST(**field)
+
+@Reporter(perm_enable=True,perm_groups=[1,28],name="Get Company List of the Provider",enable=1,category="")
+@Create_Tables(titles=["Companies"])
+def  get_provider_company_list(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_PROVIDER_COMPANY_LIST(**field)
+
+@Reporter(perm_enable=True,perm_groups=[1,28],name="Operator Payments",enable=1,category="")
+@Create_Tables(titles=["Booking Report","Cancellation Report"])
+def operator_payments(request,**field):
+    api=gds_api.Gds_Api()
+    response=api.RMS_OPERATORs_BOOKING_CANCELLATION(**field)
+    return response
+##################################################################################
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

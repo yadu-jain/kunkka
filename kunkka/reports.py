@@ -337,8 +337,8 @@ def get_day_ty_console_bookings(request,**field):
     return api.RMS_DAY_TY_CONSOLE_BOOKINGS(**field)
 
 
-@Reporter(perm_enable=True,perm_groups=[1,5],name="AGENT MIS REPORT",enable=1,category="Reports",parent_path='date_report')                   
-@Create_Tables(titles=["SUB-AGENT WISE","TY USER WISE","API PARTNER WISE","TY OVER ALL","CONSOLE OVER ALL","API PARTNER OVER ALL","AGENTS OVER ALL","GDS OVER ALL"])
+@Reporter(perm_enable=True,perm_groups=[1,5],name="Agent MIS Report",enable=1,category="Reports",parent_path='date_report')                   
+@Create_Tables(titles=["SUB-AGENT MIS REPORT","TY + CONSOLE REPORT","API PARTNER WISE REPORT"])
 def get_agent_wise_mis(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_AGENT_WISE_REPORT(**field)
@@ -714,6 +714,29 @@ def west_revenue_report(request,**field):
     field["REGION_NAME"]="West"
     response=api.RMS_COMPANY_WISE_OVERALL_REPORT(**field)              
     return response    
+
+################################# Operator Payments ################################
+# author          : sWaRtHi
+# date            : January 07, 2015
+# description     : Retrive the operator booking and cancellation report Booking/Journey Date wise
+@Reporter(perm_enable=True,perm_groups=[1,28],name="Get Provider List",enable=1,category="")
+def  get_provider_list(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_PROVIDER_LIST(**field)
+
+@Reporter(perm_enable=True,perm_groups=[1,28],name="Get Company List of the Provider",enable=1,category="")
+@Create_Tables(titles=["Companies"])
+def  get_provider_company_list(request,**field):
+    api=gds_api.Gds_Api()
+    return api.RMS_GET_PROVIDER_COMPANY_LIST(**field)
+
+@Reporter(perm_enable=True,perm_groups=[1,28],name="Operator Payments",enable=1,category="")
+@Create_Tables(titles=["Booking Report","Cancellation Report"])
+def operator_payments(request,**field):
+    api=gds_api.Gds_Api()
+    response=api.RMS_OPERATORS_BOOKING_CANCELLATION(**field)
+    return response
+##################################################################################
 
 @Reporter(perm_enable=True,perm_groups=[1,29],name="Agents Management",enable=1,category="Reports",parent_path="search_report")
 @Create_Tables(titles=["AGENTS MANAGEMENT"])

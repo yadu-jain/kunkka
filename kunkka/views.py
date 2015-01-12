@@ -406,6 +406,25 @@ def home(request):
         }
     return data
 
+################################# Operator Payments ################################
+# author          : sWaRtHi
+# date            : January 07, 2015
+# description     : 
+@view_config(route_name='operators_payment',renderer='kunkka:templates/operators_payment.mako')
+@Auth('oauth',authorize=True)
+def operators_payment(request):
+    operator_payments_path="/report_ajax/"+'operator_payments/?'
+    provider_company_list_path="/report_ajax/"+'get_provider_company_list/?'        
+    provider_list_path="/report_ajax/"+'get_provider_list/?'        
+    data={'msg_type':'success','message':'','name':request.link.name,
+        'project_name':'Kunkka',
+        "operator_payments_path":operator_payments_path,
+        "provider_company_list_path":provider_company_list_path,
+        "provider_list_path":provider_list_path
+        }
+    return data  
+##################################################################################
+
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:

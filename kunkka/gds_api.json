@@ -353,6 +353,30 @@
                     ]
             },
             {
+                "name":"RMS_GET_PROVIDER_LIST",
+                "type":"query",
+                "params":[]
+            },
+            {
+                "name":"RMS_GET_PROVIDER_COMPANY_LIST",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"ProviderId","type":"int","default":"0"}
+                    ]
+            },
+            {
+                "name":"RMS_OPERATORS_BOOKING_CANCELLATION",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"FromDate","type":"str"},
+                        {"name":"ToDate","type":"str"},
+                        {"name":"ProviderId","type":"int"},
+                        {"name":"CompanyId","type":"int","default":"0"},
+                        {"name":"DateWise","type":"str","default":""}
+                    ]
+            },{
                 "name":"RMS_UPDATE_AGENT_DETAILS",
                 "type":"query",
                 "params":

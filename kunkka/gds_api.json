@@ -366,7 +366,7 @@
                     ]
             },
             {
-                "name":"RMS_OPERATORs_BOOKING_CANCELLATION",
+                "name":"RMS_OPERATORS_BOOKING_CANCELLATION",
                 "type":"query",
                 "params":
                     [
@@ -375,6 +375,35 @@
                         {"name":"ProviderId","type":"int"},
                         {"name":"CompanyId","type":"int","default":"0"},
                         {"name":"DateWise","type":"str","default":""}
+                    ]
+            },{
+                "name":"RMS_UPDATE_AGENT_DETAILS",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"ID","type":"int"},
+                        {"name":"METHOD","type":"str"},
+                        {"name":"AREA","type":"str","optional":true},                        
+                        {"name":"CITY_ID","type":"int","optional":true},                        
+                        {"name":"CONTACT_NAME","type":"str","optional":true},                        
+                        {"name":"CONTACT_PHONE","type":"str","optional":true},                        
+                        {"name":"ADDRESS","type":"str","optional":true},                        
+                        {"name":"EMAIL_ID","type":"str","optional":true},                        
+                        {"name":"COMM_PCT","type":"int","optional":true},                        
+                        {"name":"COMM_PCT_LOWER","type":"int","optional":true},                        
+                        {"name":"IS_PREPAID","type":"int","optional":true},                        
+                        {"name":"IS_FRANCHISEE","type":"int","optional":true},                        
+                        {"name":"CREDIT_LIMIT","type":"int","optional":true},                        
+                        {"name":"BENEFICIARY_MANTIS_USER","type":"int","optional":true}
+                    ]
+            },            
+            {
+                "name":"RMS_SUB_AGENT_DETAILS",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"START_WITH","type":"str"},                        
+                        {"name":"USER_ID","type":"str","default":""}                        
                     ]
             }
         ]

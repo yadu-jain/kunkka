@@ -67,3 +67,4 @@ def sendmail(to_,sub_,content,header=""):
 ##--------------------------------- EMAIL LIST -------------------------##
 PROVIDER_UPDATE_LIST=['heera.jaiswal@travelyaari.com']
 AGENT_UPDATE_LIST=['heera.jaiswal@travelyaari.com']
+COMPANY_UPDATE_LIST=['heera.jaiswal@travelyaari.com']

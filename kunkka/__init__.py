@@ -72,6 +72,8 @@ def main(global_config, **settings):
         email_sender.html_file  =settings['email_sender.template'].strip()
         email_sender.PROVIDER_UPDATE_LIST=[email.strip() for email in settings['email_list.PROVIDER_UPDATE_LIST'].split(",")]
         email_sender.AGENT_UPDATE_LIST=[email.strip() for email in settings['email_list.AGENT_UPDATE_LIST'].split(",")]
+        email_sender.COMPANY_UPDATE_LIST=[email.strip() for email in settings['email_list.COMPANY_UPDATE_LIST'].split(",")]
+
     except Exception as e:
         print e
 

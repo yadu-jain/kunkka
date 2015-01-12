@@ -94,11 +94,7 @@ def jsonToTable(dictObj,aggregators):
             
             listTbody=[]
             for row in table:                
-                values=[]
-                str_values='' 
-                for key,val in row.items():                    
-                    str_values+='<td>'+unicode(val)+'</td>'
-
+                values=[(unicode(val)) for key,val in row.items()]  
                 is_active=None
                 is_active_class=""
                 if row.has_key("IS_ACTIVE"):
@@ -109,11 +105,10 @@ def jsonToTable(dictObj,aggregators):
                     else:
                         is_active_class="deactivated"                
                 if row.has_key("id"):                    
-                    str_values=str_values.replace("$id",str(row["id"]))                    
-                    listTbody.append('<tr id='+table_name+'_'+str(row["id"])+' class=" '+is_active_class+' table_row gradeA">'+str_values+'</tr>')                
+                    listTbody.append('<tr id='+table_name+'_'+str(row["id"])+' class=" '+is_active_class+' table_row gradeA"><td>'+'</td><td>'.join(values)+'</td></tr>') 
                     
                 else:    
-                    listTbody.append('<tr class="gradeA"><td>'+str_values+'</td></tr>')
+                    listTbody.append('<tr class="gradeA"><td>'+'</td><td>'.join(values)+'</td></tr>')
                 tableAggregators.update_aggregators(row)
 
             tfoot+=tableAggregators.get_aggregators_tr(headers.keys())

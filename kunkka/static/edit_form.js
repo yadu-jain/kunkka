@@ -3,7 +3,7 @@ Author: Heera
 Created On: 2015-01-09
 Description: to create edit forms
 */
-
+var all_edit_farms=new Object();
 function init_controls(){
 	var div_control=$("#tables .table-responsive div.controls")
 	if (div_control.length==0){
@@ -16,6 +16,7 @@ function init_edit_forms(edit_forms){
 		for (var i in edit_forms){
 			var edit_form=edit_forms[i];
 			var table_no=edit_form.content.table_no;		
+			all_edit_farms[table_no]=edit_form;			
 			//TODO:
 			$($(".dataTables_wrapper")[table_no]).parent().find("div.controls").append('<button type="button" table_no="'+table_no+'" id="edit" onclick="edit('+table_no+');" class="btn btn-sm btn-primary">Edit</button>');
 			$($(".dataTables_wrapper")[table_no]).on("click",select_row);
@@ -25,14 +26,10 @@ function init_edit_forms(edit_forms){
 
 function edit(table_no){		
 	var id=$($(".dataTables_wrapper")[table_no]).find("tr.row_selected")[0].id.split("_")[1]
-	var form_url='/report_ajax/update_agent_details/';
+	var form_url=all_edit_farms[table_no].content.url;
+   
 
-    $("#edit").attr("disabled","true");        
-    $("#edit").text("Loading...");        
-
-    function edit_callback(response){
-	    $("#edit").attr("disabled",null);                
-	    $("#edit").text("Edit");        
+    function edit_callback(response){	   
 	    if(response.success==true){
 	    	open_edit_popup(create_form(response.data),form_url,id)	
 	    }else{
@@ -160,8 +157,7 @@ function open_edit_popup(edit_form,save_url,id){
 function select_row(e){
 	var temp=e.target.parentNode;	
 	temp=$(temp).filter(".table_row");
-	if (temp.length>=1){
-	    $("#edit").attr("disabled",null);                       
+	if (temp.length>=1){	    
 	    var id=e.target.parentNode.id.split("_")[1];                
 	    $("#tables .table_row").removeClass("row_selected");                
 	    $(temp).addClass("row_selected");

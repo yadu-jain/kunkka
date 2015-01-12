@@ -754,7 +754,6 @@ def update_agent_details(request,**field):
     if field["METHOD"]=="POST":
         is_updation=True
 
-
     api=gds_api.Gds_Api()
     response=api.RMS_UPDATE_AGENT_DETAILS(**field)    
 
@@ -770,6 +769,41 @@ def update_agent_details(request,**field):
         msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
         flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"RMS: Agent "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
+        ##-------------------------------------------------------##
+    return response  
+
+
+@Reporter(perm_enable=True,perm_groups=[1,30],name="Companies Management",enable=1,category="Reports",parent_path="search_report")
+@Create_Tables(titles=["COMPANIES MANAGEMENT"])
+@Create_Edit_Form(form_configs=[(0,"update_company_details")])
+def companies_management(request,**fields):
+    api=gds_api.Gds_Api()
+    user_id=request.user.username            
+    if user_id:        
+        fields["USER_ID"]=user_id    
+    return api.RMS_GET_COMPANIES_DETAILS(**fields)
+
+@Reporter(perm_enable=True,perm_groups=[1,29],name="Update Company Details",enable=1,category="",create_form=True)
+def update_company_details(request,**field):
+    is_updation=False
+    if field["METHOD"]=="POST":
+        is_updation=True
+
+    api=gds_api.Gds_Api()
+    response=api.RMS_UPDATE_COMPANY_DETAILS(**field)    
+
+    if is_updation==True:
+        ##------Notify team through mail------------------------##        
+        msg_body='<strong>'+response["Table"][0]["name"]+'('+str(response["Table"][0]["id"])+')'+'</strong><br/></br>'
+        msg_body='<span>EDIT</span><br/>'
+        key_list=edit_form.get_changed_list(field,response)
+        for key in key_list:            
+            msg_body+='<span>'+key+' = '+str(response["Table"][0][key])+'</span><br/>'
+        msg_body+='<br/><br/>'            
+        msg_body+='<span>By: '+request.user.name+'</span><br/>'
+        msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'        
+        msg_body='<div>'+msg_body+'</div>'
+        flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"RMS: Company "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response  
 

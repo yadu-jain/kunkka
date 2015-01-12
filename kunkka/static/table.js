@@ -1,3 +1,6 @@
+/*
+***DEPRICATED:-----------------Not Being used Anywhere-------------------
+*/
 function getHandler(oTable){
                 return function () {
                     /* Filter on the column (the index) of this element */

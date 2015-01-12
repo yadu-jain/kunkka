@@ -49,7 +49,7 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     session_factory = UnencryptedCookieSessionFactoryConfig(
-        settings['session.secret']
+        secret=settings['session.secret'],timeout=3600
         )
     
     config = Configurator(
@@ -71,6 +71,7 @@ def main(global_config, **settings):
         email_sender.password   =settings['email_sender.password'].strip()
         email_sender.html_file  =settings['email_sender.template'].strip()
         email_sender.PROVIDER_UPDATE_LIST=[email.strip() for email in settings['email_list.PROVIDER_UPDATE_LIST'].split(",")]
+        email_sender.AGENT_UPDATE_LIST=[email.strip() for email in settings['email_list.AGENT_UPDATE_LIST'].split(",")]
     except Exception as e:
         print e
 
@@ -160,6 +161,7 @@ def main(global_config, **settings):
     config.add_route('report_ajax','/report_ajax/{fun}/')    
     config.add_route('report','/report/{fun}/')
     config.add_route('date_report','/date_report/{fun}/')
+    config.add_route('search_report','/search_report/{fun}/')
     config.add_route('junked_pickups','/junk_pickups/')
     config.add_route('providers','/providers/')    
     config.add_route('gds_inventory','/gds_inventory/')    

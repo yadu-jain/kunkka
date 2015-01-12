@@ -8,9 +8,11 @@
   <meta name="author" content="">
   <!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
   <link rel="stylesheet" href="${request.static_url('kunkka:static/jquery/jquery-ui.css')}" />
-  
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
+  
     <!-- Le styles -->
   <link href="${request.static_url('kunkka:static/bootstrap/css/bootstrap.min.css')}" rel="stylesheet">    
   <link href="${request.static_url('kunkka:static/bootstrap-dialog/css/bootstrap-dialog.min.css')}" rel="stylesheet">
@@ -47,6 +49,7 @@
   <script src="${request.static_url('kunkka:static/tablev2.js')}"></script>
   
   <script src="${request.static_url('kunkka:static/chart.js')}"></script>
+  <script src="${request.static_url('kunkka:static/edit_form.js')}"></script>
   <script type="text/javascript">
     var allChartObjects;
     var allTableObjects;
@@ -98,6 +101,14 @@
     {
       font-size: small;
 
+    }
+    .controls{
+      float: left;
+      margin-left: 20px;  
+    }
+    .modal-body div.input-group
+    {
+      padding: 5px;
     }
     /*DataTable*/
     /*
@@ -162,6 +173,57 @@
     }
     .select-check{
       display: none;
+    }    
+    #contextMenu.dropdown-menu{
+      border:1px solid rgb(182, 182, 182);  
+      font-size: 13px;
+    }
+
+    #contextMenu.dropdown-menu>li>a:hover
+    {
+      background-color: rgb(184, 227, 236);
+    }
+
+    td>a.editable.editable-click
+    {
+      color:inherit;
+      border:none;
+    }
+    td>a.editable.editable-click:hover
+    {
+      color:inherit;
+      border-bottom:solid 1px;
+    }
+    .modal-dialog
+    {
+      width:1100px;      
+    }
+    .modal-dialog td,th
+    {
+      border:1px solid gray;
+      min-width: 50px;
+      background-color: transparent !important;
+    }    
+    .review_content
+    {
+      max-height: 700px;
+      width:1000px;      
+      overflow: auto;
+      margin-left: 25px; 
+      margin-right: 25px;
+      background-color:rgb(241, 241, 241) ;
+    }
+
+    .update-on 
+    {
+        background: url("/static/ajax-loader_blue.gif") no-repeat !important;        
+    }
+    .update-failed 
+    {
+        background-color:#d9534f !important; 
+    }
+    span.data-changed{
+      font-weight: bold;
     }
     </style>   
 </head>
@@ -171,6 +233,7 @@
       <div class="container">
         <div class="navbar-header">                   
           <span class="navbar-brand">KUNKKA</span>          
+
         </div>        
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <div class="row">
@@ -263,8 +326,16 @@
 					</h3>
 				</div>
 				<div class="panel-body">
-					<%block name="control">                                  
+          <div class="row clearfix">        
+            <div class="btn-group btn-group-xs" style="margin-left:20px;">                
+                <button style="display:none;" type="button" id="save_changes" onclick="save_changes();" class="btn btn-success">Save</button>
+                <button style="display:none;" type="button" id="discard_changes" onclick="discard_changes();"   class="btn btn-danger">Discard</button>
+            </div>
+          </div>     
+					<%block name="control">
+                                         
           </%block>
+            
           <br/>
           <%block name="inner_content">            
                   Please wait loading...
@@ -272,25 +343,33 @@
           % if len(request.params)>0:
             <%block name="post_content">                                       
             </%block>
-          % endif          
+          % endif           
         </div>
 				<div class="panel-footer">
 					
 				</div>
 			</div>            
-		</div>
+		</div> 
 	</div>
 	<script src="${request.static_url('kunkka:static/bootstrap/js/bootstrap.min.js')}"></script>
+  <script src="${request.static_url('kunkka:static/context_menu.js')}"></script>  
+
+  <!--Data Table Editable-->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+  <script type="text/javascript">
+    $.fn.editable.defaults.mode = 'inline';        
+  </script>
 </div>
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none" >    
+</ul>
 <script type="text/javascript">
   $(document).ready(function(){
     $(document).ajaxSuccess(function(event,xhr,settings){          
       //TODO
       console.log("response");
     })
-  });
-  
+  });  
 </script>
 </body>
-
 </html>

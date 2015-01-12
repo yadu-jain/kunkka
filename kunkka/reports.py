@@ -24,7 +24,7 @@ service_reports={} ## Key Based
 #
 #
 ##FOR TABLE
-REFRESH_REPORT_IN_DB=False
+REFRESH_REPORT_IN_DB=True
 class Create_Tables:
     def __init__(self,titles,aggregators=None):
 

@@ -366,7 +366,7 @@
                     ]
             },
             {
-                "name":"RMS_OPERATORs_BOOKING_CANCELLATION",
+                "name":"RMS_OPERATORS_BOOKING_CANCELLATION",
                 "type":"query",
                 "params":
                     [

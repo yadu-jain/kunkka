@@ -32,8 +32,7 @@ def test():
         return False
         
 def execute(data):
-    h=Http()
-    print "\n\n"
+    h=Http()    
     print api_url
     print data    
     res,content=h.request(
@@ -53,18 +52,20 @@ def execute(data):
 
 def get_api_method(method):
     def api_method(instance,**kwrds):
-        param_list=[]            
-        print kwrds
+        param_list=[]                    
         for param in method["params"]:                
-            param_with_val={}                 
+            param_with_val={}                             
             param_with_val.update(param)
             if param["name"] in kwrds:                    
                 param_with_val["value"]=kwrds[param["name"]]
             elif "default" in param:
                 param_with_val["value"]=param["default"]
+            elif "optional" in param and param["optional"]==True:
+                continue #do not pass this param
             else:
-                param_with_val["value"]=None
-            param_list.append(json.dumps(param_with_val))
+                raise Exception("No Default Value specified")
+                #param_with_val["value"]=None
+            param_list.append(json.dumps(param_with_val))       
         data={method["type"]:method["name"],"params":"["+",".join(param_list)+"]"}            
 
         return execute(data)

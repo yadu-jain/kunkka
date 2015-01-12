@@ -246,6 +246,21 @@ def date_report(request):
     else:
         return HTTPNotFound()
 
+#################################GENERIC REPORT WITH DATE RANGE SEARCH ################################
+@view_config(route_name='search_report',renderer='kunkka:templates/search_report.mako')
+@Auth('oauth',authorize=True)
+def search_report(request):
+    report_name=request.matchdict["fun"]    
+    print report_name
+    if report_name:
+        report_path="/report_ajax/"+report_name+"/?"+urlencode(request.params)
+        data={'msg_type':'success','message':'','name':request.link.name,
+            'project_name':'Kunkka',
+            'report_path':report_path}
+        return data
+    else:
+        return HTTPNotFound()        
+
 
 
 
@@ -320,8 +335,7 @@ def city_management(request):
 ##GDS User Management
 @view_config(route_name='user_management',renderer='kunkka:templates/user_management.mako')
 @Auth('oauth',authorize=True)
-def user_management(request):
-        
+def user_management(request):        
     gds_users_path="/report_ajax/"+'get_user_list/?'        
     gds_get_uuid_path="/report_ajax/"+'get_gds_uuid/?'
     update_user_perms_path="/report_ajax/"+'update_user_perms/?'        

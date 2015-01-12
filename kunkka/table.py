@@ -63,7 +63,7 @@ def jsonToTable(dictObj,aggregators):
         tableAggregators = TableAggregators(aggregators,tableCounter)
         if len(table)>0:
             item=OrderedDict(table[0])
-            print item
+            header_names=[]
             for key in item:
                 if key not in headers:
                     headers[key]={}
@@ -75,10 +75,14 @@ def jsonToTable(dictObj,aggregators):
                         headers[key]["type"]="float"
                     else:
                         headers[key]["type"]="str"
+                #if not updater is None and key.upper() in updater.fields:
+                #    header_names.append('<img style="margin-right: 5px;width: 20px;height:20px;" src="/static/writing.png">'+key.upper())
+                #else:
+                header_names.append(key.upper())
             #if headers.has_key("id"):
             #    thead='<thead><tr class="gradeA"><th class="select-check"><span class="glyphicon glyphicon-ok"></span></th><th>'+'</th><th>'.join(headers)+'</th></tr></thead>'
             #else:
-            thead='<thead><tr class="gradeA"><th>'+'</th><th>'.join(headers)+'</th></tr></thead>'
+            thead='<thead><tr class="gradeA"><th>'+'</th><th>'.join(header_names)+'</th></tr></thead>'
             tfoot='<tfoot><tr>'
             ip_index=0
             #print headers
@@ -90,7 +94,11 @@ def jsonToTable(dictObj,aggregators):
             
             listTbody=[]
             for row in table:                
-                values=[(unicode(val)) for key,val in row.items()]                
+                values=[]
+                str_values='' 
+                for key,val in row.items():                    
+                    str_values+='<td>'+unicode(val)+'</td>'
+
                 is_active=None
                 is_active_class=""
                 if row.has_key("IS_ACTIVE"):
@@ -100,12 +108,12 @@ def jsonToTable(dictObj,aggregators):
                         is_active_class="activated"
                     else:
                         is_active_class="deactivated"                
-                if row.has_key("id"):
-                    #Removed
-                    #<td class="select-check"><input type="checkbox"></td>
-                    listTbody.append('<tr id='+table_name+'_'+str(row["id"])+' class=" '+is_active_class+' table_row gradeA"><td>'+'</td><td>'.join(values)+'</td></tr>')                
+                if row.has_key("id"):                    
+                    str_values=str_values.replace("$id",str(row["id"]))                    
+                    listTbody.append('<tr id='+table_name+'_'+str(row["id"])+' class=" '+is_active_class+' table_row gradeA">'+str_values+'</tr>')                
+                    
                 else:    
-                    listTbody.append('<tr class="gradeA"><td>'+'</td><td>'.join(values)+'</td></tr>')
+                    listTbody.append('<tr class="gradeA"><td>'+str_values+'</td></tr>')
                 tableAggregators.update_aggregators(row)
 
             tfoot+=tableAggregators.get_aggregators_tr(headers.keys())
@@ -113,7 +121,7 @@ def jsonToTable(dictObj,aggregators):
             
 
         tables.append((headers,'<table>'+thead+tbody+tfoot+'</table>'))
-    print len(tables)
+    print "total tables=",len(tables)
     return tables
 
 def getTable(response):

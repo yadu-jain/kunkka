@@ -19,13 +19,7 @@
     <div class="row clearfix">        
         <div class="col-md-12 column" style="padding-left:0px;"id="tables">
             
-        </div>                       
-        <style type="text/css">
-            #contextMenu {
-                position: absolute;
-                display:none;
-            }
-        </style>
+        </div>                              
         <script type="text/javascript">           
             function select_comp(e){
                 var COMPANY_ID=e.target.parentNode.id.split("_")[1];                
@@ -277,16 +271,8 @@
             });
         </script>
         <div class="col-md-12 column" style="padding-left:0px;"id="charts">                        
-        </div> 
-        <div id="contextMenu" class="dropdown clearfix">
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
-          <li><a tabindex="-1" href="#">Action</a></li>
-          <li><a tabindex="-1" href="#">Another action</a></li>
-          <li><a tabindex="-1" href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li><a tabindex="-1" href="#">Separated link</a></li>
-        </ul>
-        </div>
+        </div>         
+
 
     </div>
     <div style="" class="row clearfix">        
@@ -307,6 +293,7 @@
             
         </div >
     </div>
+    
 </%block>    
 <%block name="post_content">
     

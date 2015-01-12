@@ -4,6 +4,7 @@ from datetime import timedelta
 import table
 import gds_api
 import chart
+import edit_form
 from file_cache import FileCache
 #from mem_client import clear_companies
 from fabric_api import delete_allowed_compaies,delete_search_routes,delete_route_pickups,delete_route_pickup_details
@@ -12,6 +13,16 @@ import aggregator
 reports={} ## oauth based
 service_reports={} ## Key Based
 ##-----------------------------------Decorators------------------------##
+#titles=[<1st_table_titles,2nd_table_titles>,....]
+#aggregators=[(<field>,aggregator.Count/aggregator.Sum/aggregator.Avg,<table_no(starting from 0)>),...]    
+#updaters_config=(<update_reporter_fun>,<[list of fields]>)
+#or
+#updaters_config=(<update_reporter_fun>,<[(field_name,<fun_name to fetch field values>)]>)
+#
+#
+#
+#
+#
 ##FOR TABLE
 REFRESH_REPORT_IN_DB=False
 class Create_Tables:
@@ -20,9 +31,9 @@ class Create_Tables:
         if len(titles)==0:
             self.titles=[""]
         else:
-            self.titles=titles
-            self.aggregators=aggregators        
-        print self.titles
+            self.titles=titles        
+        self.aggregators=aggregators                                
+
     def __call__(self,fun): 
         if hasattr(fun,'dataGenerators')== False:
             fun.dataGenerators=[]
@@ -52,8 +63,7 @@ class Create_Charts:
         else:
             self.titles=titles
         try:               
-            if chart_configs and len(chart_configs)>0:
-                print "here"                
+            if chart_configs and len(chart_configs)>0:                
                 self.initialized=True
                 self.chart_configs=chart_configs
             else:            
@@ -78,6 +88,34 @@ class Create_Charts:
         fun.dataGenerators.append(generator)
         return fun
 
+## Create form to edit update
+##------------------Edit_Form-------------------------###
+class Create_Edit_Form(object):
+    """
+    """
+    def __init__(self,form_configs):       
+        if form_configs and len(form_configs)>0:
+            self.form_configs=form_configs
+            self.initialized=True
+        else:
+            self.initialized=False
+
+    def __call__(self,fun):
+        print fun
+        if hasattr(fun,'dataGenerators')==False:
+            fun.dataGenerators=[]
+        def wrapper(data):   
+            if self.initialized==True:
+                return edit_form.get_edit_forms_config(data,self.form_configs)
+            else:
+                raise Exception("Invalid Form Config")         
+            
+        generator=wrapper
+        generator.titles=["Edit"*len(self.form_configs)]
+        generator.name="edit_forms"
+        fun.dataGenerators.append(generator)
+        return fun
+
 
 ##-------------------Key based service report---------###
 
@@ -99,42 +137,48 @@ class Service_Reporter(object):
                     resultItems=[]
                     if len(dataGenerator.titles)<len(generatedData):
                         dataGenerator.titles=dataGenerator.titles
-                        dataGenerator.titles.extend(["Default Title"]*(len(generatedData)-len(dataGenerator.titles)))
+                        dataGenerator.titles.extend([""]*(len(generatedData)-len(dataGenerator.titles)))
                     for item in generatedData:
                         print "Preparing result"                         
                         if not len(item)==0:
                             resultItems.append({"title":dataGenerator.titles[count],"meta_content":item[0],"content":item[1]})
                         count+=1
                     print "added "+dataGenerator.name
-                    new_response[dataGenerator.name]=resultItems            
-            print new_response.keys()
+                    new_response[dataGenerator.name]=resultItems                        
             return new_response
         wrapper.__name__=fun.__name__
         service_reports[fun.__name__]=wrapper        
 ###---------------------------------------------------###
+
+
 class Reporter(object):
-    def __init__(self,perm_enable=True,perm_groups=[],name=None,enable=1,category=None,parent_path="report"):
+    def __init__(self,perm_enable=True,perm_groups=[],name=None,enable=1,category=None,parent_path="report",create_form=False):
         self.perm_enable=perm_enable
         self.group_ids=perm_groups
         self.name=name
         self.enabled=enable
         self.category=category
         self.parent_path=parent_path
+        self.create_form=create_form
+
     def __add_to_db__(self,fun_name):
         if not self.name:
             self.name=fun_name
         if not self.group_ids:            
                 self.group_ids=[]            
         self.path="/"+self.parent_path+"/"+fun_name+"/"
-
         response=update_perms_links(self.name,self.group_ids,self.path,self.enabled,self.category)
-        print response
+        
     def __call__(self,fun):         
         if self.perm_enable==True and REFRESH_REPORT_IN_DB==True:
                 self.__add_to_db__(fun.__name__)
-        def wrapper(*args, **kwargs):
-
-            response=fun(*args, **kwargs)     
+        def wrapper(request,*args, **kwargs):
+            if self.create_form==True:
+                if request.method=="POST":
+                    kwargs["METHOD"]="POST"
+                else: ## GET
+                    kwargs["METHOD"]="GET"
+            response=fun(request,*args, **kwargs)     
             new_response={}
             new_response["raw"]=response
             if hasattr(fun,'dataGenerators')== True:
@@ -145,15 +189,17 @@ class Reporter(object):
                     resultItems=[]
                     if len(dataGenerator.titles)<len(generatedData):
                         dataGenerator.titles=dataGenerator.titles
-                        dataGenerator.titles.extend(["Default Title"]*(len(generatedData)-len(dataGenerator.titles)))
+                        print len(dataGenerator.titles),len(generatedData)
+                        print dataGenerator.titles
+                        print generatedData
+                        dataGenerator.titles.extend([""]*(len(generatedData)-len(dataGenerator.titles)))
                     for item in generatedData:
                         print "Preparing result"                         
                         if not len(item)==0:
                             resultItems.append({"title":dataGenerator.titles[count],"meta_content":item[0],"content":item[1]})
                         count+=1
                     print "added "+dataGenerator.name
-                    new_response[dataGenerator.name]=resultItems            
-            print new_response.keys()
+                    new_response[dataGenerator.name]=resultItems                        
             return new_response
         wrapper.__name__=fun.__name__
         reports[fun.__name__]=wrapper        
@@ -688,9 +734,45 @@ def  get_provider_company_list(request,**field):
 @Create_Tables(titles=["Booking Report","Cancellation Report"])
 def operator_payments(request,**field):
     api=gds_api.Gds_Api()
-    response=api.RMS_OPERATORs_BOOKING_CANCELLATION(**field)
+    response=api.RMS_OPERATORS_BOOKING_CANCELLATION(**field)
     return response
 ##################################################################################
+
+@Reporter(perm_enable=True,perm_groups=[1,29],name="Agents Management",enable=1,category="Reports",parent_path="search_report")
+@Create_Tables(titles=["AGENTS MANAGEMENT"])
+@Create_Edit_Form(form_configs=[(0,"update_agent_details")])
+def agents_management(request,**fields):
+    api=gds_api.Gds_Api()
+    user_id=request.user.username            
+    if user_id:        
+        fields["USER_ID"]=user_id    
+    return api.RMS_SUB_AGENT_DETAILS(**fields)
+
+@Reporter(perm_enable=True,perm_groups=[1,29],name="Update Agent Details",enable=1,category="",create_form=True)
+def update_agent_details(request,**field):
+    is_updation=False
+    if field["METHOD"]=="POST":
+        is_updation=True
+
+
+    api=gds_api.Gds_Api()
+    response=api.RMS_UPDATE_AGENT_DETAILS(**field)    
+
+    if is_updation==True:
+        ##------Notify team through mail------------------------##        
+        msg_body='<strong>'+response["Table"][0]["name"]+'('+str(response["Table"][0]["id"])+')'+'</strong><br/></br>'
+        msg_body='<span>EDIT</span><br/>'
+        key_list=edit_form.get_changed_list(field,response)
+        for key in key_list:            
+            msg_body+='<span>'+key+' = '+str(response["Table"][0][key])+'</span><br/>'
+        msg_body+='<br/><br/>'            
+        msg_body+='<span>By: '+request.user.name+'</span><br/>'
+        msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'        
+        msg_body='<div>'+msg_body+'</div>'
+        flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"RMS: Agent "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
+        ##-------------------------------------------------------##
+    return response  
+
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

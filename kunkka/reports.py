@@ -320,14 +320,14 @@ def get_area_city_list(request,**field):
 
 
 
-@Reporter(perm_enable=True,perm_groups=[1,3],name="COMPANY/ROUTE BOOKING REPORT",enable=1,category="Reports",parent_path='date_report')                   
+@Reporter(perm_enable=True,perm_groups=[1,3],name="Company/Route Booking Report",enable=1,category="Reports",parent_path='date_report')                   
 @Create_Tables(titles=["COMPANY WISE BOOKINGS(TY+CONSOLE)","ROUTE WISE BOOKINGS(TY+CONSOLE)"])
 def get_company_wise_mis(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_COMPANY_WISE_MIS(**field)
 
 
-@Reporter(perm_enable=True,perm_groups=[1,4],name="DAY WISE TY+CONSOLE BOOKINGS",enable=1,category="Reports",parent_path='date_report')                   
+@Reporter(perm_enable=True,perm_groups=[1,4],name="Day wise TY+Console Bookings",enable=1,category="Reports",parent_path='date_report')                   
 @Create_Tables(titles=["DAY WISE TY+CONSOLE BOOKINGS"])
 @Create_Charts(titles=["BOOKINGS","CANCELLED","RETURN BOOKINGS"],chart_configs=[("BOOKING_DATE","BOOKINGS",["NAME"],0),
                                           ("BOOKING_DATE","CANCELLED",["NAME"],0),
@@ -343,19 +343,19 @@ def get_agent_wise_mis(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_AGENT_WISE_REPORT(**field)
 
-@Reporter(perm_enable=True,perm_groups=[1,6],name="PROVIDERS STATUS",enable=1,category="")                   
+@Reporter(perm_enable=True,perm_groups=[1,6],name="Providers Status",enable=1,category="")                   
 @Create_Tables(titles=["PROVIDERS STATUS"])
 def get_provider_status(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_GET_PROVIDER_STATUS(**field)
 
-@Reporter(perm_enable=True,perm_groups=[1,6],name="COMPANIES STATUS",enable=1,category="")
+@Reporter(perm_enable=True,perm_groups=[1,6],name="Company Status",enable=1,category="")
 @Create_Tables(titles=["COMPANIES STATUS"])
 def get_company_status(request,**field):
     api=gds_api.Gds_Api()    
     return api.RMS_GET_COMPANY_STATUS(**field)
 
-@Reporter(perm_enable=True,perm_groups=[1,6],name="PROVIDER ACTIVATE/DEACTIVATE",enable=1,category="")
+@Reporter(perm_enable=True,perm_groups=[1,6],name="Provider Activate/Deactivate",enable=1,category="")
 def update_provider_status(request,**field):
     api=gds_api.Gds_Api()    
     field["TYPE"]="PROVIDER"
@@ -391,7 +391,7 @@ def update_provider_status(request,**field):
     ##-------------------------------------------------------##
     return temp_response
 
-@Reporter(perm_enable=True,perm_groups=[1,6],name="COMPANY ACTIVATE/DEACTIVATE",enable=1,category="")
+@Reporter(perm_enable=True,perm_groups=[1,6],name="Company Activate/Deactivate",enable=1,category="")
 def update_company_status(request,**field):
     api=gds_api.Gds_Api()    
     field["TYPE"]="COMPANY"
@@ -430,7 +430,7 @@ def update_company_status(request,**field):
     return temp_response    
 
 
-@Reporter(perm_enable=True,perm_groups=[1,10],name="GDS INVENTORY",enable=1,category="")
+@Reporter(perm_enable=True,perm_groups=[1,10],name="GDS Inventory",enable=1,category="")
 @Create_Tables(titles=["TOTAL INVENTORY","OPERATOR WISE INVENTORY"])
 def gds_inventory(request,**field):
     api=gds_api.Gds_Api()
@@ -475,7 +475,7 @@ def get_gds_uuid(request,**field):
     api=gds_api.Gds_Api()
     return api.RMS_GET_GDS_UUID(**field)          
 
-@Reporter(perm_enable=True,perm_groups=[1,13],name="PROVIDER WISE INVENTORY STATS",enable=1,category="Reports",parent_path='date_report')
+@Reporter(perm_enable=True,perm_groups=[1,13],name="Provider wise Inventory Stats",enable=1,category="Reports",parent_path='date_report')
 @Create_Tables(titles=["ROUTES STATS","CITY PAIRS STATS"])
 @Create_Charts(titles=["ROUTES STATS","CITY PAIRS STATS"],chart_configs=[("JOURNEY_DATE","TOTAL_ROUTES",["PROVIDER_NAME"],0),
                                           ("JOURNEY_DATE","CITY_PAIRS_COUNT",["PROVIDER_NAME"],1),
@@ -551,7 +551,7 @@ def  karnataka_bookings(request,**field):
     field["STATE_ID"]=9
     return api.RMS_GET_STATE_AGENT_BOOKINGS(**field)  
 
-@Reporter(perm_enable=True,perm_groups=[1,18],name="PROVIDER WISE DAILY BOOKINGS",enable=1,category="Reports",parent_path='date_report')
+@Reporter(perm_enable=True,perm_groups=[1,18],name="Provider Wise Daily Bookings",enable=1,category="Reports",parent_path='date_report')
 @Create_Tables(titles=["TY BOOKINGS","OVERALL BOOKINGS"])
 @Create_Charts(titles=["TY BOOKINGS","OVERALL BOOKINGS"],chart_configs=[("BOOKING_DATE","TOTAL",["PROVIDER_NAME"],0),
                                           ("BOOKING_DATE","TOTAL",["PROVIDER_NAME"],1)]) #(X,Y,[groups],TABLE_NO)

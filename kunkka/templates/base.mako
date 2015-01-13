@@ -225,6 +225,10 @@
     span.data-changed{
       font-weight: bold;
     }
+    #main_container
+    {
+      width: 90% ;
+    }
     </style>   
 </head>
 
@@ -281,7 +285,7 @@
       </div>
 
     </div>
-<div class="container fluid">	
+<div id="main_container" class="container fluid">	
 	<div class="row">
 		<div class="col-md-2 column ">
             <div id="menu" class="affix">
@@ -289,7 +293,7 @@
                   <div class="panel-heading">                    
                     <span>Resource List</span>
                   </div>
-                  <div class="panel-body">                     
+                  <div style="font-size:11px;font-weight:bold;" class="panel-body">                     
                      <div  class="row scrollable-div-inner">
 
                       <ul class="nav nav-pills nav-stacked">

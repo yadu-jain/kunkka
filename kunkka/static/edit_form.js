@@ -27,11 +27,12 @@ function init_edit_forms(edit_forms){
 function edit(table_no){		
 	var id=$($(".dataTables_wrapper")[table_no]).find("tr.row_selected")[0].id.split("_")[1]
 	var form_url=all_edit_farms[table_no].content.url;
-   
+   	$("#edit").attr("disabled",true);
 
     function edit_callback(response){	   
 	    if(response.success==true){
 	    	open_edit_popup(create_form(response.data),form_url,id)	
+	    	$("#edit").attr("disabled",null);
 	    }else{
 	    	show_error(response.msg);
 	    }

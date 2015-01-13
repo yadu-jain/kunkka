@@ -422,10 +422,15 @@
                     [
                         {"name":"ID","type":"int"},
                         {"name":"METHOD","type":"str"},
-                        {"name":"CITY_ID","type":"int","optional":true},
+                        {"name":"COMPANY_NAME","type":"str","optional":true},
+                        {"name":"IS_ACTIVE","type":"int","optional":true},
                         {"name":"OWNER_NAME","type":"str","optional":true},
+                        {"name":"OWNER_EMAIL","type":"str","optional":true},
                         {"name":"ADDRESS","type":"str","optional":true},
-                        {"name":"IS_ACTIVE","type":"int","optional":true}         
+                        {"name":"SETTLEMENT_MODE","type":"int","optional":true},
+                        {"name":"SETTLEMENT_DAYS","type":"int","optional":true},
+                        {"name":"CITY","type":"int","optional":true},
+                        {"name":"MANAGEMENT_REGION","type":"int","optional":true}         
                     ]
             }
         ]

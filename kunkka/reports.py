@@ -384,7 +384,7 @@ def update_provider_status(request,**field):
 
     msg_body=ACTIVATION_STATUS
     msg_body+='<span>By: '+request.user.name+'</span><br/>'
-    msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'
+    msg_body+='<span>Date: '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'
     msg_body+='<span>comment: '+comment+'</span><br/>'
     msg_body='<div>'+msg_body+'</div>'
     flag_status=email_sender.sendmail(email_sender.PROVIDER_UPDATE_LIST,"RMS: "+provider_name+" Changed",msg_body,provider_name)
@@ -759,14 +759,17 @@ def update_agent_details(request,**field):
 
     if is_updation==True:
         ##------Notify team through mail------------------------##        
-        msg_body='<strong>'+response["Table"][0]["name"]+'('+str(response["Table"][0]["id"])+')'+'</strong><br/></br>'
-        msg_body='<span>EDIT</span><br/>'
+        msg_body='<strong><span>Name='+response["Table"][0]["name"]+'</span></strong><br/>'
+        msg_body+='<strong><span>ID='+str(response["Table"][0]["id"])+'</span></strong><br/><br/>'
+        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">VALUE</th></tr></thead>'
+        msg_body+='<tbody>'
         key_list=edit_form.get_changed_list(field,response)
         for key in key_list:            
-            msg_body+='<span>'+key+' = '+str(response["Table"][0][key])+'</span><br/>'
-        msg_body+='<br/><br/>'            
-        msg_body+='<span>By: '+request.user.name+'</span><br/>'
-        msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'        
+            msg_body+='<tr><td style="border:1px solid" style=>'+key+'</td><td style="border:1px solid">'+str(response["Table"][0][key])+'</td></tr>'        
+        msg_body+='</tbody>'    
+        msg_body+='</table><br/>'    
+        msg_body+='<span>By= '+request.user.name+'</span><br/>'
+        msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
         flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"RMS: Agent "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
@@ -794,14 +797,17 @@ def update_company_details(request,**field):
 
     if is_updation==True:
         ##------Notify team through mail------------------------##        
-        msg_body='<strong>'+response["Table"][0]["name"]+'('+str(response["Table"][0]["id"])+')'+'</strong><br/></br>'
-        msg_body='<span>EDIT</span><br/>'
+        msg_body='<strong><span>Name='+response["Table"][0]["name"]+'</span></strong><br/>'
+        msg_body+='<strong><span>ID='+str(response["Table"][0]["id"])+'</span></strong><br/><br/>'
+        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">VALUE</th></tr></thead>'
+        msg_body+='<tbody>'
         key_list=edit_form.get_changed_list(field,response)
         for key in key_list:            
-            msg_body+='<span>'+key+' = '+str(response["Table"][0][key])+'</span><br/>'
-        msg_body+='<br/><br/>'            
-        msg_body+='<span>By: '+request.user.name+'</span><br/>'
-        msg_body+='<span>Date: '+str(datetime.now())+'</span><br/>'        
+            msg_body+='<tr><td style="border:1px solid" style=>'+key+'</td><td style="border:1px solid">'+str(response["Table"][0][key])+'</td></tr>'        
+        msg_body+='</tbody>'    
+        msg_body+='</table><br/>'    
+        msg_body+='<span>By= '+request.user.name+'</span><br/>'
+        msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
         flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"RMS: Company "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##

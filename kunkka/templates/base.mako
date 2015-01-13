@@ -293,7 +293,7 @@
                   <div class="panel-heading">                    
                     <span>Resource List</span>
                   </div>
-                  <div style="font-size:11px;font-weight:bold;" class="panel-body">                     
+                  <div style="font-size:12px;font-weight:bold;" class="panel-body">                     
                      <div  class="row scrollable-div-inner">
 
                       <ul class="nav nav-pills nav-stacked">

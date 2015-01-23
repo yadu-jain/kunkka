@@ -342,6 +342,17 @@
                     ]
             },
             {
+                "name":"RMS_GET_NON_TY_DAY_BOOKINGS_REPORT",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"},
+                        {"name":"BOOKED","type":"int","default":1},
+                        {"name":"BASED_ON","type":"str","default":"BD"}
+                    ]
+            },
+            {
                 "name":"RMS_COMPANY_WISE_OVERALL_REPORT",
                 "type":"query",
                 "params":
@@ -376,27 +387,7 @@
                         {"name":"CompanyId","type":"int","default":"0"},
                         {"name":"DateWise","type":"str","default":""}
                     ]
-            },{
-                "name":"RMS_UPDATE_AGENT_DETAILS",
-                "type":"query",
-                "params":
-                    [
-                        {"name":"ID","type":"int"},
-                        {"name":"METHOD","type":"str"},
-                        {"name":"AREA","type":"str","optional":true},                        
-                        {"name":"CITY_ID","type":"int","optional":true},                        
-                        {"name":"CONTACT_NAME","type":"str","optional":true},                        
-                        {"name":"CONTACT_PHONE","type":"str","optional":true},                        
-                        {"name":"ADDRESS","type":"str","optional":true},                        
-                        {"name":"EMAIL_ID","type":"str","optional":true},                        
-                        {"name":"COMM_PCT","type":"int","optional":true},                        
-                        {"name":"COMM_PCT_LOWER","type":"int","optional":true},                        
-                        {"name":"IS_PREPAID","type":"int","optional":true},                        
-                        {"name":"IS_FRANCHISEE","type":"int","optional":true},                        
-                        {"name":"CREDIT_LIMIT","type":"int","optional":true},                        
-                        {"name":"BENEFICIARY_MANTIS_USER","type":"int","optional":true}
-                    ]
-            },            
+            },
             {
                 "name":"RMS_SUB_AGENT_DETAILS",
                 "type":"query",
@@ -406,6 +397,29 @@
                         {"name":"USER_ID","type":"str","default":""}                        
                     ]
             },
+            {
+                "name":"RMS_UPDATE_AGENT_DETAILS",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"ID","type":"int"},
+                        {"name":"METHOD","type":"str"},                        
+                        {"name":"CITY","type":"int","optional":true},                        
+                        {"name":"CONTACT_NAME","type":"str","optional":true},                        
+                        {"name":"CONTACT_PHONE","type":"str","optional":true},                        
+                        {"name":"ADDRESS","type":"str","optional":true},                        
+                        {"name":"AREA","type":"str","optional":true},                        
+                        {"name":"EMAIL_ID","type":"str","optional":true},                        
+                        {"name":"COMM_PCT","type":"int","optional":true},                        
+                        {"name":"COMM_PCT_LOWER","type":"int","optional":true},                        
+                        {"name":"IS_PREPAID","type":"int","optional":true},                        
+                        {"name":"IS_FRANCHISEE","type":"int","optional":true},                        
+                        {"name":"CREDIT_LIMIT","type":"int","optional":true},                        
+                        {"name":"BENEFICIARY_MANTIS_USER","type":"int","optional":true},
+                        {"name":"IS_AUTO_CREDIT_LIMIT","type":"int","optional":true}                        
+
+                    ]
+            },                       
             {
                 "name":"RMS_GET_COMPANIES_DETAILS",
                 "type":"query",
@@ -420,18 +434,54 @@
                 "type":"query",
                 "params":
                     [
-                        {"name":"ID","type":"int"},
-                        {"name":"METHOD","type":"str"},
-                        {"name":"COMPANY_NAME","type":"str","optional":true},
-                        {"name":"IS_ACTIVE","type":"int","optional":true},
-                        {"name":"OWNER_NAME","type":"str","optional":true},
-                        {"name":"OWNER_EMAIL","type":"str","optional":true},
-                        {"name":"ADDRESS","type":"str","optional":true},
+                        {"name":"ID",           "type":"int"},
+                        {"name":"METHOD",       "type":"str"},
+                        {"name":"COMPANY_NAME", "type":"str","optional":true},
+                        {"name":"IS_ACTIVE",    "type":"int","optional":true},
+                        {"name":"OWNER_NAME",   "type":"str","optional":true},
+                        {"name":"OWNER_EMAIL",  "type":"str","optional":true},
+                        {"name":"ADDRESS",      "type":"str","optional":true},
                         {"name":"SETTLEMENT_MODE","type":"int","optional":true},
                         {"name":"SETTLEMENT_DAYS","type":"int","optional":true},
-                        {"name":"CITY","type":"int","optional":true},
+                        {"name":"IFSC_CODE",    "type":"str","optional":true},
+                        {"name":"ACCOUNT_NAME", "type":"str","optional":true},
+                        {"name":"ACCOUNT_NO",   "type":"str","optional":true},
+                        {"name":"BANK_NAME",    "type":"str","optional":true},
+                        {"name":"MANAGER_CONTACT_NO","type":"str","optional":true},
+                        {"name":"MANAGER_NAME", "type":"str","optional":true},
+                        {"name":"NEXT_VOUCHER", "type":"str","optional":true},
+                        {"name":"M_TICKET",     "type":"int","optional":true},                        
+                        {"name":"CITY",         "type":"int","optional":true},
                         {"name":"MANAGEMENT_REGION","type":"int","optional":true}         
                     ]
+            },
+            {
+                
+                "name":"RMS_GET_MANTIS_USER_LIST",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"START_WITH","type":"str"},                        
+                        {"name":"USER_ID","type":"str","default":""}                        
+                    ]            
+            },
+            {
+                "name":"RMS_UPDATE_USER_DETAILS",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"ID",           "type":"int"},
+                        {"name":"METHOD",       "type":"str"},
+                        {"name":"USER_NAME",    "type":"str","optional":true},
+                        {"name":"IS_ACTIVE",    "type":"int","optional":true},
+                        {"name":"CITY",         "type":"int","optional":true},
+                        {"name":"EMAIL_ID",     "type":"str","optional":true},
+                        {"name":"CAN_RECEIVE_CACHE",  "type":"int","optional":true},
+                        {"name":"PENDING_CACHE_LIMIT","type":"int","optional":true},
+                        {"name":"PARENT_USER",  "type":"int","optional":true}
+                    ]
             }
+
+
         ]
 }

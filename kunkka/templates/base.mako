@@ -49,7 +49,7 @@
   <script src="${request.static_url('kunkka:static/tablev2.js')}"></script>
   
   <script src="${request.static_url('kunkka:static/chart.js')}"></script>
-  <script src="${request.static_url('kunkka:static/edit_form.js')}"></script>
+  <script src="${request.static_url('kunkka:static/edit_form_v2.js')}"></script>
   <script type="text/javascript">
     var allChartObjects;
     var allTableObjects;
@@ -198,7 +198,7 @@
     {
       width:1100px;      
     }
-    .modal-dialog td,th
+    .modal-dialog td,.modal-dialog th
     {
       border:1px solid gray;
       min-width: 50px;

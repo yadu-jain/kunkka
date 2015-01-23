@@ -583,6 +583,18 @@ def b2c_booking_report(request,**field):
     response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              
     return response
 
+@Reporter(perm_enable=True,perm_groups=[1,31],name="IN-B2C Booking Report",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["IN-B2C BOOKING REPORT"],aggregators=[
+    ("ORDER_ID",aggregator.Count,0),
+    ("AMOUNT",aggregator.Sum,0),
+    ("AGENT_COMM",aggregator.Sum,0),
+    ("DISCOUNT",aggregator.Sum,0)
+    ])
+def in_b2c_booking_report(request,**field):
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_NON_TY_DAY_BOOKINGS_REPORT(**field)              
+    return response    
+
 @Reporter(perm_enable=True,perm_groups=[1,21],name="All Regions Revenue",enable=1,category="Reports",parent_path="date_report")
 @Create_Tables(titles=["COMPANY WISE REVENUE"],aggregators=[
     ("B2C TOTAL",aggregator.Sum,0),
@@ -786,7 +798,7 @@ def companies_management(request,**fields):
         fields["USER_ID"]=user_id    
     return api.RMS_GET_COMPANIES_DETAILS(**fields)
 
-@Reporter(perm_enable=True,perm_groups=[1,29],name="Update Company Details",enable=1,category="",create_form=True)
+@Reporter(perm_enable=True,perm_groups=[1,30],name="Update Company Details",enable=1,category="",create_form=True)
 def update_company_details(request,**field):
     is_updation=False
     if field["METHOD"]=="POST":
@@ -813,6 +825,42 @@ def update_company_details(request,**field):
         ##-------------------------------------------------------##
     return response  
 
+@Reporter(perm_enable=True,perm_groups=[1,31],name="Users Management",enable=1,category="Reports",parent_path="search_report")
+@Create_Tables(titles=["USERS MANAGEMENT"])
+@Create_Edit_Form(form_configs=[(0,"update_user_details")])
+def users_management(request,**fields):
+    api=gds_api.Gds_Api()
+    user_id=request.user.username            
+    if user_id:        
+        fields["USER_ID"]=user_id    
+    return api.RMS_GET_MANTIS_USER_LIST(**fields)
+
+@Reporter(perm_enable=True,perm_groups=[1,31],name="Update User Details",enable=1,category="",create_form=True)
+def update_user_details(request,**field):
+    is_updation=False
+    if field["METHOD"]=="POST":
+        is_updation=True
+
+    api=gds_api.Gds_Api()
+    response=api.RMS_UPDATE_USER_DETAILS(**field)    
+
+    if is_updation==True:
+        ##------Notify team through mail------------------------##        
+        msg_body='<strong><span>Name='+response["Table"][0]["name"]+'</span></strong><br/>'
+        msg_body+='<strong><span>ID='+str(response["Table"][0]["id"])+'</span></strong><br/><br/>'
+        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">VALUE</th></tr></thead>'
+        msg_body+='<tbody>'
+        key_list=edit_form.get_changed_list(field,response)
+        for key in key_list:            
+            msg_body+='<tr><td style="border:1px solid" style=>'+key+'</td><td style="border:1px solid">'+str(response["Table"][0][key])+'</td></tr>'        
+        msg_body+='</tbody>'    
+        msg_body+='</table><br/>'    
+        msg_body+='<span>By= '+request.user.name+'</span><br/>'
+        msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
+        msg_body='<div>'+msg_body+'</div>'
+        flag_status=email_sender.sendmail(email_sender.USER_UPDATE_LIST,"RMS: User "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
+        ##-------------------------------------------------------##
+    return response 
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

@@ -583,7 +583,7 @@ def b2c_booking_report(request,**field):
     response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              
     return response
 
-@Reporter(perm_enable=True,perm_groups=[1,31],name="IN-B2C Booking Report",enable=1,category="Reports",parent_path="date_report")
+@Reporter(perm_enable=True,perm_groups=[1,32],name="IN-B2C Booking Report",enable=1,category="Reports",parent_path="date_report")
 @Create_Tables(titles=["IN-B2C BOOKING REPORT"],aggregators=[
     ("ORDER_ID",aggregator.Count,0),
     ("AMOUNT",aggregator.Sum,0),

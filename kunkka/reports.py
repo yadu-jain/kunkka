@@ -773,7 +773,7 @@ def update_agent_details(request,**field):
         ##------Notify team through mail------------------------##        
         msg_body='<strong><span>Name='+response["Table"][0]["name"]+'</span></strong><br/>'
         msg_body+='<strong><span>ID='+str(response["Table"][0]["id"])+'</span></strong><br/><br/>'
-        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">VALUE</th></tr></thead>'
+        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">NEW VALUE</th></tr></thead>'
         msg_body+='<tbody>'
         key_list=edit_form.get_changed_list(field,response)
         for key in key_list:            
@@ -783,7 +783,7 @@ def update_agent_details(request,**field):
         msg_body+='<span>By= '+request.user.name+'</span><br/>'
         msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
-        flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"Kunkka: Agent - "+response["Table"][0]["name"]+" Modified",msg_body,response["Table"][0]["name"])
+        flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"Kunkka: Agent Modified - "+response["Table"][0]["name"],msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response  
 
@@ -811,7 +811,7 @@ def update_company_details(request,**field):
         ##------Notify team through mail------------------------##        
         msg_body='<strong><span>Name='+response["Table"][0]["name"]+'</span></strong><br/>'
         msg_body+='<strong><span>ID='+str(response["Table"][0]["id"])+'</span></strong><br/><br/>'
-        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">VALUE</th></tr></thead>'
+        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">NEW VALUE</th></tr></thead>'
         msg_body+='<tbody>'
         key_list=edit_form.get_changed_list(field,response)
         for key in key_list:            
@@ -821,7 +821,7 @@ def update_company_details(request,**field):
         msg_body+='<span>By= '+request.user.name+'</span><br/>'
         msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
-        flag_status=email_sender.sendmail(email_sender.COMPANY_UPDATE_LIST,"Kunkka: Company - "+response["Table"][0]["name"]+" Modified",msg_body,response["Table"][0]["name"])
+        flag_status=email_sender.sendmail(email_sender.COMPANY_UPDATE_LIST,"Kunkka: Company Modified - "+response["Table"][0]["name"],msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response  
 
@@ -848,7 +848,7 @@ def update_user_details(request,**field):
         ##------Notify team through mail------------------------##        
         msg_body='<strong><span>Name='+response["Table"][0]["name"]+'</span></strong><br/>'
         msg_body+='<strong><span>ID='+str(response["Table"][0]["id"])+'</span></strong><br/><br/>'
-        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">VALUE</th></tr></thead>'
+        msg_body+='<table><thead><tr><th style="border:1px solid">FIELD</th><th style="border:1px solid">NEW VALUE</th></tr></thead>'
         msg_body+='<tbody>'
         key_list=edit_form.get_changed_list(field,response)
         for key in key_list:            
@@ -858,7 +858,7 @@ def update_user_details(request,**field):
         msg_body+='<span>By= '+request.user.name+'</span><br/>'
         msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
-        flag_status=email_sender.sendmail(email_sender.USER_UPDATE_LIST,"Kunkka: User - "+response["Table"][0]["name"]+" Modified",msg_body,response["Table"][0]["name"])
+        flag_status=email_sender.sendmail(email_sender.USER_UPDATE_LIST,"Kunkka: User Modified - "+response["Table"][0]["name"],msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response 
 

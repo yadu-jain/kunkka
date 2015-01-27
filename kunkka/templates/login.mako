@@ -28,16 +28,18 @@
   <body>
 
     <div class="container">
-      <form class="form-signin" method="POST" action="/old_login/">
-        <h2 class="form-signin-heading">${project_name} Login</h2>
+      <form class="form-signin" style="text-align:center;" method="POST" action="/old_login/">
+        <img src="${request.static_url('kunkka:static/x_mark.png')}"/>
+        <h2 class="form-signin-heading">${project_name}</h2>
+        <!--
         <input name="username" type="text" class="form-control" placeholder="Login Id" required="" autofocus="">
         <input name="password" type="password" class="form-control" placeholder="Password" required="">
-        <label class="checkbox">
-          <!--<input name="remember_me" type="checkbox" value="remember-me"> Remember me-->
+        <label class="checkbox">        
         </label>
         <button class="btn btn-sm btn-primary btn-block" type="submit">Login</button>
+        -->
         <br/>
-        <a class="btn btn-sm btn-primary btn-block" href="${oauth_url}">Login With TY</a>        
+        <a class="btn btn-sm btn-primary btn-block" style="font-weight:bold;font-size:14px;" href="${oauth_url}">Login With TY</a>        
         <br/>
         <span style="color:red;">${msg}</span>
       </form>

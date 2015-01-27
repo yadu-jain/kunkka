@@ -783,7 +783,7 @@ def update_agent_details(request,**field):
         msg_body+='<span>By= '+request.user.name+'</span><br/>'
         msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
-        flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"RMS: Agent "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
+        flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"Kunkka: Agent - "+response["Table"][0]["name"]+" Modified",msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response  
 
@@ -821,7 +821,7 @@ def update_company_details(request,**field):
         msg_body+='<span>By= '+request.user.name+'</span><br/>'
         msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
-        flag_status=email_sender.sendmail(email_sender.AGENT_UPDATE_LIST,"RMS: Company "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
+        flag_status=email_sender.sendmail(email_sender.COMPANY_UPDATE_LIST,"Kunkka: Company - "+response["Table"][0]["name"]+" Modified",msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response  
 
@@ -858,7 +858,7 @@ def update_user_details(request,**field):
         msg_body+='<span>By= '+request.user.name+'</span><br/>'
         msg_body+='<span>Date= '+str(datetime.now().strftime(" %Y-%m-%d %H:%M %p"))+'</span><br/>'        
         msg_body='<div>'+msg_body+'</div>'
-        flag_status=email_sender.sendmail(email_sender.USER_UPDATE_LIST,"RMS: User "+response["Table"][0]["name"]+" Changed",msg_body,response["Table"][0]["name"])
+        flag_status=email_sender.sendmail(email_sender.USER_UPDATE_LIST,"Kunkka: User - "+response["Table"][0]["name"]+" Modified",msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response 
 

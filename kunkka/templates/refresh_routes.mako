@@ -23,7 +23,7 @@
             <span class="input-group-addon">To:</span>
             <input type="text" class="form-control" id="jd_to">
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" style="display:none;">
             <input type="checkbox" id="chkHardRefresh"> Hard Refresh
         </div>
         <div class="col-md-1 column btn-toolbar">

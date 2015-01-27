@@ -71,7 +71,7 @@ function generateTables(tables,add_to)
         rendered_tables.addClass("table-striped")                    
         var oTables=$(rendered_tables).dataTable({
             "aoColumnDefs": columns,
-            "iDisplayLength":100,
+            "iDisplayLength":10,
             "sDom": 'T<"clear">lfrtip',
             "oTableTools": {
                 "buttons": [

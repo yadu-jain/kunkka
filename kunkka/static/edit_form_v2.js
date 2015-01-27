@@ -16,10 +16,9 @@ function init_edit_forms(edit_forms){
 		for (var i in edit_forms){
 			var edit_form=edit_forms[i];
 			var table_no=edit_form.content.table_no;		
-			all_edit_farms[table_no]=edit_form;			
-			//TODO:
+			all_edit_farms[table_no]=edit_form;						
 			$($(".dataTables_wrapper")[table_no]).parent().find("div.controls").append('<button type="button" table_no="'+table_no+'" id="edit" onclick="edit('+table_no+');" class="btn btn-sm btn-primary">Edit</button>');
-			$($(".dataTables_wrapper")[table_no]).on("click",select_row);
+			$($(".dataTables_wrapper")[table_no]).on("click",select_row);			
 		}
 	}	
 }
@@ -31,11 +30,11 @@ function edit(table_no){
 
     function edit_callback(response){	   
 	    if(response.success==true){
-	    	open_edit_popup(create_form(response.data),form_url,id)	
-	    	$("#edit").attr("disabled",null);
+	    	open_edit_popup(create_form(response.data),form_url,id)		    	
 	    }else{
 	    	show_error(response.msg);
 	    }
+	    $("#edit").attr("disabled",null);
 	    
 	} 
     $.ajax({

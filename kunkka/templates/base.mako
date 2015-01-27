@@ -229,6 +229,12 @@
     {
       width: 90% ;
     }
+    .bootstrap-dialog-close-button{
+      border:1px solid black;
+    }
+    .bootstrap-dialog-close-button button.close{
+      font-size: 30px;
+    }
     </style>   
 </head>
 

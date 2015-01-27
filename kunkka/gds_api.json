@@ -404,6 +404,7 @@
                     [
                         {"name":"ID","type":"int"},
                         {"name":"METHOD","type":"str"},                        
+                        {"name":"IS_ACTIVE","type":"int","optional":true},                        
                         {"name":"CITY","type":"int","optional":true},                        
                         {"name":"CONTACT_NAME","type":"str","optional":true},                        
                         {"name":"CONTACT_PHONE","type":"str","optional":true},                        
@@ -415,6 +416,7 @@
                         {"name":"IS_PREPAID","type":"int","optional":true},                        
                         {"name":"IS_FRANCHISEE","type":"int","optional":true},                        
                         {"name":"CREDIT_LIMIT","type":"int","optional":true},                        
+                        {"name":"CREDITDAYS","type":"int","optional":true},                                                
                         {"name":"BENEFICIARY_MANTIS_USER","type":"int","optional":true},
                         {"name":"IS_AUTO_CREDIT_LIMIT","type":"int","optional":true}                        
 

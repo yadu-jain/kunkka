@@ -49,7 +49,7 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     session_factory = UnencryptedCookieSessionFactoryConfig(
-        secret=settings['session.secret'],timeout=3600
+        secret=settings['session.secret'],timeout=9*60*60
         )
     
     config = Configurator(

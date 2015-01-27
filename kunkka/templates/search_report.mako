@@ -53,13 +53,7 @@
             
         </div>               
         <script type="text/javascript">
-        function show_error(msg){
-            var dialogInstance2 = new BootstrapDialog();
-            dialogInstance2.setTitle('ERROR');
-            dialogInstance2.setMessage(msg);
-            dialogInstance2.setType(BootstrapDialog.TYPE_DANGER);
-            dialogInstance2.open();
-        }
+        
         function report_callback(response)
         {                
             if (response.success==true)

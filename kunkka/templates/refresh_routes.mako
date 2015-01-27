@@ -8,17 +8,23 @@
             <span class="input-group-addon">Trip ID:</span>
             <input type="text" class="form-control" id="trip_id">
         </div>
-        <div class="col-md-3 input-group input-group-sm">
+        <div class="col-md-2 input-group input-group-sm">
             <span class="input-group-addon">Service ID:</span>
             <input type="text" class="form-control" id="service_id">
         </div>
-        <div class="col-md-3 input-group input-group-sm">
+    </div>
+    <br/>
+    <div class="row">        
+        <div class="col-md-2 input-group input-group-sm">
             <span class="input-group-addon">From:</span>
             <input type="text" class="form-control" id="jd_from">
         </div>
-        <div class="col-md-3 input-group input-group-sm">
+        <div class="col-md-2 input-group input-group-sm">
             <span class="input-group-addon">To:</span>
             <input type="text" class="form-control" id="jd_to">
+        </div>
+        <div class="col-md-2">
+            <input type="checkbox" id="chkHardRefresh"> Hard Refresh
         </div>
         <div class="col-md-1 column btn-toolbar">
             <div class="btn-group-sm">            
@@ -80,11 +86,12 @@
                     }catch(e){
 
                     }
-                    $("#go").text("Go");
+                    $("#go").text("Refresh");
                     $("#go").attr("disabled",null);
                 }else{
-                    $("#go").text("Go");
+                    $("#go").text("Refresh");
                     $("#go").attr("disabled",null);
+                    show_error(response.msg);
                 }
             }
             function open_report()
@@ -96,6 +103,7 @@
                 var jd_from=$("#jd_from").val().trim();
                 var jd_to=$("#jd_to").val();
                 var url="${refresh_routes_path}";
+                var hard_refresh=$("#chkHardRefresh").prop('checked');
                 if(trip_id.length==0 && service_id.length==0)
                 {
                         return;
@@ -106,7 +114,12 @@
                 if(service_id.length!=0){
                     url+="&SERVICE_ID="+service_id;    
                 }
-                                
+                if(hard_refresh==true){
+                    url+="&HARD_REFRESH="+1;                    
+                }else{
+                    url+="&HARD_REFRESH="+0;                    
+                }
+                
                 url+="&STR_FROM_JOURNEY_DATE="+jd_from+"&STR_TO_JOURNEY_DATE="+jd_to;
                 $("#go").attr("disabled",true);
                 $("#go").text("Refreshing...");

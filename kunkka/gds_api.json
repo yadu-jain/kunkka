@@ -262,7 +262,8 @@
                         {"name":"TRIP_ID","type":"int","default":0},
                         {"name":"SERVICE_ID","type":"int","default":0},
                         {"name":"STR_FROM_JOURNEY_DATE","type":"str"},
-                        {"name":"STR_TO_JOURNEY_DATE","type":"str"}
+                        {"name":"STR_TO_JOURNEY_DATE","type":"str"},
+                        {"name":"HARD_REFRESH","type":"int","default":0}                        
                     ]
             },
             {
@@ -478,8 +479,8 @@
                         {"name":"IS_ACTIVE",    "type":"int","optional":true},
                         {"name":"CITY",         "type":"int","optional":true},
                         {"name":"EMAIL_ID",     "type":"str","optional":true},
-                        {"name":"CAN_RECEIVE_CACHE",  "type":"int","optional":true},
-                        {"name":"PENDING_CACHE_LIMIT","type":"int","optional":true},
+                        {"name":"CAN_RECEIVE_CACH",  "type":"int","optional":true},
+                        {"name":"PENDING_CACH_LIMIT","type":"int","optional":true},
                         {"name":"PARENT_USER",  "type":"int","optional":true}
                     ]
             }

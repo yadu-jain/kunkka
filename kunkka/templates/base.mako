@@ -380,6 +380,13 @@
       console.log("response");
     })
   });  
+  function show_error(msg){
+      var dialogInstance2 = new BootstrapDialog();
+      dialogInstance2.setTitle('ERROR');
+      dialogInstance2.setMessage(msg);
+      dialogInstance2.setType(BootstrapDialog.TYPE_DANGER);
+      dialogInstance2.open();
+  }
 </script>
 </body>
 </html>

@@ -343,6 +343,17 @@
                     ]
             },
             {
+                "name":"RMS_GET_TY_DAY_BOOKINGS_DETAILED_REPORT",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"},
+                        {"name":"BOOKED","type":"int","default":1},
+                        {"name":"BASED_ON","type":"str","default":"BD"}
+                    ]
+            },
+            {
                 "name":"RMS_GET_NON_TY_DAY_BOOKINGS_REPORT",
                 "type":"query",
                 "params":
@@ -353,6 +364,16 @@
                         {"name":"BASED_ON","type":"str","default":"BD"}
                     ]
             },
+            {
+                "name":"RMS_GET_DAY_FAILURE_REPORT",
+                "type":"query",
+                "params":
+                    [
+                        {"name":"STR_FROM_DATE","type":"str"},
+                        {"name":"STR_TO_DATE","type":"str"},                        
+                        {"name":"BASED_ON","type":"str","default":"BD"}
+                    ]
+            },            
             {
                 "name":"RMS_COMPANY_WISE_OVERALL_REPORT",
                 "type":"query",

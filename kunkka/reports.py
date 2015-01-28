@@ -534,13 +534,14 @@ def  rms_report(request,**field):
 def refresh_routes(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_ROUTE_LIST(**field)      
-    inactive_count=response["Table1"][0]["INACTIVE"]
-    print inactive_count
-    if inactive_count >0 and inactive_count<=100:
-        #activating inactive routes
-        api.RMS_REFRESH_INACTIVE_ROUTE(**field)
+    if "Table1" in response and len(response["Table1"])>0:
+        inactive_count=response["Table1"][0]["INACTIVE"]
+        print inactive_count
+        if inactive_count >0 and inactive_count<=100:
+            #activating inactive routes
+            api.RMS_REFRESH_INACTIVE_ROUTE(**field)
     ## Deleting cache    
-    delete_search_routes(response["Table"])
+    #delete_search_routes(response["Table"])
     return response
 
 @Reporter(perm_enable=True,perm_groups=[1,17],name="Karnataka Agents Report",enable=1,category="Reports",parent_path='date_report')         
@@ -582,6 +583,20 @@ def b2c_booking_report(request,**field):
     api=gds_api.Gds_Api() 
     response=api.RMS_GET_TY_DAY_BOOKINGS_REPORT(**field)              
     return response
+
+@Reporter(perm_enable=True,perm_groups=[1,33],name="B2C Booking Detailed Report",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["B2C BOOKING DETAILED REPORT"])
+def b2c_booking_detailed_report(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_TY_DAY_BOOKINGS_DETAILED_REPORT(**field)              
+    return response    
+
+@Reporter(perm_enable=True,perm_groups=[1,34],name="Booking Failure Report",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["BOOKING FAILURE REPORT"])
+def booking_failure_report(request,**field):
+    api=gds_api.Gds_Api() 
+    response=api.RMS_GET_DAY_FAILURE_REPORT(**field)              
+    return response 
 
 @Reporter(perm_enable=True,perm_groups=[1,32],name="IN-B2C Booking Report",enable=1,category="Reports",parent_path="date_report")
 @Create_Tables(titles=["IN-B2C BOOKING REPORT"],aggregators=[

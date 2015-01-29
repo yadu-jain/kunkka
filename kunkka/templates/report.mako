@@ -13,6 +13,8 @@
                         console.log( response.data.meta_content);
                         generateTables(response.data.tables)
                         generateCharts(response.data.charts)                     
+                    }else{
+                        show_error(response.msg);
                     }
                 }                
                 $.getJSON("${report_path}",callback)

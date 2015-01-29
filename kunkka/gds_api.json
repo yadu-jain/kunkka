@@ -504,8 +504,31 @@
                         {"name":"PENDING_CACH_LIMIT","type":"int","optional":true},
                         {"name":"PARENT_USER",  "type":"int","optional":true}
                     ]
-            }
+            },
+            {
+                "name":"RMS_GET_USER_DUES",
+                "type":"query",
+                "params":
+                    [                        
+                        {"name":"USER_ID",       "type":"str","default":""},
+                        {"name":"STATEMENT",       "type":"int","default":0},                        
+                        {"name":"STR_FROM_DATE","type":"str","default":null},
+                        {"name":"STR_TO_DATE","type":"str","default":null}                                                
 
+                    ]
+            },
+            {
+                "name":"RMS_GET_AGENT_PENDING_DUES",
+                "type":"query",
+                "params":
+                    [                        
+                        {"name":"USER_ID",       "type":"str","default":""},
+                        {"name":"STATEMENT",       "type":"int","default":0},                        
+                        {"name":"STR_FROM_DATE","type":"str","default":null},
+                        {"name":"STR_TO_DATE","type":"str","default":null}                                                
 
+                    ]
+            }             
+            
         ]
 }

@@ -541,7 +541,7 @@ def refresh_routes(request,**field):
             #activating inactive routes
             api.RMS_REFRESH_INACTIVE_ROUTE(**field)
     ## Deleting cache    
-    #delete_search_routes(response["Table"])
+    delete_search_routes(response["Table"])
     return response
 
 @Reporter(perm_enable=True,perm_groups=[1,17],name="Karnataka Agents Report",enable=1,category="Reports",parent_path='date_report')         
@@ -876,6 +876,113 @@ def update_user_details(request,**field):
         flag_status=email_sender.sendmail(email_sender.USER_UPDATE_LIST,"Kunkka: User Modified - "+response["Table"][0]["name"],msg_body,response["Table"][0]["name"])
         ##-------------------------------------------------------##
     return response 
+
+@Reporter(perm_enable=True,perm_groups=[1,35],name="User Pending Dues",enable=1,category="Reports",parent_path="report")
+@Create_Tables(titles=["USER PENDING DUES"],aggregators=[
+    ("AMOUNT",aggregator.Sum,0),
+    ("PENDING_AMOUNT",aggregator.Sum,0)    
+    ] )
+def get_user_dues(request,**field):
+    user_id=request.user.username            
+    if user_id:        
+        field["USER_ID"]=user_id
+        field["STATEMENT"]=0
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_USER_DUES(**field)
+    return response
+
+@Reporter(perm_enable=True,perm_groups=[1,35],name="User Credit Statement",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["USER CREDIT STATEMENT"], aggregators=[
+    ("RECHARGE_AMOUNT",aggregator.Sum,0),
+    ("RECEIVED_AMOUNT",aggregator.Sum,0)    
+    ])
+def get_user_credit_statement(request,**field):
+    user_id=request.user.username            
+    if user_id:        
+        field["USER_ID"]=user_id
+        field["STATEMENT"]=1
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_USER_DUES(**field)
+    return response    
+
+@Reporter(perm_enable=True,perm_groups=[1,36],name="All Users Pending Dues",enable=1,category="Reports",parent_path="report")
+@Create_Tables(titles=["ALL USERS PENDING DUES"],aggregators=[
+    ("AMOUNT",aggregator.Sum,0),
+    ("PENDING_AMOUNT",aggregator.Sum,0)    
+    ] )
+def get_all_user_dues(request,**field):
+    user_id=request.user.username                
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_USER_DUES(**field)
+    return response   
+
+@Reporter(perm_enable=True,perm_groups=[1,36],name="All Users Credit Statement",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["ALL USER CREDIT STATEMENT"],aggregators=[
+    ("RECHARGE_AMOUNT",aggregator.Sum,0),
+    ("RECEIVED_AMOUNT",aggregator.Sum,0)    
+    ])
+def get_all_user_credit_statement(request,**field):
+    user_id=request.user.username            
+    if user_id:                
+        field["STATEMENT"]=1
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_USER_DUES(**field)
+
+    return response      
+#RMS_GET_AGENT_PENDING_DUES
+
+@Reporter(perm_enable=True,perm_groups=[1,35],name="Agent Pending Dues",enable=1,category="Reports",parent_path="report")
+@Create_Tables(titles=["AGENT PENDING DUES"],aggregators=[
+    ("AMOUNT",aggregator.Sum,0),
+    ("PENDING_AMOUNT",aggregator.Sum,0)    
+    ] )
+def get_agent_dues(request,**field):
+    user_id=request.user.username            
+    if user_id:        
+        field["USER_ID"]=user_id
+        field["STATEMENT"]=0
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_AGENT_PENDING_DUES(**field)
+    return response
+
+@Reporter(perm_enable=True,perm_groups=[1,35],name="Agent Recharge/Payment Statement",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["AGENT RECHARGE STATEMENT","AGENT PAYMENT STATEMENT"], aggregators=[    
+    ("RECHARGE_AMOUNT",aggregator.Sum,0),
+    ("PAID_AMOUNT",aggregator.Sum,1)  
+    ])
+def get_agent_credit_statement(request,**field):
+    user_id=request.user.username            
+    if user_id:        
+        field["USER_ID"]=user_id
+        field["STATEMENT"]=1
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_AGENT_PENDING_DUES(**field)
+    return response    
+
+@Reporter(perm_enable=True,perm_groups=[1,36],name="All Agents Pending Dues",enable=1,category="Reports",parent_path="report")
+@Create_Tables(titles=["ALL AGENTS PENDING DUES"],aggregators=[
+    ("AMOUNT",aggregator.Sum,0),
+    ("PENDING_AMOUNT",aggregator.Sum,0)    
+    ] )
+def get_all_agents_dues(request,**field):
+    user_id=request.user.username                
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_AGENT_PENDING_DUES(**field)
+    return response   
+
+@Reporter(perm_enable=True,perm_groups=[1,36],name="All Agents Statement",enable=1,category="Reports",parent_path="date_report")
+@Create_Tables(titles=["ALL AGENTS RECHARGE STATEMENT","ALL AGENTS PAYMENT STATEMENT"],aggregators=[    
+    ("RECHARGE_AMOUNT",aggregator.Sum,0),
+    ("PAID_AMOUNT",aggregator.Sum,1)    
+    ])
+def get_all_agents_credit_statement(request,**field):
+    user_id=request.user.username            
+    if user_id:                
+        field["STATEMENT"]=1
+    api=gds_api.Gds_Api()
+    response=api.RMS_GET_AGENT_PENDING_DUES(**field)
+
+    return response
 
 ##---------------------------------## Services for crons and other clients-----------------------------------------##
 @Service_Reporter(shared_key="b218fad544980213a25ef18031c9127e")

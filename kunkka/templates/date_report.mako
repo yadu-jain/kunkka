@@ -84,6 +84,7 @@
                 }else{
                     $("#go").text("Go");
                     $("#go").attr("disabled",null);
+                    show_error(response.msg);
                 }
             }
             function open_report()
